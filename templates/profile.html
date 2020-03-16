@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+  <head>
+      <title>Cashflow</title>
+      <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+      <link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %}">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  </head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-item" href="#">
+                <div class="text navbar-logo-text">
+                    Cashflow
+                </div>
+            </a>
+            <div class="dropdown float-right">
+                <a class="navbar-item profile-nav" href="profile">
+                    gwyrwch
+                    <img src="{% static "img/Disc_Plain_orange.png" %}">
+                </a>
+                <div class="dropdown-content">
+                    <a href="#">Your account</a>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-container">
+            <form class="profile-form">
+                <div class="row">
+                    <div class="column-3 profile-photo-col-3">
+                        <img class="profile-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                        <button class="profile-photo-button">UPLOAD PHOTO</button>
+                    </div>
+                    <div class="column-6">
+                        <div class="row">
+                            <div class="column-5">
+                                <input type="text" name="name" placeholder="Rita">
+                            </div>
+                            <div class="column-1">
+
+                            </div>
+                            <div class="column-6">
+                                <input type="text" name="surname" placeholder="Gagarina">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column-12">
+                                <input type="text" name="email" placeholder="gwyrwch@mail.ru">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column-12">
+                                <input type="text" name="password" placeholder="New password">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column-12">
+                                <select name="currency">
+                                    &nbsp
+                                    <option>BYN</option>
+                                    <option>USD</option>
+                                    <option>EUR</option>
+                                    <option>PLN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="display: inline;">
+                            <button class="profile-submit-btn" type="submit">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+{#                <button class="profile-submit-btn" type="submit">SAVE</button>#}
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="row">
+                <div class="column-9 logo">
+                    <img src="{% static "img/logo.png" %}" alt="">
+                </div>
+                <div class="column-3">
+                    <div class="company">
+                        <h4>
+                            Company
+                        </h4>
+                        <a href="#">
+                            About us
+                        </a>
+                        <a href="#">
+                            Contact us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hr">
+                .
+            </div>
+            <div class="row">
+                <div class="column-9">
+
+                </div>
+                <div class="column-3 follow-us">
+                        <ul>
+                            <li>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </footer>
+</body>
+</html>

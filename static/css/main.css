@@ -1,9 +1,12 @@
-
+html {
+    /*height: 100%;*/
+}
 body {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif !important;
     font-size: 15px;
+    height: 100%;
 }
 
 button {
@@ -15,6 +18,15 @@ button {
 
 }
 
+input {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+select {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px;
+}
+
 .navbar {
     background-color: rgb(0, 126, 255);
     height: 50px;
@@ -24,9 +36,14 @@ button {
     width: 80%;
     position: fixed;
     padding-right: 100px;
+    z-index: 10;
     /*border-style: solid;*/
     /*border-width: 1px;*/
     /*border-color: red;*/
+}
+
+main {
+    min-height: calc(100vh - 160px);
 }
 
 .navbar, .main-container {
@@ -35,6 +52,7 @@ button {
 
 .main-container {
     padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 .navbar-item:hover {
@@ -202,7 +220,7 @@ button {
     color: #007eff;
 }
 
-.sidebar-container .hr {
+.hr {
     width: 100%;
     font-size: 1px;
     color: rgba(0, 0, 0, 0);
@@ -336,4 +354,73 @@ th {
     color: #2ecc71;
     text-transform: lowercase;
 
+}
+
+footer {
+    clear: both;
+    /*font-size: 10px;*/
+}
+
+.footer .hr {
+    background-color: rgba(0, 0, 0, 0.20);
+    margin-top: 10px;
+}
+
+.footer {
+    background-color: #f1f1f1;
+    /*height: 100px;*/
+    padding: 0 10%;
+}
+
+.footer .logo {
+    margin: 15px 0px;
+}
+
+.footer .logo img {
+    height: 50px;
+}
+
+.footer ul {
+    list-style-type: none;
+    display: inline-block;
+    margin-left: 0;
+    float: right;
+}
+
+.footer ul:before {
+    content: "Follow us:";
+    font-size: 11px;
+}
+
+.footer li {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.follow-us {
+    /*display: inline-block;*/
+}
+
+.follow-us img {
+    height: 20px;
+}
+
+.company {
+    padding-left: 65px;
+    font-size: 11px;
+}
+
+
+.company a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-size: 10px;
+
+}
+
+
+.company a:hover {
+    color: #007eff;
 }
