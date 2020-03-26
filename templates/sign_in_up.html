@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+  <head>
+      <title>Cashflow</title>
+      <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+      <link rel="stylesheet" type="text/css" href="{% static "css/sign_in_up.css" %}">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  </head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-item" href="#">
+                <div class="text navbar-logo-text">
+                    Cashflow
+                </div>
+            </a>
+            <div class="dropdown float-right">
+                <a class="navbar-item profile-nav" href="profile">
+                    gwyrwch
+                    <img src="{% static "img/Disc_Plain_orange.png" %}">
+                </a>
+                <div class="dropdown-content">
+                    <a href="#">Your account</a>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-container">
+            <h1>
+                ~Some cool slogan~
+            </h1>
+            <h2>
+                ~some text about the web app, with what it can help and etc~
+            </h2>
+            <div class="switch">
+                <button class="btn-primary btn1" id="sin" onclick="sign_in_click();">
+                    sign in
+                </button>
+                <button class="btn-secondary btn2" id="sup" onclick="sign_up_click();">
+                    sign up
+                </button>
+            </div>
+            <div class="sign_form_base">
+                <form class="sign_form" id="sign-in-form">
+                    <h2>
+                        Sign in to <span class="span-logo-text">Cashflow</span>
+                    </h2>
+                    <div class="row">
+                        <div class="column-12">
+                            <label>
+                                <input placeholder="Username">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column-12">
+                            <label>
+                                <input placeholder="Password">
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn-sign-in">
+                        sign in
+                    </button>
+                </form>
+                <form class="sign_form" id="sign-up-form">
+                    <h2>
+                        Create an account in <span class="span-logo-text">Cashflow</span>
+                    </h2>
+                    <div class="row">
+                        <div class="column-12">
+                            <label>
+                                <input placeholder="Username">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column-12">
+                            <label>
+                                <input placeholder="Email">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column-12">
+                            <label>
+                                <input placeholder="Password">
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn-sign-in">
+                        sign up
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="row">
+                <div class="column-9 logo">
+                    <img src="{% static "img/logo.png" %}" alt="">
+                </div>
+                <div class="column-3">
+                    <div class="company">
+                        <h4>
+                            Company
+                        </h4>
+                        <a href="#">
+                            About us
+                        </a>
+                        <a href="#">
+                            Contact us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hr">
+                .
+            </div>
+            <div class="row">
+                <div class="column-9">
+
+                </div>
+                <div class="column-3 follow-us">
+                        <ul>
+                            <li>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="{% static "img/friend.png" %}">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </footer>
+</body>
+<script>
+    var sign_up_form = document.getElementById('sign-up-form');
+    {#sign_up_form.style.width = "0px";#}
+    sign_up_form.style.display = 'none';
+    sign_up_form.style.opacity = '0';
+
+
+    function sign_in_click() {
+        var sign_in_form = document.getElementById('sign-in-form');
+        var sign_up_form = document.getElementById('sign-up-form');
+
+        sign_in_form.style.display = 'block';
+        sign_up_form.style.display = 'none';
+
+        setTimeout(function () {
+            sign_in_form.style.opacity = '1';
+            sign_up_form.style.opacity = '0';
+        });
+
+        {#sign_in_form.style.width = "100px";#}
+        {#sign_up_form.style.width = "0px";#}
+
+        var btn1 = document.getElementById('sin');
+        var btn2 = document.getElementById('sup');
+
+        btn1.classList.remove("btn-secondary");
+        btn1.classList.add("btn-primary");
+
+        btn2.classList.remove("btn-primary");
+        btn2.classList.add("btn-secondary");
+    }
+
+    function sign_up_click() {
+        var sign_in_form = document.getElementById('sign-in-form');
+        var sign_up_form = document.getElementById('sign-up-form');
+
+
+        sign_in_form.style.display = 'none';
+        sign_up_form.style.display = 'block';
+
+        setTimeout(function () {
+            sign_in_form.style.opacity = '0';
+            sign_up_form.style.opacity = '1';
+        });
+
+        var btn1 = document.getElementById('sup');
+        var btn2 = document.getElementById('sin');
+
+        btn1.classList.remove("btn-secondary");
+        btn1.classList.add("btn-primary");
+
+        btn2.classList.remove("btn-primary");
+        btn2.classList.add("btn-secondary");
+    }
+
+</script>
+</html>

@@ -252,11 +252,13 @@ main {
 .group-header button {
     width: 130px;
     height: 34px;
+    transition: all 0.5s cubic-bezier(0.65,-0.25,0.25, 1.95);
 }
 
 .group-header .btn-set {
     color: #007eff;
     background-color: #ffffff;
+    outline: none;
 }
 
 .group-header .btn-add {
@@ -264,6 +266,15 @@ main {
     background-color: #007eff;
     border: none;
     float: right;
+    outline: none;
+}
+
+.group-header .btn-add:hover {
+    width: 150px;
+}
+
+.group-header .btn-set:hover {
+    width: 150px;
 }
 
 .group-header img {
