@@ -139,14 +139,128 @@
                                     <div class="modal-body">
                                         <div>
                                             <p style="align-content: center">
-                                                <a href="#">You</a> paid
-                                                <a href="#">you</a>.
+                                                <a class='a-modal-links' id='a-who-settle' href="#">You</a> paid
+                                                <a href="#" class="a-modal-links" id="a-who-recipient">you</a>.
                                             </p>
                                         </div>
                                         <label>
-                                            <input style="margin-top: 0" placeholder="$0.00">
+                                            <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
                                         </label>
                                         <button>Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="who_settle" class="modal">
+                                <div class="modal-content" id="who-settle-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Choose  payer</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="material-icons close" style="float: right">
+                                                add
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <hr style="margin: 0;">
+                                    <div id="who-settle-body" class="modal-body">
+                                        <div>
+                                            <ul class="modal-settle-ul">
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Rita Gagarina
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Alex Vistyazh
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Olga Sotnikova
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Polina Lazuk
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Arina Gusakovskaya
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Liza Sokolovskaya
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="who_recipient" class="modal">
+                                <div class="modal-content" id="who-settle-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Choose a recipient</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="material-icons close" style="float: right">
+                                                add
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <hr style="margin: 0;">
+                                    <div id="who-settle-body" class="modal-body">
+                                        <div>
+                                            <ul class="modal-settle-ul">
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Rita Gagarina
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Alex Vistyazh
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Olga Sotnikova
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Polina Lazuk
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Arina Gusakovskaya
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Liza Sokolovskaya
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -168,18 +282,168 @@
                                     <hr style="margin: 0;">
                                     <div class="modal-body">
                                         <label>
-                                            <input placeholder="Description">
+                                            <input placeholder="Description" class="modal-input">
                                         </label>
                                         <label>
-                                            <input placeholder="$0.00">
+                                            <input placeholder="$0.00" class="modal-input">
                                         </label>
                                         <div>
                                             <p>Paid by
-                                                <a href="#">you</a> and split
-                                                <a href="#">equally</a>. (0.00$/person)
+                                                <a id="a-who-paid" class="a-modal-links" href="#">you</a> and split
+                                                <a id="a-split" class="a-modal-links" href="#">equally</a>. (0.00$/person)
                                             </p>
                                         </div>
                                         <button>Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="who_paid" class="modal">
+                                <div class="modal-content" id="who-settle-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Choose payer</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="material-icons close" style="float: right">
+                                                add
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <hr style="margin: 0;">
+                                    <div id="who-settle-body" class="modal-body">
+                                        <div>
+                                            <ul class="modal-settle-ul">
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Rita Gagarina
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Alex Vistyazh
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Olga Sotnikova
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Polina Lazuk
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Arina Gusakovskaya
+                                                    </a>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <a>
+                                                        <img src="{% static "img/group2.png" %}">
+                                                        Liza Sokolovskaya
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="split" class="modal">
+                                <div class="modal-content" id="percentage-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Split by percentages</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="material-icons close" style="float: right">
+                                                add
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <hr style="margin: 0;">
+                                    <div id="who-settle-body" class="modal-body">
+                                        <div>
+                                            <ul class="modal-settle-ul">
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Rita Gagarina
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Alex Vistyazh
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Olga Sotnikova
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Polina Lazuk
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Arina Gusakovskaya
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="modal-settle-li">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{% static "img/group2.png" %}">
+                                                            Liza Sokolovskaya
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -782,12 +1046,47 @@
 
     var modal = document.getElementById("addModal");
     var btn = document.getElementById("btnAdd");
-    var close = document.getElementsByClassName("close")[1];
+    var close = document.getElementsByClassName("close")[3];
     add_modal(modal, btn, close);
 
     var modal_settle = document.getElementById("settleModal");
     var btn_settle = document.getElementById("btnSet");
     var close_btn = document.getElementsByClassName("close")[0];
     add_modal(modal_settle, btn_settle, close_btn);
+
+
+    function add_who_settle_modal() {
+        var modal = document.getElementById("who_settle");
+        var open_btn = document.getElementById("a-who-settle");
+        var close_btn = document.getElementsByClassName("close")[1];
+        add_modal(modal, open_btn, close_btn);
+    }
+
+    add_who_settle_modal();
+
+    function add_who_recipient_modal() {
+        var modal = document.getElementById("who_recipient");
+        var open_btn = document.getElementById("a-who-recipient");
+        var close_btn = document.getElementsByClassName("close")[2];
+        add_modal(modal, open_btn, close_btn);
+    }
+    add_who_recipient_modal();
+
+    function add_who_paid_modal() {
+        var modal = document.getElementById("who_paid");
+        var open_btn = document.getElementById("a-who-paid");
+        var close_btn = document.getElementsByClassName("close")[4];
+        add_modal(modal, open_btn, close_btn);
+    }
+    add_who_paid_modal();
+
+    function add_how_split_modal() {
+        var modal = document.getElementById("split");
+        var open_btn = document.getElementById("a-split");
+        var close_btn = document.getElementsByClassName("close")[5];
+        add_modal(modal, open_btn, close_btn);
+    }
+    add_how_split_modal();
+
 </script>
 </html>

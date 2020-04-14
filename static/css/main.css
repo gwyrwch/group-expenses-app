@@ -453,30 +453,90 @@ footer {
 
 /* Modal Content */
 .modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 2px solid #007eff;
-  width: 30%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 2px solid #007eff;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
     border-radius: 8px;
+}
+
+#who-settle-content {
+    margin-right: 15%;
+    animation-name: animateright;
+    width: 18%;
+}
+
+#who-settle-content li {
+    text-decoration: none;
+
+}
+
+#who-settle-body {
+    padding: 0;
+}
+
+.modal-settle-li:hover {
+    background-color: #fafafa;
+    border-radius: 8px;
+}
+
+.modal-settle-li a:hover {
+    color: #007eff;
+}
+
+.modal-settle-li img {
+    width: 20px; !important;
+    padding: 3%;
+    vertical-align: middle;
+}
+
+.modal-settle-li a {
+    text-decoration: none;
+    vertical-align: middle;
+    display: block;
+    color: rgba(72, 72, 72, 0.85);
+    background-color: transparent; !important;
+    border-radius: 0; !important;
+}
+
+
+.modal-settle-ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+    from { top:-300px; opacity:0 }
+    to { top:0; opacity:1 }
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+    from { top:-300px; opacity:0 }
+    to { top:0; opacity:1 }
 }
+
+
+/* Add Animation */
+@-webkit-keyframes animateright {
+    from {right: 100px; opacity:0}
+    to {right:0; opacity:1}
+}
+
+@keyframes animateright {
+    from {right: 100px; opacity:0}
+    to {right:0; opacity:1}
+}
+
 
 /* The Close Button */
 .close {
@@ -510,7 +570,7 @@ footer {
 
 .modal-body {padding: 2px 16px;}
 
-.modal input {
+.modal-input {
     width: 100%;
     /*padding: 3%;*/
     height: 45px;
@@ -524,7 +584,7 @@ footer {
     /*text-align: center;*/
 }
 
-.modal a {
+.a-modal-links {
     background-color: #f1f1f1;
     text-decoration: none;
     color: #007eff;
@@ -540,4 +600,31 @@ footer {
     margin-bottom: 2%;
     /*float: right;*/
     outline: none;
+}
+
+
+.input-percent-append {
+    height: 100%;
+    width: 50%;
+    padding: 0 4px;
+    border: 0;
+    outline: none;
+}
+
+.percent-border {
+    border: 1px solid black;
+    margin: 2px;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+.percent  {
+    padding: 5px 0 5px 0;
+    vertical-align: middle;
+}
+
+#percentage-content {
+    margin-right: 12%;
+    animation-name: animateright;
+    width: 22%;
 }
