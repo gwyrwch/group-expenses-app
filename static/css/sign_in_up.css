@@ -83,6 +83,7 @@
 .switch .btn-secondary {
     color: #007eff;
     border: 1px solid #007eff;
+    background-color: white;
 }
 
 .switch .btn1 {
@@ -104,12 +105,97 @@
 
 }
 
-.btn2:active {
-    /*background-color: #007eff;*/
-    /*color: #fff;*/
-}
+/*.btn2:active {*/
+/*    background-color: #007eff;*/
+/*    color: #fff;*/
+/*}*/
 
 
 .span-logo-text {
     color: #007eff;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .sign_form_base {
+        width: 100%;
+        padding-top: 0;
+        margin: 0;
+    }
+
+    .sign_form {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    .sign_form h2 {
+        margin-top: 2% !important;
+        margin-bottom: 4% !important;
+    }
+
+    .btn-sign-in {
+        margin-bottom: 2%;
+    }
+
+    .main-container {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 3%;
+    }
+
+    .main-container h2 {
+        margin: 3%; !important;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .sign_form_base {
+        width: 100%;
+    }
+
+    .sign_form {
+        margin-left: 6%;
+        margin-right: 6%;
+        margin-top: 3%;
+    }
+
+
+    .btn-sign-in {
+        width: 140px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .main-container {
+        padding-left: 4%;
+        padding-right: 4%;
+        padding-top: 3%;
+    }
+
+    .switch button {
+        margin: 0 -2px;
+        height: 40px;
+        width: 130px;
+        transition: all 0.5s cubic-bezier(0.65,-0.25,0.25, 1.95);
+        font-size: 18px;
+    }
+
+    .sign_form input {
+        font-size: 18px;
+    }
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }
