@@ -76,3 +76,110 @@
 
     width: 100%;
 }
+
+
+@media only screen and (max-width: 600px) {
+    .main-container {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        overflow: hidden;
+    }
+
+
+    html {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+
+    .float-right {
+        width:80px;
+    }
+
+    .profile-form {
+        padding: 3%;
+        margin-top: 5px;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .profile-photo {
+        width: 100px;
+        border-radius: 50px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .profile-photo-button {
+        display: none;
+    }
+
+    .profile-form .row {
+        display: block;
+    }
+
+    .profile-form input {
+        height: 45px;
+    }
+
+    .profile-form select {
+        height: 45px;
+    }
+
+    .profile-form .input-small-device {
+        width: 100%;
+        margin-top: 26px;
+    }
+
+    .profile-submit-btn {
+        float: none;
+        width: 150px;
+        margin: 0 auto;
+        display: block;
+    }
+
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .main-container {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+
+    }
+
+    .navbar {
+        width: 88%;
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .profile-form {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .float-right {
+        width: 80px;
+    }
+}
+
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .navbar {
+        width: 88%;
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .main-container {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .navbar-logout {
+        margin-right: 0;
+    }
+}
