@@ -17,3 +17,7 @@ def sign_in_up(request):
 
 def index_mobile(request):
     return render(request, 'index_mobile.html')
+
+
+def friends_groups_mobile(request):
+    return render(request, 'friends_groups_mobile.html')

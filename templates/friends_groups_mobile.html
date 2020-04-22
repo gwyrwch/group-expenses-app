@@ -5,11 +5,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cashflow</title>
+    <title>friends/groups</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static "css/friends_groups.css" %}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -35,121 +34,87 @@
     </header>
     <main>
         <div class="main-container">
-            <div class="row">
-                <img class="group-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+            <div class="header-text">
+                Friends
             </div>
-            <div class="group-name-text">
-                Flat 102
-            </div>
-            <div class="row row-btns">
-                <div class="column-3">
-                    <button class="btn-groups btn-white" onclick="location.href='friends_groups';">
-                        groups
-                    </button>
-                </div>
-                <div class="column-3">
-                    <button class="btn-groups btn-blue">
-                        friends
-                    </button>
-                </div>
-                <div class="column-3">
-                    <button class="btn-set btn-white">
-                        settle up
-                    </button>
-                </div>
-                <div class="column-3">
-                    <button class="btn-set btn-blue">
-                        add new
-                    </button>
-                </div>
-            </div>
+            <hr>
             <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        airport water
-                    </div>
-                    <div class="card-date">
-                        20.01.2020
-                    </div>
-                </div>
                 <div class="column-3">
-
+                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">5BYN</div>
+                <div class="column-5">
+                    <div class="friend-group-name">
+                        James
+                    </div>
+                    <div class="owes-you-text">
+                        owes you 20$
+                    </div>
+                    <div class="you-owe-text">
+                        you owe 40$
+                    </div>
                 </div>
+                <div class="column-4"></div>
 
             </div>
+            <hr>
             <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        Tenerife cafe
-                    </div>
-                    <div class="card-date">
-                        28.01.2020
-                    </div>
-                </div>
                 <div class="column-3">
-
+                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">72.00$</div>
+                <div class="column-5">
+                    <div class="friend-group-name">
+                        Rev Shown
+                    </div>
+                    <div class="owes-you-text">
+                        owes you 20$
+                    </div>
+                    <div class="you-owe-text">
+                        you owe 40$
+                    </div>
                 </div>
+                <div class="column-4"></div>
 
             </div>
+            <hr>
             <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        restaurant Gvozd
-                    </div>
-                    <div class="card-date">
-                        20.02.2020
-                    </div>
-                </div>
                 <div class="column-3">
-
+                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">462.77$</div>
+                <div class="column-5">
+                    <div class="friend-group-name">
+                        Will Kenny
+                    </div>
+                    <div class="owes-you-text">
+                        owes you 20$
+                    </div>
+                    <div class="you-owe-text">
+                        you owe 40$
+                    </div>
                 </div>
+                <div class="column-4"></div>
 
             </div>
+            <hr>
             <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        petrol
-                    </div>
-                    <div class="card-date">
-                        03.03.2020
-                    </div>
-                </div>
                 <div class="column-3">
-
+                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">223BYN</div>
+                <div class="column-5">
+                    <div class="friend-group-name">
+                        Beth Williams
+                    </div>
+                    <div class="owes-you-text">
+                        owes you 20$
+                    </div>
+                    <div class="you-owe-text">
+                        you owe 40$
+                    </div>
                 </div>
+                <div class="column-4"></div>
 
             </div>
+            <hr>
         </div>
-
-
     </main>
     <footer>
         <div class="footer">
@@ -207,5 +172,6 @@
                 </div>
             </div>
     </footer>
+
 </body>
 </html>

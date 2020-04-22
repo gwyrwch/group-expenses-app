@@ -1,0 +1,52 @@
+.navbar {
+    padding: 0;
+    width: 100%;
+}
+
+.main-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.header-text {
+    text-align: center;
+    font-weight: 800;
+    font-size: larger;
+    margin: auto 0;
+}
+
+.main-container hr {
+    /*color: #000;*/
+    /*margin: 0;*/
+}
+
+.group-friend-card-photo {
+    width: 60px;
+    display: block;
+    margin: 0;
+}
+
+.card {
+    padding: 3% 2%;
+}
+
+.friend-group-name {
+    font-weight: 900;
+    font-size: larger;
+
+}
+
+.owes-you-text {
+    padding-top: 4px;
+    color: #00D95F;
+    font-size: smaller;
+}
+
+.you-owe-text {
+    color: #FF7A00;
+    font-size: smaller;
+}
+
+.main-container .column-5 {
+    margin: auto 0;
+}
