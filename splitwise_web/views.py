@@ -13,3 +13,7 @@ def profile(request):
 
 def sign_in_up(request):
     return render(request, 'sign_in_up.html')
+
+
+def index_mobile(request):
+    return render(request, 'index_mobile.html')

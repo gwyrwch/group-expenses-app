@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cashflow</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-item" href="index_mobile">
+                <div class="text navbar-logo-text">
+                    Cashflow
+                </div>
+            </a>
+            <div class="dropdown float-right">
+                <a class="navbar-item profile-nav" href="profile">
+                    gwyrwch
+                    <img src="{% static "img/Disc_Plain_orange.png" %}">
+                </a>
+                <div class="dropdown-content">
+                    <a href="profile">Your account</a>
+                    <a href="sign_in_up">Log out</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-container">
+            <div class="row">
+                <img class="group-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+            </div>
+            <div class="group-name-text">
+                Flat 102
+            </div>
+            <div class="row row-btns">
+                <div class="column-3">
+                    <button class="btn-groups btn-white">
+                        groups
+                    </button>
+                </div>
+                <div class="column-3">
+                    <button class="btn-groups btn-blue">
+                        friends
+                    </button>
+                </div>
+                <div class="column-3">
+                    <button class="btn-set btn-white">
+                        settle up
+                    </button>
+                </div>
+                <div class="column-3">
+                    <button class="btn-set btn-blue">
+                        add new
+                    </button>
+                </div>
+            </div>
+            <div class="row card">
+                <div class="column-2">
+                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                </div>
+                <div class="column-4">
+                    <div class="exp-name-text">
+                        airport water
+                    </div>
+                    <div class="card-date">
+                        20.01.2020
+                    </div>
+                </div>
+                <div class="column-3">
+
+                </div>
+                <div class="column-3">
+                    <div class="lent-borrowed-text">you borrowed</div>
+                    <div class="borrowed-money-text">5BYN</div>
+                </div>
+
+            </div>
+            <div class="row card">
+                <div class="column-2">
+                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                </div>
+                <div class="column-4">
+                    <div class="exp-name-text">
+                        Tenerife cafe
+                    </div>
+                    <div class="card-date">
+                        28.01.2020
+                    </div>
+                </div>
+                <div class="column-3">
+
+                </div>
+                <div class="column-3">
+                    <div class="lent-borrowed-text">you lent</div>
+                    <div class="lent-money-text">72.00$</div>
+                </div>
+
+            </div>
+            <div class="row card">
+                <div class="column-2">
+                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                </div>
+                <div class="column-4">
+                    <div class="exp-name-text">
+                        restaurant Gvozd
+                    </div>
+                    <div class="card-date">
+                        20.02.2020
+                    </div>
+                </div>
+                <div class="column-3">
+
+                </div>
+                <div class="column-3">
+                    <div class="lent-borrowed-text">you lent</div>
+                    <div class="lent-money-text">462.77$</div>
+                </div>
+
+            </div>
+            <div class="row card">
+                <div class="column-2">
+                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                </div>
+                <div class="column-4">
+                    <div class="exp-name-text">
+                        petrol
+                    </div>
+                    <div class="card-date">
+                        03.03.2020
+                    </div>
+                </div>
+                <div class="column-3">
+
+                </div>
+                <div class="column-3">
+                    <div class="lent-borrowed-text">you borrowed</div>
+                    <div class="borrowed-money-text">223BYN</div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="row">
+                <div class="column-9 logo">
+                    <img src="{% static "img/logo.png" %}" alt="">
+                </div>
+                <div class="column-3">
+                    <div class="company">
+                        <h4>
+                            Company
+                        </h4>
+                        <a href="#">
+                            About us
+                        </a>
+                        <a href="#">
+                            Contact us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hr">
+                .
+            </div>
+            <div class="row">
+                <div class="column-9">
+
+                </div>
+                <div class="column-3 follow-us">
+                    <ul>
+                        <li>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="{% static "img/friend.png" %}">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="{% static "img/friend.png" %}">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="{% static "img/friend.png" %}">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="{% static "img/friend.png" %}">
+                            </a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+    </footer>
+</body>
+</html>

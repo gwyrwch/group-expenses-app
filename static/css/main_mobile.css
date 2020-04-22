@@ -1,0 +1,100 @@
+.group-photo {
+    width: 80px;
+    margin: 0 auto 4px;
+    display: block;
+}
+
+.group-card-photo {
+    width: 50px;
+    display: block;
+    margin: 0;
+}
+
+.row-btns button {
+    outline: none;
+    font-size: 12px;
+    width: 72px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+
+.row-btns .btn-blue {
+    color: #ffffff;
+    background-color: #007eff;
+    border-color: #007eff;
+
+}
+
+.row-btns .btn-white {
+    color: #007eff;
+    background-color: #ffffff;
+}
+
+.row-btns .btn-set {
+    float: right;
+}
+
+.row-btns {
+    background-color: rgba(24, 160, 251, 0.10);
+    padding: 5px;
+}
+
+
+.main-container  {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.card {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.28);
+    margin: 3%;
+    padding: 3% 2%;
+    border-radius: 4px;
+}
+
+.card .column-3 {
+    margin: auto 0;
+}
+
+.card .column-4 {
+    margin: auto 0;
+}
+
+.lent-borrowed-text {
+    font-size: 10.5px;
+    float: right;
+    color: #5b5b5b;
+}
+
+.lent-money-text {
+    color: #00D95F;
+    float: right;
+}
+
+.borrowed-money-text {
+    color: #FF7A00;
+    float: right;
+}
+
+.exp-name-text {
+    font-size: smaller;
+    text-transform: capitalize;
+}
+
+.card-date {
+    font-size: 11px;
+    color: #5b5b5b;
+}
+
+.navbar {
+    padding: 0;
+    width: 100%;
+}
+
+.group-name-text {
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
