@@ -476,6 +476,24 @@ footer {
     }
 }
 
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .main-container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .sidebar {
+        width: 140px;
+    }
+
+    .navbar {
+        width: 96%;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+}
+
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
     .footer ul {
         display: none;
@@ -484,6 +502,23 @@ footer {
     main {
         min-height: calc(100vh - 95px);
     }
+
+    .main-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .sidebar {
+        width: 180px;
+
+    }
+
+    .navbar {
+        width: 96%;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
 }
 
 /* The Modal (background) */

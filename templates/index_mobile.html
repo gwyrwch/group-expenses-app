@@ -16,7 +16,7 @@
 <body>
     <header>
         <nav class="navbar">
-            <a class="navbar-item" href="index_mobile">
+            <a class="navbar-item" href="/">
                 <div class="text navbar-logo-text">
                     Cashflow
                 </div>
@@ -48,19 +48,76 @@
                     </button>
                 </div>
                 <div class="column-3">
-                    <button class="btn-groups btn-blue">
+                    <button class="btn-groups btn-blue" onclick="location.href='friends_groups';">
                         friends
                     </button>
                 </div>
                 <div class="column-3">
-                    <button class="btn-set btn-white">
+                    <button id="btn-settle-up" class="btn-set btn-white">
                         settle up
                     </button>
+                    <div id="settleModal" class="modal">
+                        <div class="modal-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Settle up</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <i class="material-icons close" style="float: right">
+                                        close
+                                    </i>
+                                </div>
+                            </div>
+                            <hr style="margin: 0;">
+                            <div class="modal-body">
+                                <div>
+                                    <p style="align-content: center">
+                                        <a class='a-modal-links' id='a-who-settle' href="#">You</a> paid
+                                        <a href="#" class="a-modal-links" id="a-who-recipient">you</a>.
+                                    </p>
+                                </div>
+                                <label>
+                                    <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
+                                </label>
+                                <button>Save</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="column-3">
-                    <button class="btn-set btn-blue">
+                    <button id="btn-add-new" class="btn-set btn-blue">
                         add new
                     </button>
+                    <div id="addModal" class="modal">
+                        <div class="modal-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Add an expense</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <i class="material-icons close" style="float: right">
+                                        close
+                                    </i>
+                                </div>
+                            </div>
+                            <hr style="margin: 0;">
+                            <div class="modal-body">
+                                <label>
+                                    <input placeholder="Description" class="modal-input">
+                                </label>
+                                <label>
+                                    <input placeholder="$0.00" class="modal-input">
+                                </label>
+                                <div>
+                                    <p>Paid by
+                                        <a id="a-who-paid" class="a-modal-links" href="#">you</a> and split
+                                        <a id="a-split" class="a-modal-links" href="#">equally</a>. (0.00$/person)
+                                    </p>
+                                </div>
+                                <button>Save</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row card">
@@ -149,7 +206,6 @@
             </div>
         </div>
 
-
     </main>
     <footer>
         <div class="footer">
@@ -208,4 +264,8 @@
             </div>
     </footer>
 </body>
+
+<script src="{% static "js/index_mobile.js" %}" type="module"></script>
+<script src="{% static "js/lib.js" %}" type="module"></script>
+
 </html>

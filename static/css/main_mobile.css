@@ -98,3 +98,7 @@
     text-transform: uppercase;
     font-weight: bolder;
 }
+
+.modal-content {
+    width: 80%;
+}
