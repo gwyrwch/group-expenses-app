@@ -42,12 +42,12 @@ for (var i = 0; i < all_sidebar_elements.length; i++) {
 var modal = document.getElementById("addModal");
 var btn = document.getElementById("btnAdd");
 var close = document.getElementsByClassName("close")[3];
-add_modal(modal, btn, close);
+add_modal(modal, btn, close, true);
 
 var modal_settle = document.getElementById("settleModal");
 var btn_settle = document.getElementById("btnSet");
 var close_btn = document.getElementsByClassName("close")[0];
-add_modal(modal_settle, btn_settle, close_btn);
+add_modal(modal_settle, btn_settle, close_btn, true);
 
 
 function add_who_settle_modal() {

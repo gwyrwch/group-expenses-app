@@ -36,9 +36,9 @@
     margin-bottom: 26px;
 }
 
-.sign_form h2 {
-    margin-top: 35px !important;
-    margin-bottom: 25px !important;
+.main-container .sign_form h2 {
+    margin-top: 35px;
+    margin-bottom: 25px;
 }
 
 .btn-sign-in {
@@ -130,9 +130,9 @@
         margin-right: 2%;
     }
 
-    .sign_form h2 {
-        margin-top: 2% !important;
-        margin-bottom: 4% !important;
+    .main-container .sign_form h2 {
+        margin-top: 2%;
+        margin-bottom: 4%;
     }
 
     .btn-sign-in {
@@ -146,7 +146,7 @@
     }
 
     .main-container h2 {
-        margin: 3%; !important;
+        margin: 3%;
     }
 }
 

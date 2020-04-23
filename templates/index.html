@@ -20,7 +20,7 @@
                 </div>
             </a>
             <div class="dropdown float-right">
-                <a class="navbar-item profile-nav" href="profile">
+                <a class="profile-nav" href="profile">
                     gwyrwch
                     <img src="{% static "img/Disc_Plain_orange.png" %}">
                 </a>
@@ -136,12 +136,12 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div class="modal-body">
                                         <div>
                                             <p style="align-content: center">
-                                                <a class='a-modal-links' id='a-who-settle' href="#">You</a> paid
-                                                <a href="#" class="a-modal-links" id="a-who-recipient">you</a>.
+                                                <button class='btn-modal-links' id='a-who-settle'>You</button> paid
+                                                <button class="btn-modal-links" id="a-who-recipient">you</button>.
                                             </p>
                                         </div>
                                         <label>
@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                             <div id="who_settle" class="modal">
-                                <div class="modal-content" id="who-settle-content">
+                                <div class="modal-content modal-content-right" id="who-settle-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
                                             <h3><strong>Choose  payer</strong></h3>
@@ -163,7 +163,7 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
@@ -209,7 +209,7 @@
                                 </div>
                             </div>
                             <div id="who_recipient" class="modal">
-                                <div class="modal-content" id="who-settle-content">
+                                <div class="modal-content modal-content-right" id="who-settle-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
                                             <h3><strong>Choose a recipient</strong></h3>
@@ -220,7 +220,7 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
@@ -280,7 +280,7 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div class="modal-body">
                                         <label>
                                             <input placeholder="Description" class="modal-input">
@@ -290,8 +290,8 @@
                                         </label>
                                         <div>
                                             <p>Paid by
-                                                <a id="a-who-paid" class="a-modal-links" href="#">you</a> and split
-                                                <a id="a-split" class="a-modal-links" href="#">equally</a>. (0.00$/person)
+                                                <button id="a-who-paid" class="btn-modal-links">you</button> and split
+                                                <button id="a-split" class="btn-modal-links">equally</button>. (0.00$/person)
                                             </p>
                                         </div>
                                         <button>Save</button>
@@ -299,7 +299,7 @@
                                 </div>
                             </div>
                             <div id="who_paid" class="modal">
-                                <div class="modal-content" id="who-settle-content">
+                                <div class="modal-content modal-content-right" id="who-settle-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
                                             <h3><strong>Choose payer</strong></h3>
@@ -310,7 +310,7 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
@@ -356,7 +356,7 @@
                                 </div>
                             </div>
                             <div id="split" class="modal">
-                                <div class="modal-content" id="percentage-content">
+                                <div class="modal-content modal-content-right" id="percentage-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
                                             <h3><strong>Split by percentages</strong></h3>
@@ -367,7 +367,7 @@
                                             </i>
                                         </div>
                                     </div>
-                                    <hr style="margin: 0;">
+                                    <div class="hr">.</div>
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
