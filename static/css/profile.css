@@ -17,6 +17,10 @@
     height: 34px;
 }
 
+.profile-submit-btn-parent {
+    text-align: right;
+}
+
 .profile-submit-btn {
     color: #ffffff;
     background-color: #007eff;
@@ -24,9 +28,7 @@
     font-size: 12px;
     width: 230px;
     height: 34px;
-    float: right;
     padding: 7px;
-    /*margin: 0 %;*/
 }
 
 .profile-photo-col-3 {
@@ -92,11 +94,6 @@
         overflow-y: scroll;
     }
 
-
-    .float-right {
-        width:80px;
-    }
-
     .profile-form {
         padding: 3%;
         margin-top: 5px;
@@ -139,6 +136,10 @@
         display: block;
     }
 
+    .navbar-logout {
+        margin-right: 0;
+    }
+
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -160,8 +161,8 @@
         margin-right: 30px;
     }
 
-    .float-right {
-        width: 80px;
+    .navbar-logout {
+        margin-right: 0;
     }
 }
 

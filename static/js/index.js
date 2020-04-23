@@ -82,3 +82,19 @@ function add_how_split_modal() {
     add_modal(modal, open_btn, close_btn);
 }
 add_how_split_modal();
+
+
+function get_current_date() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '.' + dd + '.' + yyyy;
+
+    var date_btn = document.getElementById("btn-date-paid");
+    date_btn.innerText = today;
+
+    return today;
+}
+get_current_date();

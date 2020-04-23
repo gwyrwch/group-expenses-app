@@ -13,20 +13,25 @@
   </head>
 <body>
     <header>
-        <nav class="navbar">
-            <a class="navbar-item" href="/">
-                <div class="text navbar-logo-text">
-                    Cashflow
-                </div>
-            </a>
-            <div class="dropdown float-right">
-                <a class="profile-nav" href="profile">
-                    gwyrwch
-                    <img src="{% static "img/Disc_Plain_orange.png" %}">
+        <nav class="navbar row">
+            <div class="column-2">
+                <a class="navbar-item" href="/">
+                    <div class="text navbar-logo-text">
+                        Cashflow
+                    </div>
                 </a>
-                <div class="dropdown-content">
-                    <a href="profile">Your account</a>
-                    <a href="sign_in_up">Log out</a>
+            </div>
+            <div class="column-8"></div>
+            <div class="column-2" style="text-align: right">
+                <div class="dropdown">
+                    <a class="profile-nav" href="profile">
+                        gwyrwch
+                        <img src="{% static "img/Disc_Plain_orange.png" %}">
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="profile">Your account</a>
+                        <a href="sign_in_up">Log out</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -36,7 +41,7 @@
             <div class="column-3">
                 <div class="sidebar">
                     <div class="sidebar-container">
-                        <div class="row header">
+                        <div class="row header-sidebar">
                             <div class="column-10">
                                 <h3>GROUPS</h3>
                             </div>
@@ -76,7 +81,7 @@
                     </div>
 
                     <div class="sidebar-container">
-                        <div class="row header">
+                        <div class="row header-sidebar">
                             <div class="column-10">
                                 <h3>FRIENDS</h3>
                             </div>
@@ -131,7 +136,7 @@
                                             <h3><strong>Settle up</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close">
                                                 close
                                             </i>
                                         </div>
@@ -158,7 +163,7 @@
                                             <h3><strong>Choose  payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close">
                                                 close
                                             </i>
                                         </div>
@@ -215,7 +220,7 @@
                                             <h3><strong>Choose a recipient</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close">
                                                 close
                                             </i>
                                         </div>
@@ -275,7 +280,7 @@
                                             <h3><strong>Add an expense</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close">
                                                 close
                                             </i>
                                         </div>
@@ -294,6 +299,17 @@
                                                 <button id="a-split" class="btn-modal-links">equally</button>. (0.00$/person)
                                             </p>
                                         </div>
+                                        <div class="row">
+                                            <div class="column-6">
+                                                <label for="btn-date-paid">
+                                                    <input type="date" id="btn-date-paid" class="btn-modal-links">
+                                                </label>
+                                            </div>
+                                            <div class="column-6">
+                                                <button id="btn-add-image" class="btn-modal-links">add image</button>
+                                            </div>
+
+                                        </div>
                                         <button>Save</button>
                                     </div>
                                 </div>
@@ -305,7 +321,7 @@
                                             <h3><strong>Choose payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close">
                                                 close
                                             </i>
                                         </div>
@@ -362,7 +378,7 @@
                                             <h3><strong>Split by percentages</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" style="float: right">
+                                            <i class="material-icons close" >
                                                 close
                                             </i>
                                         </div>

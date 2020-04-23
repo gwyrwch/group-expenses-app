@@ -31,8 +31,9 @@
     background-color: #ffffff;
 }
 
-.row-btns .btn-set {
-    float: right;
+
+.btn-to-right {
+    text-align: right;
 }
 
 .row-btns {
@@ -63,18 +64,18 @@
 
 .lent-borrowed-text {
     font-size: 10.5px;
-    float: right;
+    text-align: right;
     color: #5b5b5b;
 }
 
 .lent-money-text {
     color: #00D95F;
-    float: right;
+    text-align: right;
 }
 
 .borrowed-money-text {
     color: #FF7A00;
-    float: right;
+    text-align: right;
 }
 
 .exp-name-text {

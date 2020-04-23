@@ -14,20 +14,25 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <a class="navbar-item" href="index_mobile">
-                <div class="text navbar-logo-text">
-                    Cashflow
-                </div>
-            </a>
-            <div class="dropdown float-right">
-                <a class="navbar-item profile-nav" href="profile">
-                    gwyrwch
-                    <img src="{% static "img/Disc_Plain_orange.png" %}">
+        <nav class="navbar row">
+            <div class="column-3">
+                <a class="navbar-item" href="/">
+                    <div class="text navbar-logo-text">
+                        Cashflow
+                    </div>
                 </a>
-                <div class="dropdown-content">
-                    <a href="profile">Your account</a>
-                    <a href="sign_in_up">Log out</a>
+            </div>
+            <div class="column-2"></div>
+            <div class="column-7" style="text-align: right">
+                <div class="dropdown">
+                    <a class="profile-nav" href="profile">
+                        gwyrwch
+                        <img src="{% static "img/Disc_Plain_orange.png" %}">
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="profile">Your account</a>
+                        <a href="sign_in_up">Log out</a>
+                    </div>
                 </div>
             </div>
         </nav>

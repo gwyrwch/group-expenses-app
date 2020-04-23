@@ -14,13 +14,16 @@
   </head>
 <body>
     <header>
-        <nav class="navbar">
-            <a class="navbar-item" href="/">
-                <div class="text navbar-logo-text">
-                    Cashflow
-                </div>
-            </a>
-            <div class="float-right">
+        <nav class="navbar row">
+            <div class="column-2">
+                <a class="navbar-item" href="/">
+                    <div class="text navbar-logo-text">
+                        Cashflow
+                    </div>
+                </a>
+            </div>
+            <div class="column-8"></div>
+            <div class="column-2" style="text-align: right">
                 <a class="navbar-item navbar-logout" href="sign_in_up">
                     Log out
                 </a>
@@ -69,7 +72,9 @@
                             </div>
                         </div>
                         <div class="row" style="display: inline;">
-                            <button class="profile-submit-btn" type="submit">SAVE</button>
+                            <div class="column-12 profile-submit-btn-parent">
+                                <button class="profile-submit-btn" type="submit">SAVE</button>
+                            </div>
                         </div>
                     </div>
                 </div>
