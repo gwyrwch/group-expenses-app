@@ -224,9 +224,8 @@ main {
 
 .hr {
     width: 100%;
-    font-size: 1px;
+    height: 1px;
     color: rgba(0, 0, 0, 0);
-    /*padding: 0.5px;*/
     background-color: #007eff;
 }
 
