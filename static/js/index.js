@@ -4,38 +4,34 @@ if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.u
 
 import { add_modal } from './lib.js';
 
-function hover_image(id) {
-    return function () {
-        var sidebar_el = document.getElementById(id);
-        var a_el = sidebar_el.firstElementChild;
-        var img_el = a_el.firstElementChild;
-        if (id.includes("gr"))
-            img_el.src = "static/img/group_hover.png";
-        else if (id.includes("fr")) {
-            img_el.src = "static/img/friend_hover.png";
-        }
-    }
-}
+// function hover_image(id) {
+//     return function () {
+//         var sidebar_el = document.getElementById(id);
+//         var a_el = sidebar_el.firstElementChild;
+//         var img_el = a_el.firstElementChild;
+//         if (id.includes("gr"))
+//             img_el.src = "static/img/group_hover.png";
+//     }
+// }
+//
+// function unhover_image(id) {
+//     return function () {
+//         var sidebar_el = document.getElementById(id);
+//         var a_el = sidebar_el.firstElementChild;
+//         var img_el = a_el.firstElementChild;
+//         if (id.includes("gr"))
+//             img_el.src = "static/img/group2.png";
+//     }
+// }
 
-function unhover_image(id) {
-    return function () {
-        var sidebar_el = document.getElementById(id);
-        var a_el = sidebar_el.firstElementChild;
-        var img_el = a_el.firstElementChild;
-        if (id.includes("gr")) {
-            img_el.src = "static/img/group2.png";
-        } else if (id.includes("fr")) {
-            img_el.src = "static/img/friend.png";
-        }
-    }
-}
+// var  all_sidebar_elements = document.getElementsByClassName("li-sidebar-hover");
+// var  save_sidebar_elements = document.getElementsByClassName("li-sidebar-hover");
+// for (var i = 0; i < all_sidebar_elements.length; i++) {
+//     all_sidebar_elements[i].onmouseover = hover_image(all_sidebar_elements[i].id);
+//     all_sidebar_elements[i].onmouseout = unhover_image(all_sidebar_elements[i].id);
+// }
 
-var  all_sidebar_elements = document.getElementsByClassName("li-sidebar-hover");
-var  save_sidebar_elements = document.getElementsByClassName("li-sidebar-hover");
-for (var i = 0; i < all_sidebar_elements.length; i++) {
-    all_sidebar_elements[i].onmouseover = hover_image(all_sidebar_elements[i].id);
-    all_sidebar_elements[i].onmouseout = unhover_image(all_sidebar_elements[i].id);
-}
+// todo: color image border on hover
 
 
 // modal

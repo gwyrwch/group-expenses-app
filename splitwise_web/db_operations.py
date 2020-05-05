@@ -81,9 +81,30 @@ def get_user_friends(user_id):
     res = []
     for friendship in friendships:
         friend = dict()
-        friend_username = User.objects.filter(id=friendship.uid_2).get().username
-        friend['friend_username'] = friend_username
+        friend__obj = User.objects.filter(id=friendship.uid_2).get()
+        friend['friend_username'] = friend__obj.username
+        friend['photo_path'] = find_user_photo(friend__obj.id)
 
         res.append(friend)
 
     return res
+
+
+def add_or_update_photo(id_user, pic):
+    profile_pics = ProfilePictures.objects.filter(id_user=id_user)
+
+    if not len(profile_pics):
+        profile_pic = ProfilePictures(id_user=id_user, photo_path=pic)
+        profile_pic.save()
+    else:
+        profile_pic = profile_pics.get()
+        profile_pic.photo_path = pic
+        profile_pic.save()
+
+
+def find_user_photo(id_user):
+    profile_pics = ProfilePictures.objects.filter(id_user=id_user)
+
+    if len(profile_pics):
+        return profile_pics.get().photo_path
+    return None

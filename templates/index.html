@@ -26,7 +26,11 @@
                 <div class="dropdown">
                     <a class="profile-nav" href="profile">
                         {{ user.username }}
-                        <img src="{% static "img/Disc_Plain_orange.png" %}">
+                        {% if user_photo_path %}
+                            <img class="profile-photo" src="{{ user_photo_path }}" alt="..."/>
+                        {% else %}
+                            <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
+                        {% endif %}
                     </a>
                     <div class="dropdown-content">
                         <a href="profile">Your account</a>
@@ -59,7 +63,7 @@
                         <ul class="ul-sidebar">
                             <li class="li-sidebar li-sidebar-hover" id="gr1">
                                 <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
+                                    <img src="{% static "img/group_default.jpg" %}"
                                          alt=""
                                     >
                                     <span>group1</span>
@@ -67,7 +71,7 @@
                             </li>
                             <li class="li-sidebar li-sidebar-hover" id="gr2">
                                 <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
+                                    <img src="{% static "img/group_default.jpg" %}"
                                          alt=""
                                     >
                                     <span>group2</span>
@@ -75,7 +79,7 @@
                             </li>
                             <li class="li-sidebar li-sidebar-hover" id="gr3">
                                 <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
+                                    <img src="{% static "img/group_default.jpg" %}"
                                          alt=""
                                     >
                                     <span>group3</span>
@@ -100,7 +104,11 @@
                             {% for friend in user_friends %}
                                 <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
                                 <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
+                                    {% if friend.photo_path %}
+                                        <img src="{{ friend.photo_path }}" alt="">
+                                    {% else %}
+                                        <img class="sidebar-photo" src="{% static "img/profile_default.jpg" %}" alt="">
+                                    {% endif %}
                                     <span>{{ friend.friend_username }}</span>
                                 </a>
                             </li>

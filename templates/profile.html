@@ -32,12 +32,18 @@
     </header>
     <main>
         <div class="main-container">
-            <form class="profile-form" method="post">
+            <form class="profile-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="column-3 profile-photo-col-3">
-                        <img class="profile-photo" src="{% static "img/Disc_Plain_orange.png" %}" alt="..."/>
-                        <button class="profile-photo-button">UPLOAD PHOTO</button>
+                        {% if photo_path %}
+                            <img class="profile-photo" src="{{ photo_path }}" alt="..."/>
+                        {% else %}
+                            <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
+                        {% endif %}
+
+                        <button type="button" class="profile-photo-button">UPLOAD PHOTO</button>
+                        <input type="file" id="photo" name="photo" style="display: none;">
                     </div>
                     <div class="column-6">
                         <div class="row">
@@ -162,4 +168,13 @@
 </body>
 <script src="{% static "js/profile.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
+<script>
+    var btn = document.getElementsByClassName('profile-photo-button').item(0);
+    btn.onclick = function () {
+        var file_input = document.getElementById('photo');
+        file_input.click();
+
+        btn.innerHTML = 'PHOTO SELECTED';
+    };
+</script>
 </html>

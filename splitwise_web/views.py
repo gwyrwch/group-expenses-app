@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.base import View
 
-from splitwise_web.db_opearations import *
+from splitwise_web.db_operations import *
 from splitwise_web.models import Notification
 
 
@@ -26,6 +26,8 @@ class Index(View):
             user_friends = get_user_friends(request.user.id)
             context['user_friends'] = user_friends
 
+            context['user_photo_path'] = find_user_photo(request.user.id)
+
             print(user_notifications)
             print(len(user_notifications))
 
@@ -37,14 +39,25 @@ class Index(View):
         pass
 
 
+def handle_uploaded_file(f):
+    name = f.name
+    with open('./media/images/{}'.format(name), 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return 'media/images/{}'.format(name)
+
+
 class Profile(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return render(request, 'profile.html', context={'user': request.user})
+            photo_path = find_user_photo(request.user.id)
+
+            return render(request, 'profile.html', context={'user': request.user, 'photo_path': photo_path})
         else:
             return HttpResponseRedirect(redirect_to='/sign_in_up')
 
     def post(self, request):
+        photo = request.FILES.get('photo')
         cur_password = request.POST.get('cur_password')
         name = request.POST.get('name')
         surname = request.POST.get('surname')
@@ -70,7 +83,9 @@ class Profile(View):
             request.user.email = email
             request.user.save()
 
-        # print(name, surname, password, email, currency)
+        if photo:
+            fs = handle_uploaded_file(photo)
+            add_or_update_photo(request.user.id, fs)
 
         return HttpResponseRedirect(redirect_to='/profile')
 
