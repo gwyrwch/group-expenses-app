@@ -1,17 +1,37 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.base import View
 
+from splitwise_web.db_opearations import get_user_notifications, process_notification
+from splitwise_web.models import Notification
 
-def index(request):
-    if request.user.is_authenticated:
-        return render(request, 'index.html')
-    else:
-        return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+class Index(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            context = dict()
+            context['user'] = request.user
+
+            user_notifications = get_user_notifications(request.user.id)
+            if user_notifications:
+                context['notifications'] = user_notifications
+
+            print(user_notifications)
+            print(len(user_notifications))
+
+            return render(request, 'index.html', context=context)
+        else:
+            return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+    def post(self, request):
+        pass
 
 
 class Profile(View):
@@ -29,7 +49,7 @@ class Profile(View):
         email = request.POST.get('email')
         currency = request.POST.get('currency')
 
-        print(request.POST)
+        # print(request.POST)
 
         if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
             # todo: show error msg
@@ -47,7 +67,7 @@ class Profile(View):
             request.user.email = email
             request.user.save()
 
-        print(name, surname, password, email, currency)
+        # print(name, surname, password, email, currency)
 
         return HttpResponseRedirect(redirect_to='/profile')
 
@@ -58,7 +78,7 @@ class SignInUP(View):
 
     def post(self, request):
         if request.POST.get('sign-in-username'):
-            print(request.POST)
+            # print(request.POST)
             username = request.POST.get('sign-in-username')
             password = request.POST.get('sign-in-password')
             user = authenticate(username=username, password=password)
@@ -75,7 +95,7 @@ class SignInUP(View):
             password = request.POST.get('sign-up-password')
             email = request.POST.get('sign-up-email')
             user = User.objects.create_user(username, password=password, email=email)
-            print(user)
+            # print(user)
 
             user = authenticate(username=username, password=password)
             if user is not None:
@@ -104,3 +124,44 @@ def friends_groups_mobile(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+
+@csrf_exempt
+def send_friend_invitation(request):
+    r = json.loads(request.body)
+    friend_username = r.get('username')
+    try:
+        user_friend = User.objects.filter(username=friend_username).get()
+        print(user_friend.id)
+        print(user_friend.username)
+        notification = Notification(
+            id_sender=request.user.id,
+            id_recipient=user_friend.id,
+            notification_type='friend_request'
+        )
+        notification.save()
+    except:
+        # no such user
+        pass
+    return JsonResponse({})
+
+
+@csrf_exempt
+def reply_to_notification(request):
+    r = json.loads(request.body)
+    print(r)
+    id_sender = int(r.get('n_sender_id'))
+    accept = r.get('accept')
+    notification_type = r.get('n_type')
+    if accept == 'accept':
+        accept = True
+    elif accept == 'decline':
+        accept = False
+    else:
+        accept = None
+
+    process_notification(id_sender, notification_type, accept, request.user.id)
+
+    return JsonResponse({})
+
+

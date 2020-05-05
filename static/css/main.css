@@ -709,3 +709,31 @@ input[type="date" i] {
 }
 
 
+#notificationModal .modal-content {
+    width: 35%;
+}
+
+#notificationModal button {
+    width: 70px;
+    height: 34px;
+}
+
+#notificationModal button.button-accept {
+    background-color: #4cd964;
+}
+
+#notificationModal button.button-decline {
+    background-color: #ff3b30;
+}
+
+#notificationModal button.button-seen {
+    margin-top: 4%;
+}
+
+#notificationModal .column-8 {
+    padding-top: 2%;
+}
+
+#notificationModal .row {
+    margin-bottom: 2%;
+}

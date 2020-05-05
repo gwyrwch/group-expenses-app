@@ -27,3 +27,8 @@ class Expense(models.Model):
     id_user = models.IntegerField()
     id_group = models.IntegerField()
 
+
+class Notification(models.Model):
+    notification_type = models.CharField(max_length=30)  # friend invitation,
+    id_sender = models.IntegerField()
+    id_recipient = models.IntegerField()

@@ -98,3 +98,132 @@ function get_current_date() {
     return today;
 }
 get_current_date();
+
+
+function add_find_friend_modal() {
+    var modal = document.getElementById("addFriendModal");
+    var open_btn = document.getElementById("btnAddFriend");
+    var close_btn = document.getElementsByClassName("close-friend-modal")[0];
+    add_modal(modal, open_btn, close_btn);
+}
+add_find_friend_modal();
+
+
+function send_invitation_to_friend() {
+    var sendInvitationBtn = document.getElementById('send-friend-invitation');
+    sendInvitationBtn.onclick = async function() {
+        var friendUsername = document.getElementById('add-friend-username').value;
+        console.log(friendUsername);
+
+        if (friendUsername.length > 0) {
+            let user = {
+                username: friendUsername
+            };
+
+            let response = await fetch('/send_friend_invitation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+
+            location.reload();
+            //
+            // let result = await response.json();
+            // console.log(result);
+        }
+    };
+
+}
+
+send_invitation_to_friend();
+
+function add_notification_friend_modal() {
+    var modal = document.getElementById("notificationModal");
+    var open_btn = document.getElementById("btnOpenNotifications");
+    var close_btn = document.getElementsByClassName("close-notification-modal")[0];
+    add_modal(modal, open_btn, close_btn);
+}
+add_notification_friend_modal();
+
+
+function reply_to_notification_request() {
+    var acceptBtns = document.getElementsByClassName('button-accept');
+    var declineBtns = document.getElementsByClassName('button-decline');
+    var okBtns = document.getElementsByClassName('button-seen');
+
+    for (let i = 0; i < acceptBtns.length; i++) {
+        acceptBtns[i].onclick = async function() {
+            let tokens = this.id.split('-');
+            let res = {
+                accept: tokens[0],
+                n_type: tokens[1],
+                n_sender_id: tokens[2]
+            };
+
+
+            let response = await fetch('/reply_to_notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(res)
+            });
+
+            location.reload();
+        }
+    }
+
+    for (let i = 0; i < declineBtns.length; i++) {
+        declineBtns[i].onclick = async function() {
+            let tokens = this.id.split('-');
+            let res = {
+                accept: tokens[0],
+                n_type: tokens[1],
+                n_sender_id: tokens[2]
+            };
+
+
+            let response = await fetch('/reply_to_notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(res)
+            });
+
+            location.reload();
+        }
+    }
+
+    for (let i = 0; i < okBtns.length; i++) {
+        okBtns[i].onclick = async function() {
+            let tokens = this.id.split('-');
+
+            let res = {
+                accept: tokens[0],
+                n_type: tokens[1],
+                n_sender_id: tokens[2]
+            };
+
+            let response = await fetch('/reply_to_notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(res)
+            });
+
+            location.reload();
+        }
+    }
+}
+
+reply_to_notification_request();
+
+
