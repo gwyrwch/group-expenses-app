@@ -22,10 +22,11 @@ function unhover_image(id) {
         var sidebar_el = document.getElementById(id);
         var a_el = sidebar_el.firstElementChild;
         var img_el = a_el.firstElementChild;
-        if (id.includes("gr"))
+        if (id.includes("gr")) {
             img_el.src = "static/img/group2.png";
-        else if (id.includes("fr"))
+        } else if (id.includes("fr")) {
             img_el.src = "static/img/friend.png";
+        }
     }
 }
 
@@ -41,19 +42,19 @@ for (var i = 0; i < all_sidebar_elements.length; i++) {
 
 var modal = document.getElementById("addModal");
 var btn = document.getElementById("btnAdd");
-var close = document.getElementsByClassName("close")[3];
+var close = document.getElementsByClassName("close-add-expense-modal")[0];
 add_modal(modal, btn, close, true);
 
 var modal_settle = document.getElementById("settleModal");
 var btn_settle = document.getElementById("btnSet");
-var close_btn = document.getElementsByClassName("close")[0];
+var close_btn = document.getElementsByClassName("close-settle-modal")[0];
 add_modal(modal_settle, btn_settle, close_btn, true);
 
 
 function add_who_settle_modal() {
     var modal = document.getElementById("who_settle");
     var open_btn = document.getElementById("a-who-settle");
-    var close_btn = document.getElementsByClassName("close")[1];
+    var close_btn = document.getElementsByClassName("close-who-settle-modal")[0];
     add_modal(modal, open_btn, close_btn);
 }
 
@@ -62,7 +63,7 @@ add_who_settle_modal();
 function add_who_recipient_modal() {
     var modal = document.getElementById("who_recipient");
     var open_btn = document.getElementById("a-who-recipient");
-    var close_btn = document.getElementsByClassName("close")[2];
+    var close_btn = document.getElementsByClassName("close-who-recipient-modal")[0];
     add_modal(modal, open_btn, close_btn);
 }
 add_who_recipient_modal();
@@ -70,7 +71,7 @@ add_who_recipient_modal();
 function add_who_paid_modal() {
     var modal = document.getElementById("who_paid");
     var open_btn = document.getElementById("a-who-paid");
-    var close_btn = document.getElementsByClassName("close")[4];
+    var close_btn = document.getElementsByClassName("close-who-paid-modal")[0];
     add_modal(modal, open_btn, close_btn);
 }
 add_who_paid_modal();
@@ -78,7 +79,7 @@ add_who_paid_modal();
 function add_how_split_modal() {
     var modal = document.getElementById("split");
     var open_btn = document.getElementById("a-split");
-    var close_btn = document.getElementsByClassName("close")[5];
+    var close_btn = document.getElementsByClassName("close-split-modal")[0];
     add_modal(modal, open_btn, close_btn);
 }
 add_how_split_modal();

@@ -50,7 +50,7 @@
                                 <h3>GROUPS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons">
+                                <i class="material-icons add-icon">
                                     add
                                 </i>
                             </div>
@@ -90,31 +90,21 @@
                                 <h3>FRIENDS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons" id="btnAddFriend">
+                                <i class="material-icons add-icon" id="btnAddFriend">
                                     add
                                 </i>
                             </div>
                         </div>
                         <div class="hr"></div>
                         <ul class="ul-sidebar">
-                            <li class="li-sidebar li-sidebar-hover" id="fr1">
+                            {% for friend in user_friends %}
+                                <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
                                 <a href="#">
                                     <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend1</span>
+                                    <span>{{ friend.friend_username }}</span>
                                 </a>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="fr2">
-                                <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend2</span>
-                                </a>
-                            </li>
-                            <li class="li-sidebar li-sidebar-hover" id="fr3">
-                                <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend3</span>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -197,7 +187,7 @@
                                             <h3><strong>Settle up</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <i class="material-icons close close-settle-modal">
                                                 close
                                             </i>
                                         </div>
@@ -224,7 +214,7 @@
                                             <h3><strong>Choose  payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <i class="material-icons close close-who-settle-modal">
                                                 close
                                             </i>
                                         </div>
@@ -281,7 +271,7 @@
                                             <h3><strong>Choose a recipient</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <i class="material-icons close close-who-recipient-modal">
                                                 close
                                             </i>
                                         </div>
@@ -341,7 +331,7 @@
                                             <h3><strong>Add an expense</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <i class="material-icons close close-add-expense-modal">
                                                 close
                                             </i>
                                         </div>
@@ -382,7 +372,7 @@
                                             <h3><strong>Choose payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <i class="material-icons close close-who-paid-modal">
                                                 close
                                             </i>
                                         </div>
@@ -439,7 +429,7 @@
                                             <h3><strong>Split by percentages</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" >
+                                            <i class="material-icons close close-split-modal" >
                                                 close
                                             </i>
                                         </div>

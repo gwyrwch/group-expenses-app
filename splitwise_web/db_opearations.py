@@ -75,3 +75,15 @@ def process_notification(id_sender, notification_type, accept=None, id_user=None
         except Exception as e:
             print(e)
 
+
+def get_user_friends(user_id):
+    friendships = FriendShip.objects.filter(uid_1=user_id)
+    res = []
+    for friendship in friendships:
+        friend = dict()
+        friend_username = User.objects.filter(id=friendship.uid_2).get().username
+        friend['friend_username'] = friend_username
+
+        res.append(friend)
+
+    return res

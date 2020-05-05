@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.base import View
 
-from splitwise_web.db_opearations import get_user_notifications, process_notification
+from splitwise_web.db_opearations import *
 from splitwise_web.models import Notification
 
 
@@ -22,6 +22,9 @@ class Index(View):
             user_notifications = get_user_notifications(request.user.id)
             if user_notifications:
                 context['notifications'] = user_notifications
+
+            user_friends = get_user_friends(request.user.id)
+            context['user_friends'] = user_friends
 
             print(user_notifications)
             print(len(user_notifications))

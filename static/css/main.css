@@ -624,6 +624,10 @@ input[type="date" i] {
     margin-top: auto;
 }
 
+.add-icon:hover {
+    cursor: pointer;
+}
+
 .close:hover {
   color: #007eff;
   text-decoration: none;
