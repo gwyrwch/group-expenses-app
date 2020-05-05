@@ -80,6 +80,21 @@
 }
 
 
+.profile-confirm-submit-btn {
+    font-size: 12px;
+    width: 50%;
+    height: 34px;
+    text-transform: uppercase;
+}
+
+.modal-content {
+    border-width: 1px;
+}
+
+.modal-header {
+    font-size: 14px;
+}
+
 @media only screen and (max-width: 600px) {
     .main-container {
         width: 100%;

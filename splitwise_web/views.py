@@ -1,11 +1,9 @@
-from hashlib import md5
-
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
-# Create your views here.
 from django.views.generic.base import View
 
 
@@ -16,11 +14,42 @@ def index(request):
         return HttpResponseRedirect(redirect_to='/sign_in_up')
 
 
-def profile(request):
-    if request.user.is_authenticated:
-        return render(request, 'profile.html')
-    else:
-        return HttpResponseRedirect(redirect_to='/sign_in_up')
+class Profile(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, 'profile.html', context={'user': request.user})
+        else:
+            return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+    def post(self, request):
+        cur_password = request.POST.get('cur_password')
+        name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        currency = request.POST.get('currency')
+
+        print(request.POST)
+
+        if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
+            # todo: show error msg
+            return HttpResponseRedirect('/profile')
+
+        if len(name) > 0 and name != request.user.first_name:
+            request.user.first_name = name
+            request.user.save()
+
+        if len(surname) > 0 and surname != request.user.last_name:
+            request.user.last_name = surname
+            request.user.save()
+
+        if len(email) > 0 and email != request.user.email:
+            request.user.email = email
+            request.user.save()
+
+        print(name, surname, password, email, currency)
+
+        return HttpResponseRedirect(redirect_to='/profile')
 
 
 class SignInUP(View):
@@ -32,8 +61,7 @@ class SignInUP(View):
             print(request.POST)
             username = request.POST.get('sign-in-username')
             password = request.POST.get('sign-in-password')
-            pass_hash = md5(password.encode()).hexdigest()
-            user = authenticate(username=username, password=pass_hash)
+            user = authenticate(username=username, password=password)
 
             if user is not None:
                 login(request, user)
@@ -46,11 +74,10 @@ class SignInUP(View):
             username = request.POST.get('sign-up-username')
             password = request.POST.get('sign-up-password')
             email = request.POST.get('sign-up-email')
-            pass_hash = md5(password.encode()).hexdigest()
-            user = User.objects.create_user(username, password=pass_hash, email=email)
+            user = User.objects.create_user(username, password=password, email=email)
             print(user)
 
-            user = authenticate(username=username, password=pass_hash)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 return HttpResponseRedirect(redirect_to='/')

@@ -32,32 +32,33 @@
     </header>
     <main>
         <div class="main-container">
-            <form class="profile-form">
+            <form class="profile-form" method="post">
+                {% csrf_token %}
                 <div class="row">
                     <div class="column-3 profile-photo-col-3">
-                        <img class="profile-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                        <img class="profile-photo" src="{% static "img/Disc_Plain_orange.png" %}" alt="..."/>
                         <button class="profile-photo-button">UPLOAD PHOTO</button>
                     </div>
                     <div class="column-6">
                         <div class="row">
                             <div class="column-5">
-                                <input class="input-small-device" type="text" name="name" placeholder="Rita">
+                                <input class="input-small-device" type="text" value="{{ user.first_name }}" name="name" placeholder="Rita">
                             </div>
                             <div class="column-1">
 
                             </div>
                             <div class="column-6">
-                                <input class="input-small-device" type="text" name="surname" placeholder="Gagarina">
+                                <input class="input-small-device" type="text" value="{{ user.last_name }}" name="surname" placeholder="Gagarina">
                             </div>
                         </div>
                         <div class="row">
                             <div class="column-12">
-                                <input type="text" name="email" placeholder="gwyrwch@mail.ru">
+                                <input type="email" value="{{ user.email }}" name="email" placeholder="gwyrwch@mail.ru">
                             </div>
                         </div>
                         <div class="row">
                             <div class="column-12">
-                                <input type="text" name="password" placeholder="New password">
+                                <input type="password" name="password" placeholder="New password">
                             </div>
                         </div>
                         <div class="row">
@@ -73,12 +74,32 @@
                         </div>
                         <div class="row" style="display: inline;">
                             <div class="column-12 profile-submit-btn-parent">
-                                <button class="profile-submit-btn" type="submit">SAVE</button>
+                                <button id="saveChanges" type="button" class="profile-submit-btn">SAVE</button>
+                            </div>
+                            <div id="confirmModal" class="modal">
+                                <div class="modal-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Are you sure you want to save changes?</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="material-icons close">
+                                                close
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="modal-body">
+                                        <label>
+                                            <input placeholder="Current password" type="password" name="cur_password" class="modal-input">
+                                        </label>
+                                        <button type="submit" class="profile-confirm-submit-btn">Save</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-{#                <button class="profile-submit-btn" type="submit">SAVE</button>#}
             </form>
         </div>
     </main>
@@ -139,4 +160,6 @@
             </div>
     </footer>
 </body>
+<script src="{% static "js/profile.js" %}" type="module"></script>
+<script src="{% static "js/lib.js" %}" type="module"></script>
 </html>
