@@ -111,7 +111,7 @@ function send_invitation_to_friend() {
     var sendInvitationBtn = document.getElementById('send-friend-invitation');
     sendInvitationBtn.onclick = async function() {
         var friendUsername = document.getElementById('add-friend-username').value;
-        console.log(friendUsername);
+        // console.log(friendUsername);
 
         if (friendUsername.length > 0) {
             let user = {
@@ -243,7 +243,7 @@ function create_new_group() {
 
 
     document.getElementById('add_group_photo').onchange = function () {
-        console.log(groupPhotoBtn);
+        // console.log(groupPhotoBtn);
         groupPhotoBtn.style.color = '#4cd964';
     };
 
@@ -255,7 +255,7 @@ function create_new_group() {
 
         // if (groupFile.type.startsWith('image'))
 
-        console.log(groupName, groupFile);
+        // console.log(groupName, groupFile);
 
         if (groupName.length > 0) {
             var fd = new FormData();
@@ -269,7 +269,7 @@ function create_new_group() {
             });
 
             let result = await response.json();
-            console.log(result);
+            // console.log(result);
 
             location.reload();
         }
@@ -284,7 +284,7 @@ function edit_group_modal() {
     var open_btns = document.getElementsByClassName("btnEditGroup");
     var close_btns = document.getElementsByClassName("close-edit-group-modal");
 
-    console.log(modals.length,open_btns.length,close_btns.length);
+    // console.log(modals.length,open_btns.length,close_btns.length);
 
     for (var i = 0; i < modals.length; i++) {
         add_modal(modals.item(i), open_btns.item(i), close_btns.item(i));
@@ -296,7 +296,7 @@ edit_group_modal();
 
 function delete_member_from_group() {
     var deleteBtns = document.getElementsByClassName('close-delete-member');
-    console.log(deleteBtns);
+    // console.log(deleteBtns);
 
     for (var i = 0; i < deleteBtns.length; i++) {
         deleteBtns.item(i).onclick = async function () {
@@ -313,7 +313,7 @@ function delete_member_from_group() {
             });
 
             let result = await response.json();
-            console.log(result);
+            // console.log(result);
 
             location.reload();
         };
@@ -420,6 +420,116 @@ function edit_group() {
 edit_group();
 
 
+function addOnclickToPhotoButton(idAddPhotoBtn, fileInputId) {
+    var groupPhotoBtn = document.getElementById(idAddPhotoBtn);
+    groupPhotoBtn.onclick = function () {
+        var file_input = document.getElementById(fileInputId);
+        file_input.click();
+    };
 
+
+    document.getElementById(fileInputId).onchange = function () {
+        console.log(groupPhotoBtn);
+        groupPhotoBtn.style.color = '#4cd964';
+    };
+}
+
+function create_expense() {
+    var createBtn = document.getElementsByClassName('btn-create_expense').item(0);
+    addOnclickToPhotoButton('expense-photo-btn', 'expense-photo-input-file');
+
+    createBtn.onclick = async function () {
+        var id_group = createBtn.id.split('-')[2];
+        var desc = document.getElementById('expense-description').value;
+        var amount = document.getElementById('expense-amount').value;
+        var photo = document.getElementById('expense-photo-input-file').files[0];
+        var date = document.getElementById('btn-date-paid').value;
+        var paid_username = document.getElementById('a-who-paid').innerText;
+
+        var percentage_li = document.getElementsByClassName('percentage');
+        var percent_users = [];
+        for (var i = 0; i < percentage_li.length; i++) {
+            var p = percentage_li[i];
+            var username = p.getElementsByTagName('span')[0].innerText;
+            var val = p.getElementsByClassName('input-percent-append')[0].value;
+
+            console.log(username, val); // insert into dict
+            var percent_user = {
+                username: username,
+                percent: parseFloat(val)
+            };
+            percent_users.push(percent_user);
+        }
+
+        var fd = new FormData();
+
+        fd.append('id_group', id_group);
+        if (photo)
+            fd.append('photo', photo, photo.name);
+        fd.append('desc', desc);
+        fd.append('amount', amount);
+        fd.append('date', date);
+        fd.append('percent_users', JSON.stringify(percent_users));
+        fd.append('paid_username', paid_username);
+
+
+        let response = await fetch('/create_new_expense', {
+            method: 'POST',
+            body: fd
+        });
+
+        // console.log(id_group, desc, amount, photo);
+
+    };
+}
+
+create_expense();
+
+
+function add_who_settle_to_new_expense() {
+    var whoBtns = document.getElementsByClassName('who-settle-li');
+    console.log(whoBtns);
+
+    for (var i = 0; i < whoBtns.length; i++) {
+        console.log(whoBtns.item(i));
+        whoBtns[i].onclick = function () {
+            console.log(this.id);
+            console.log("kek");
+            var open_btn = document.getElementById("a-who-paid");
+            open_btn.innerText = this.id;
+            var closeModalBtn = document.getElementsByClassName('close-who-paid-modal').item(0);
+            closeModalBtn.click();
+        };
+    }
+}
+
+add_who_settle_to_new_expense();
+
+function save_percents() {
+    var percentSave = document.getElementById('save-percents-btn');
+
+    percentSave.onclick = function () {
+        var percents = document.getElementsByClassName('input-percent-append');
+        var sm = 0.0;
+        for (var i = 0; i < percents.length; i++) {
+            sm += parseFloat(percents.item(i).value)
+        }
+        var eps = 1e-10;
+
+        // sm nan
+
+        if (Math.abs(sm - 100.0) > eps) {
+            var invalid = document.getElementById('percent-invalid-span');
+            invalid.style.display = 'block';
+            return;
+        }
+
+        var equally_btn = document.getElementById("a-split");
+        equally_btn.innerText = 'by percentage';
+        var closeModalBtn = document.getElementsByClassName('close-split-modal').item(0);
+        closeModalBtn.click();
+    }
+}
+save_percents();
 
 

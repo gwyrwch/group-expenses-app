@@ -21,10 +21,10 @@ class UserToGroup(models.Model):
 class Expense(models.Model):
     description = models.CharField(max_length=200)
     date = models.DateField()
-    split_method = models.CharField(max_length=30)
     currency = models.CharField(max_length=10)
-    amount = models.CharField(max_length=15)
-    id_user = models.IntegerField()
+    amount = models.FloatField()
+    id_user_paid = models.IntegerField()
+    id_user_owes = models.IntegerField()
     id_group = models.IntegerField()
     pic_file_path = models.CharField(max_length=100, default=None)
 

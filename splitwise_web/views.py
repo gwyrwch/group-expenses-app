@@ -14,9 +14,11 @@ from splitwise_web.models import Notification
 
 from django.template.defaulttags import register
 
+
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
 
 class Index(View):
     def get(self, request):
@@ -28,6 +30,20 @@ class Index(View):
             if user_notifications:
                 context['notifications'] = user_notifications
 
+            selected_group_id = request.GET.get('group')
+            if selected_group_id:
+                selected_group_id = int(selected_group_id)
+                group_expenses = get_group_expenses(selected_group_id)
+                context['group_expenses'] = group_expenses
+                context['selected_group_id'] = selected_group_id
+                context['selected_group_name'] = get_group_name_by_id(selected_group_id)
+                context['selected_group_photo'] = get_group_photo_by_id(selected_group_id)
+            else:
+                context['group_expenses'], context['selected_group_id'] = \
+                    get_some_user_group_expenses(request.user.id)
+                context['selected_group_name'] = get_group_name_by_id(context['selected_group_id'])
+                context['selected_group_photo'] = get_group_photo_by_id(context['selected_group_id'])
+
             user_friends = get_user_friends(request.user.id)
             user_groups = get_user_groups(request.user.id)
 
@@ -35,10 +51,6 @@ class Index(View):
             context['user_photo_path'] = find_user_photo(request.user.id)
             context['user_groups'] = user_groups
             context['group_members'] = get_user_group_members(request.user.id)
-
-            # print(context.get('group_members'))
-            # print(user_notifications)
-            # print(len(user_notifications))
 
             return render(request, 'index.html', context=context)
         else:
@@ -226,6 +238,25 @@ def delete_member_from_group(request):
     id_group = r.get('id_group')
     username = r.get('username')
 
-    delete_group_member(id_group, username)
+    delete_group_member(int(id_group), username)
+
+    return JsonResponse({})
+
+
+@csrf_exempt
+def create_new_expense(request):
+    id_group = request.POST.get('id_group')
+    amount = float(request.POST.get('amount'))
+    date = request.POST.get('date')
+    percent_users = request.POST.get('percent_users')
+    photo = request.FILES.get('photo')
+    desc = request.POST.get('desc')
+    paid_username = request.POST.get('paid_username')
+
+    pic = None
+    if photo:
+        pic = handle_uploaded_file(photo)
+
+    create_expense(int(id_group), desc, amount, date, json.loads(percent_users), paid_username, pic)
 
     return JsonResponse({})

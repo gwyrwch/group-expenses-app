@@ -68,7 +68,7 @@
                             <li class="li-sidebar li-sidebar-hover" id="gr_{{ group.id }}">
                                 <div class="row">
                                     <div class="column-10">
-                                        <a href="#">
+                                        <a href="/?group={{ group.id }}">
                                             <img src="{{ group.logo_file_path }}"
                                                  alt=""
                                             >
@@ -275,13 +275,12 @@
                 <div class="group-header">
                     <div class="row">
                         <div class="column-1">
-                            <img src="{% static "img/outline_group_black_48dp.png" %}" alt="">
+                            <img src="{{ selected_group_photo }}" class="main-group-photo" alt="">
                         </div>
                         <div class="column-6">
-                            <h1>GROUPNAME</h1>
+                            <h1>{{ selected_group_name }}</h1>
                         </div>
                         <div class="column-1">
-
                         </div>
                         <div class="column-2" style="margin-right: 10px;">
                             <button id="btnSet" class="btn-set">settle up</button>
@@ -382,7 +381,7 @@
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
+                                    <div id="who-2-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
                                                 <li class="modal-settle-li">
@@ -444,10 +443,10 @@
                                     <div class="hr"></div>
                                     <div class="modal-body">
                                         <label>
-                                            <input placeholder="Description" class="modal-input">
+                                            <input placeholder="Description" id="expense-description" class="modal-input">
                                         </label>
                                         <label>
-                                            <input placeholder="$0.00" class="modal-input">
+                                            <input placeholder="$0.00" id="expense-amount" class="modal-input">
                                         </label>
                                         <div>
                                             <p>Paid by
@@ -462,11 +461,12 @@
                                                 </label>
                                             </div>
                                             <div class="column-6">
-                                                <button id="btn-add-image" class="btn-modal-links">add image</button>
+                                                <button id="expense-photo-btn" class="btn-modal-links">add image</button>
+                                                <input type="file" accept="image/*" id="expense-photo-input-file" name="edit_group_photo" style="display: none;">
                                             </div>
 
                                         </div>
-                                        <button>Save</button>
+                                        <button id="create-expense-{{ selected_group_id }}" class="btn-create_expense">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -486,42 +486,14 @@
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
+                                                {% for member in group_members|get_item:selected_group_id %}
+                                                <li id="{{ member|get_item:'username' }}"
+                                                    class="modal-settle-li who-settle-li"
+                                                >
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username'}}</span>
                                                 </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
@@ -540,14 +512,15 @@
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
+                                    <div id="split-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
+                                            {% for member in group_members|get_item:selected_group_id %}
+                                                <li class="modal-settle-li percentage">
                                                     <div class="row">
                                                         <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Rita Gagarina
+                                                            <img src="{{ member|get_item:'photo' }}">
+                                                            <span>{{ member|get_item:'username' }}</span>
                                                         </div>
                                                         <div class="column-4 percent-border">
                                                             <input class="input-percent-append">
@@ -555,67 +528,10 @@
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Alex Vistyazh
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Olga Sotnikova
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Polina Lazuk
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Arina Gusakovskaya
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Liza Sokolovskaya
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                            {% endfor %}
                                             </ul>
+                                            <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
+                                            <button id="save-percents-btn" type="button">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -623,493 +539,64 @@
                         </div>
                     </div>
                 </div>
-                <div class="group-table">
-                    <table>
-                        <tr>
-                            <th>Date</th>
-                            <th>Logo</th>
-                            <th>Name</th>
-                            <th>Who paid</th>
-                            <th>Amount</th>
-                            <th>Who lent</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                    </table>
+                <div class="hr"></div>
+                <div class="row">
+                    {% for exp in group_expenses %}
+                        <div class="column-6">
+                            <div class="row card">
+                                <div class="column-2">
+                                    <img class="group-card-photo" style="height: 40px" src="{% static "img/group_default.jpg" %}"/>
+                                </div>
+                                <div class="column-4">
+                                    <div class="exp-name-text">
+                                        {{ exp.description }}
+                                    </div>
+                                    <div class="card-date">
+                                        20.01.2020
+                                    </div>
+                                </div>
+                                <div class="column-3">
+
+                                </div>
+                                <div class="column-3">
+                                    <div class="lent-borrowed-text">you borrowed</div>
+                                    <div class="borrowed-money-text">5BYN</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+{#                    <div class="column-6">#}
+{#                        <div class="row card">#}
+{#                            <div class="column-2">#}
+{#                                <img class="group-card-photo" style="height: 40px" src="{% static "img/group_default.jpg" %}"/>#}
+{#                            </div>#}
+{#                            <div class="column-4">#}
+{#                                <div class="exp-name-text">#}
+{#                                    airport water#}
+{#                                </div>#}
+{#                                <div class="card-date">#}
+{#                                    20.01.2020#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="column-3">#}
+{##}
+{#                            </div>#}
+{#                            <div class="column-3">#}
+{#                                <div class="lent-borrowed-text">you borrowed</div>#}
+{#                                <div class="borrowed-money-text">5BYN</div>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             </div>
         </div>
     </main>
     <footer>
         <div class="footer">
+            {# fixme: #}
             <div class="row">
                 <div class="column-9 logo">
                     <img src="{% static "img/logo.png" %}" alt="">

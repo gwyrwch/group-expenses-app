@@ -242,14 +242,12 @@ main {
 .group-header {
     display: inline-block;
     width: 93%;
-    padding: 30px 2% 30px 5%;
+    padding: 10px 2% 10px 5%;
 
 }
 
 .group-header h1 {
-    padding: 0px;
-    margin: 0;
-    /*display: inline-block;*/
+    padding: 0 0 0 3%;
 }
 
 .group-header button {
@@ -280,8 +278,10 @@ main {
 }
 
 .group-header img {
-    width: 36px;
+    width: 70px;
+    border-radius: 50%;
 }
+
 
 table {
     padding-top: 40px;
@@ -566,7 +566,7 @@ input[type="date" i] {
     background-color: #007eff;
 }
 
-.column-6 #btn-add-image {
+.column-6 #expense-photo-btn {
     padding: 3% 7%;
     margin: auto 0;
     border-radius: 10px;
@@ -593,20 +593,21 @@ input[type="date" i] {
     border-radius: 8px;
 }
 
-.modal-settle-li a:hover {
+.modal-settle-li span:hover {
     color: #007eff;
+    cursor: pointer;
 }
 
 .modal-settle-li img {
     width: 20px;
+    height: 20px;
     padding: 3%;
     vertical-align: middle;
 }
 
-.modal-settle-li a {
+.modal-settle-li span {
     text-decoration: none;
     vertical-align: middle;
-    display: block;
     color: rgba(72, 72, 72, 0.85);
     background-color: transparent;
     border-radius: 0;
@@ -830,8 +831,6 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
     color:  #ff3b30;
 }
 
-
-
 .groupSettingsModal .row {
     margin-bottom: 1%;
 }
@@ -856,4 +855,17 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
     font-size: 14px;
     padding-left: 10px;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+}
+
+.card {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.28);
+    margin: 3%;
+    padding: 3% 2%;
+    border-radius: 4px;
+}
+
+
+#percent-invalid-span {
+    color: #ff3b30;
+    display: none;
 }

@@ -194,3 +194,65 @@ def edit_group_db(id_group, pic, name, group_members):
             user_to_group.save()
 
 
+def get_group_expenses(id_group):
+    expenses = Expense.objects.filter(id_group=id_group)
+
+    res = []
+    for expense in expenses:
+        exp = dict()
+        exp['description'] = expense.description
+        exp['date'] = expense.date
+        exp['id_paid'] = expense.id_user_paid
+        exp['id_owed'] = expense.id_user_owes
+        exp['amount'] = expense.amount
+        exp['currency'] = expense.currency
+        exp['photo'] = expense.pic_file_path
+        exp['id_group'] = id_group
+
+        res.append(exp)
+
+    return res
+
+
+def get_group_name_by_id(id_group):
+    group = Group.objects.filter(id=id_group).first()
+    if group:
+        return group.name
+    return "GROUP NAME"
+
+
+def get_group_photo_by_id(id_group):
+    group = Group.objects.filter(id=id_group).first()
+    if group:
+        return group.group_logo_path
+    return "./media/images/group_default.jpg"
+
+
+def get_some_user_group_expenses(id_user):
+    user_group = UserToGroup.objects.filter(id_user=id_user).first()
+    if not user_group:
+        return [], -1
+
+    return get_group_expenses(user_group.id_group), user_group.id_group
+
+
+def create_expense(id_group, desc, amount, date, percent_users, paid_username, pic):
+    if not pic:
+        pic = "./media/images/group_default.jpg"
+
+    for d in percent_users:
+        id_user_owes = User.objects.filter(username=d['username']).first().id
+
+        user_amount = float(d['percent']) / 100 * amount
+
+        expense = Expense(
+            id_group=id_group,
+            description=desc,
+            amount=user_amount,
+            date=date,
+            currency='$',
+            id_user_paid=User.objects.filter(username=paid_username).first().id,
+            pic_file_path=pic,
+            id_user_owes=id_user_owes
+        )
+        expense.save()
