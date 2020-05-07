@@ -54,40 +54,94 @@
                                 <h3>GROUPS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons add-icon">
+                                <i class="material-icons add-icon" id="btnCreateGroup">
                                     add
                                 </i>
                             </div>
                         </div>
                         <div class="hr"></div>
+
+                        <input type="file" accept="image/*" id="edit_group_photo" name="edit_group_photo" style="display: none;">
+
                         <ul class="ul-sidebar">
-                            <li class="li-sidebar li-sidebar-hover" id="gr1">
-                                <a href="#">
-                                    <img src="{% static "img/group_default.jpg" %}"
-                                         alt=""
-                                    >
-                                    <span>group1</span>
-                                </a>
+                        {% for group in user_groups %}
+                            <li class="li-sidebar li-sidebar-hover" id="gr_{{ group.id }}">
+                                <div class="row">
+                                    <div class="column-10">
+                                        <a href="#">
+                                            <img src="{{ group.logo_file_path }}"
+                                                 alt=""
+                                            >
+                                            <span>{{ group.name }}</span>
+                                        </a>
+                                    </div>
+                                    <div class="column-2 settings-col">
+                                        <i class="material-icons settings btnEditGroup">
+                                            settings
+                                        </i>
+                                    </div>
+                                </div>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="gr2">
-                                <a href="#">
-                                    <img src="{% static "img/group_default.jpg" %}"
-                                         alt=""
-                                    >
-                                    <span>group2</span>
-                                </a>
+                            <div class="groupSettingsModal modal">
+                                <div class="modal-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Group settings</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <i class="close close-edit-group-modal material-icons">
+                                                close
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="column-11">
+                                                <label>
+                                                    <input placeholder="groupname" class="modal-input edit-group-name">
+                                                </label>
+                                            </div>
+                                            <div class="column-1 edit-group-photo-col">
+                                                <i class="material-icons add_a_photo edit-group-photo-button">
+                                                    add_a_photo
+                                                </i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <ul class="ul-group-members">
+                                            {% for member in group_members|get_item:group.id %}
+                                                <li class="li-group-members">
+                                                    <div class="row">
+                                                        <div class="column-5">
+                                                            <a href="#">
+                                                                <img class="sidebar-photo" src="{{ member|get_item:'photo' }}" alt="">
+                                                                <span>{{ member|get_item:'username' }}</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="column-1">
+                                                            <i class="material-icons close close-delete-member">
+                                                                close
+                                                            </i>
+                                                        </div>
+                                                        <div class="column-6"></div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                        <button class="edit-group" style="width: 130px;height: 34px;">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li class="li-sidebar li-sidebar-hover">
+                                <span style="color: rgba(72, 72, 72, 0.85);">No active groups</span>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="gr3">
-                                <a href="#">
-                                    <img src="{% static "img/group_default.jpg" %}"
-                                         alt=""
-                                    >
-                                    <span>group3</span>
-                                </a>
-                            </li>
+                        {% endfor %}
                         </ul>
                     </div>
-
                     <div class="sidebar-container">
                         <div class="row header-sidebar">
                             <div class="column-10">
@@ -101,8 +155,8 @@
                         </div>
                         <div class="hr"></div>
                         <ul class="ul-sidebar">
-                            {% for friend in user_friends %}
-                                <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
+                        {% for friend in user_friends %}
+                            <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
                                 <a href="#">
                                     {% if friend.photo_path %}
                                         <img src="{{ friend.photo_path }}" alt="">
@@ -112,7 +166,11 @@
                                     <span>{{ friend.friend_username }}</span>
                                 </a>
                             </li>
-                            {% endfor %}
+                        {% empty %}
+                            <li class="li-sidebar li-sidebar-hover">
+                                <span style="color: rgba(72, 72, 72, 0.85);">No friends in your list</span>
+                            </li>
+                        {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -135,6 +193,39 @@
                             <input placeholder="username" class="modal-input" id="add-friend-username">
                         </label>
                         <button id="send-friend-invitation" style="width: 130px;height: 34px;">Send invitation</button>
+                    </div>
+                </div>
+            </div>
+            <div id="createGroupModal" class="modal">
+                <div class="modal-content">
+                    <div class="row modal-header">
+                        <div class="column-10">
+                            <h3><strong>Enter group name</strong></h3>
+                        </div>
+                        <div class="column-2">
+                            <i class="material-icons close close-create-group-modal">
+                                close
+                            </i>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="column-11">
+                                <label>
+                                    <input placeholder="groupname" class="modal-input" id="create-group-name">
+                                </label>
+                            </div>
+                            <div class="column-1" id="add-group-photo-col">
+                                <i class="material-icons add_a_photo" id="add-group-photo-button">
+                                    add_a_photo
+                                </i>
+                                <input type="file" id="add_group_photo" name="add_group_photo" style="display: none;">
+                            </div>
+                        </div>
+
+
+                        <button id="create-group" style="width: 130px;height: 34px;">Save</button>
                     </div>
                 </div>
             </div>

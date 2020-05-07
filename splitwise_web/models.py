@@ -11,7 +11,6 @@ class FriendShip(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=30)
     group_logo_path = models.CharField(max_length=100)
-    logo_file_path = models.CharField(max_length=100, default=None)
 
 
 class UserToGroup(models.Model):

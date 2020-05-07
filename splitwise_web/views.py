@@ -12,6 +12,11 @@ from django.views.generic.base import View
 from splitwise_web.db_operations import *
 from splitwise_web.models import Notification
 
+from django.template.defaulttags import register
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 class Index(View):
     def get(self, request):
@@ -24,10 +29,14 @@ class Index(View):
                 context['notifications'] = user_notifications
 
             user_friends = get_user_friends(request.user.id)
+            user_groups = get_user_groups(request.user.id)
+
             context['user_friends'] = user_friends
-
             context['user_photo_path'] = find_user_photo(request.user.id)
+            context['user_groups'] = user_groups
+            context['group_members'] = get_user_group_members(request.user.id)
 
+            print(context.get('group_members'))
             print(user_notifications)
             print(len(user_notifications))
 
@@ -182,4 +191,15 @@ def reply_to_notification(request):
 
     return JsonResponse({})
 
+
+@csrf_exempt
+def create_new_group(request):
+    photo = request.FILES.get('group_photo')
+    name = request.POST.get('group_name')
+
+    pic = None
+    if photo:
+        pic = handle_uploaded_file(photo)
+    create_group(name, pic, request.user.id)
+    return JsonResponse({})
 

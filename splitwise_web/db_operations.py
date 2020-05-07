@@ -90,6 +90,47 @@ def get_user_friends(user_id):
     return res
 
 
+def get_user_groups(id_user):
+    group_ids = UserToGroup.objects.filter(id_user=id_user)
+    print(group_ids)
+    res = []
+
+    for group_id in group_ids:
+        group = dict()
+        group_obj = Group.objects.filter(id=group_id.id_group).get()
+        group['name'] = group_obj.name
+        group['logo_file_path'] = group_obj.group_logo_path
+        group['id'] = group_obj.id
+
+        res.append(group)
+
+    return res
+
+
+def get_user_group_members(id_user):
+    group_ids = UserToGroup.objects.filter(id_user=id_user)
+    print(group_ids)
+    res = {}
+
+    for group_id in group_ids:
+        group_members = list()
+        group_obj = Group.objects.filter(id=group_id.id_group).get()
+        id_group = group_obj.id
+        user_to_groups = UserToGroup.objects.filter(id_group=id_group)
+        for user_to_group in user_to_groups:
+            usr = dict()
+            user = User.objects.filter(id=user_to_group.id_user).get()
+            usr['username'] = user.username
+            usr['photo'] = find_user_photo(user.id)
+
+            group_members.append(usr)
+
+        res[id_group] = group_members
+
+    print(res)
+    return res
+
+
 def add_or_update_photo(id_user, pic):
     profile_pics = ProfilePictures.objects.filter(id_user=id_user)
 
@@ -108,3 +149,17 @@ def find_user_photo(id_user):
     if len(profile_pics):
         return profile_pics.get().photo_path
     return None
+
+
+def create_group(name, pic, id_user):
+    if not pic:
+        pic = "./media/images/group_default.jpg"
+
+    group = Group(
+        name=name,
+        group_logo_path=pic
+    )
+    group.save()
+
+    user_to_group = UserToGroup(id_user=id_user, id_group=group.id)
+    user_to_group.save()

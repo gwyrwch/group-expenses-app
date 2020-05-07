@@ -224,3 +224,79 @@ function reply_to_notification_request() {
 reply_to_notification_request();
 
 
+function create_group_modal() {
+    var modal = document.getElementById("createGroupModal");
+    var open_btn = document.getElementById("btnCreateGroup");
+    var close_btn = document.getElementsByClassName("close-create-group-modal")[0];
+    add_modal(modal, open_btn, close_btn);
+}
+create_group_modal();
+
+
+function create_new_group() {
+    var groupPhotoBtn = document.getElementById('add-group-photo-button');
+    groupPhotoBtn.onclick = function () {
+        var file_input = document.getElementById('add_group_photo');
+        file_input.click();
+    };
+
+    // todo: do it after groupPhotoBtn onclick
+
+    // var groupFile = document.getElementById('add_group_photo').files[0];
+    document.getElementById('add_group_photo').onchange = function () {
+        console.log(groupPhotoBtn);
+        groupPhotoBtn.style.color = '#4cd964';
+    };
+
+
+
+    var createGroupBtn = document.getElementById('create-group');
+
+    createGroupBtn.onclick = async function() {
+        var groupName = document.getElementById('create-group-name').value;
+        var groupFile = document.getElementById('add_group_photo').files[0];
+
+        // if (groupFile.type.startsWith('image'))
+
+        console.log(groupName, groupFile);
+
+        if (groupName.length > 0) {
+            var fd = new FormData();
+
+            fd.append('group_name', groupName);
+            fd.append('group_photo', groupFile, groupFile.name);
+
+            let response = await fetch('/create_new_group', {
+                method: 'POST',
+                body: fd
+            });
+
+            let result = await response.json();
+            console.log(result);
+
+            location.reload();
+        }
+    };
+}
+create_new_group();
+
+
+
+function edit_group_modal() {
+    var modals = document.getElementsByClassName("groupSettingsModal");
+    var open_btns = document.getElementsByClassName("btnEditGroup");
+    var close_btns = document.getElementsByClassName("close-edit-group-modal");
+
+    console.log(modals.length,open_btns.length,close_btns.length);
+
+    for (var i = 0; i < modals.length; i++) {
+        add_modal(modals.item(i), open_btns.item(i), close_btns.item(i));
+    }
+}
+
+edit_group_modal();
+
+
+
+
+

@@ -206,7 +206,7 @@ main {
 }
 
 .sidebar-container li {
-    padding: 5px;
+    padding: 5px 10px 5px 5px;
 }
 
 .row .header-sidebar .column-2 {
@@ -573,6 +573,7 @@ input[type="date" i] {
     height: 100%;
 }
 
+
 #who-settle-content {
     margin-right: 15%;
     opacity: 1;
@@ -627,11 +628,36 @@ input[type="date" i] {
     margin-top: auto;
 }
 
+.close:hover {
+  color: #007eff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .add-icon:hover {
     cursor: pointer;
 }
 
-.close:hover {
+.add_a_photo {
+    color: black;
+    font-weight: bold;
+    margin-top: auto;
+}
+
+.add_a_photo:hover {
+  color: #007eff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.settings {
+    padding: 2px;
+    color: black;
+    font-size: 20px !important; /* todo: remove important */
+}
+
+.settings:hover {
   color: #007eff;
   text-decoration: none;
   cursor: pointer;
@@ -743,4 +769,68 @@ input[type="date" i] {
 
 #notificationModal .row {
     margin-bottom: 2%;
+}
+
+#add-group-photo-col, .edit-group-photo-col {
+    text-align: right;
+    margin: 20px 0 10px 0;
+}
+
+#add-group-photo-col > i, .edit-group-photo-col > i {
+    position:relative;
+    top: calc(50% - 13px); /*todo remove 13px vertical centering*/
+}
+
+.settings-col {
+    text-align: right;
+}
+
+.settings-col > i {
+    position:relative;
+    top: calc(50% - 13px); /*todo remove 13px vertical centering*/
+}
+
+
+.li-group-members img {
+    width: 30px;
+    height: 30px;
+    margin-right: 2%;
+    border: #f1f1f1 solid 1px;
+    border-radius: 50%;
+    vertical-align: middle;
+
+}
+
+.li-group-members a {
+    text-decoration: none;
+    vertical-align: middle;
+    display: block;
+    color: rgba(72, 72, 72, 0.85);
+    padding: 5px 10px 5px 5px;
+}
+
+.ul-group-members {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+i.close-delete-member {
+    position:relative;
+    top: calc(50% - 11px);
+    font-size: 20px;
+    color:  #ff3b30;
+}
+
+i.close-delete-member:hover {
+    top: calc(50% - 13px);
+    font-size: 24px;
+    color:  #ff3b30;
+}
+
+
+.groupSettingsModal .row {
+    margin-bottom: 1%;
 }
