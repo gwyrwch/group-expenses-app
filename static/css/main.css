@@ -817,20 +817,43 @@ input[type="date" i] {
     width: 100%;
 }
 
-i.close-delete-member {
+i.close-delete-member, .modal-invite-input + i.close-delete-new-member {
     position:relative;
     top: calc(50% - 11px);
     font-size: 20px;
     color:  #ff3b30;
 }
 
-i.close-delete-member:hover {
+i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hover {
     top: calc(50% - 13px);
     font-size: 24px;
     color:  #ff3b30;
 }
 
 
+
 .groupSettingsModal .row {
     margin-bottom: 1%;
+}
+
+.modal .invite-group-member {
+    background-color: white;
+    color: #007eff;
+    border-color: #007eff;
+    padding-left: 0;
+}
+
+.modal .invite-group-member:hover {
+    cursor: pointer;
+}
+
+.modal-invite-input {
+    display: inline-block;
+    margin-top: 5px;
+    height: 30px;
+    box-sizing: border-box;
+    border: rgba(72, 72, 72, 0.85) 0.5px solid;
+    font-size: 14px;
+    padding-left: 10px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
 }

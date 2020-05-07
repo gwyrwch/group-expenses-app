@@ -99,7 +99,7 @@
                                         <div class="row">
                                             <div class="column-11">
                                                 <label>
-                                                    <input placeholder="groupname" class="modal-input edit-group-name">
+                                                    <input value="{{ group.name }}" id="{{ group.id }}" placeholder="groupname" class="modal-input edit-group-name">
                                                 </label>
                                             </div>
                                             <div class="column-1 edit-group-photo-col">
@@ -120,7 +120,9 @@
                                                             </a>
                                                         </div>
                                                         <div class="column-1">
-                                                            <i class="material-icons close close-delete-member">
+                                                            <i class="material-icons close close-delete-member"
+                                                               id="delete-{{ member|get_item:'username'}}-{{ group.id }}"
+                                                            >
                                                                 close
                                                             </i>
                                                         </div>
@@ -130,8 +132,12 @@
                                             {% endfor %}
                                             </ul>
                                         </div>
-
-                                        <button class="edit-group" style="width: 130px;height: 34px;">Save</button>
+                                        <div class="row">
+                                            <button type='button' class="invite-group-member">Invite member</button>
+                                        </div>
+                                        <div class="add-members-div">
+                                        </div>
+                                        <button class="edit-group-save" style="width: 130px;height: 34px;">Save</button>
                                     </div>
                                 </div>
                             </div>

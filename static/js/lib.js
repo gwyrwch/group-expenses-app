@@ -23,3 +23,7 @@ export function add_modal(modal, open_btn, close_btn, animate_top=false) {
         }
     };
 }
+
+export function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

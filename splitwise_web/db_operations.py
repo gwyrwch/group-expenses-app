@@ -97,6 +97,7 @@ def get_user_groups(id_user):
 
     for group_id in group_ids:
         group = dict()
+        print(group_id.id_group)
         group_obj = Group.objects.filter(id=group_id.id_group).get()
         group['name'] = group_obj.name
         group['logo_file_path'] = group_obj.group_logo_path
@@ -121,7 +122,10 @@ def get_user_group_members(id_user):
             usr = dict()
             user = User.objects.filter(id=user_to_group.id_user).get()
             usr['username'] = user.username
-            usr['photo'] = find_user_photo(user.id)
+            photo = find_user_photo(user.id)
+            if not photo:
+                photo = "./media/images/profile_default.jpg"
+            usr['photo'] = photo
 
             group_members.append(usr)
 
@@ -163,3 +167,30 @@ def create_group(name, pic, id_user):
 
     user_to_group = UserToGroup(id_user=id_user, id_group=group.id)
     user_to_group.save()
+
+
+def delete_group_member(id_group, username):
+    id_user = User.objects.filter(username=username).get().id
+    UserToGroup.objects.filter(id_group=id_group, id_user=id_user).delete()
+
+    user_to_group = UserToGroup.objects.filter(id_group=id_group)
+    if len(user_to_group) == 1:
+        Group.objects.filter(id_group=id_group).delete()
+
+    print(id_group, username)
+
+
+def edit_group_db(id_group, pic, name, group_members):
+    group = Group.objects.filter(id=id_group).get()
+    group.name = name
+    if pic:
+        group.group_logo_path = pic
+    group.save()
+
+    for username in group_members:
+        user_obj = User.objects.filter(username=username)
+        if user_obj:
+            user_to_group = UserToGroup(id_group=id_group, id_user=user_obj.get().id)
+            user_to_group.save()
+
+

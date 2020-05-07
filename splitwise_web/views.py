@@ -36,9 +36,9 @@ class Index(View):
             context['user_groups'] = user_groups
             context['group_members'] = get_user_group_members(request.user.id)
 
-            print(context.get('group_members'))
-            print(user_notifications)
-            print(len(user_notifications))
+            # print(context.get('group_members'))
+            # print(user_notifications)
+            # print(len(user_notifications))
 
             return render(request, 'index.html', context=context)
         else:
@@ -159,8 +159,8 @@ def send_friend_invitation(request):
     friend_username = r.get('username')
     try:
         user_friend = User.objects.filter(username=friend_username).get()
-        print(user_friend.id)
-        print(user_friend.username)
+        # print(user_friend.id)
+        # print(user_friend.username)
         notification = Notification(
             id_sender=request.user.id,
             id_recipient=user_friend.id,
@@ -176,7 +176,7 @@ def send_friend_invitation(request):
 @csrf_exempt
 def reply_to_notification(request):
     r = json.loads(request.body)
-    print(r)
+    # print(r)
     id_sender = int(r.get('n_sender_id'))
     accept = r.get('accept')
     notification_type = r.get('n_type')
@@ -203,3 +203,29 @@ def create_new_group(request):
     create_group(name, pic, request.user.id)
     return JsonResponse({})
 
+
+@csrf_exempt
+def edit_group(request):
+    photo = request.FILES.get('group_photo')
+    pic = None
+    if photo:
+        pic = handle_uploaded_file(photo)
+    name = request.POST.get('group_name')
+    group_members = request.POST.get('group_members')
+    id_group = request.POST.get('id_group')
+    group_members = json.loads(group_members)
+
+    edit_group_db(int(id_group), pic, name, group_members)
+
+    return JsonResponse({})
+
+
+@csrf_exempt
+def delete_member_from_group(request):
+    r = json.loads(request.body)
+    id_group = r.get('id_group')
+    username = r.get('username')
+
+    delete_group_member(id_group, username)
+
+    return JsonResponse({})

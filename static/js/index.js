@@ -3,6 +3,7 @@ if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.u
 }
 
 import { add_modal } from './lib.js';
+import { getRandomInt } from './lib.js';
 
 // function hover_image(id) {
 //     return function () {
@@ -240,15 +241,11 @@ function create_new_group() {
         file_input.click();
     };
 
-    // todo: do it after groupPhotoBtn onclick
 
-    // var groupFile = document.getElementById('add_group_photo').files[0];
     document.getElementById('add_group_photo').onchange = function () {
         console.log(groupPhotoBtn);
         groupPhotoBtn.style.color = '#4cd964';
     };
-
-
 
     var createGroupBtn = document.getElementById('create-group');
 
@@ -295,6 +292,132 @@ function edit_group_modal() {
 }
 
 edit_group_modal();
+
+
+function delete_member_from_group() {
+    var deleteBtns = document.getElementsByClassName('close-delete-member');
+    console.log(deleteBtns);
+
+    for (var i = 0; i < deleteBtns.length; i++) {
+        deleteBtns.item(i).onclick = async function () {
+            let tokens = this.id.split('-');
+
+            let res = {
+                id_group: tokens[2],
+                username: tokens[1],
+            };
+
+            let response = await fetch('/delete_member_from_group', {
+                method: 'POST',
+                body: JSON.stringify(res)
+            });
+
+            let result = await response.json();
+            console.log(result);
+
+            location.reload();
+        };
+    }
+}
+delete_member_from_group();
+
+
+function invite_member() {
+    var buttons = document.getElementsByClassName('invite-group-member');
+    var members_div = document.getElementsByClassName('add-members-div');
+
+    for (var i = 0; i < buttons.length; i++) {
+        buttons.item(i).onclick = function (i) {
+            return function() {
+                var id_input = getRandomInt(1,10000);
+                var id_close = id_input + '_close';
+                // любой айдишник рандомный
+
+                var members = members_div.item(i);
+                var input = document.createElement('input');
+                input.classList.add("modal-invite-input");
+                input.id = id_input;
+
+                members.appendChild(input);
+
+                var icon = document.createElement('i');
+                icon.classList.add("close-delete-new-member", "material-icons", "close");
+                icon.id = id_close;
+                icon.innerText = 'close';
+
+
+                icon.onclick = function () {
+                    var input = document.getElementById(this.id.split('_')[0]);
+                    input.style.display = 'none';
+                    this.style.display = 'none';
+                };
+                members.append(icon);
+            }
+        }(i);
+    }
+}
+
+invite_member();
+
+
+
+function edit_group() {
+    var editGroupBtns = document.getElementsByClassName('edit-group-save');
+    var modals = document.getElementsByClassName("groupSettingsModal");
+
+    var groupPhotoBtns = document.getElementsByClassName('edit-group-photo-button');
+    for (var i = 0; i < groupPhotoBtns.length; i++) {
+        groupPhotoBtns[i].onclick = function () {
+            var file_input = document.getElementById('edit_group_photo');
+            file_input.click();
+        };
+
+
+        document.getElementById('edit_group_photo').onchange = function(i) {
+            return function () {
+                groupPhotoBtns[i].style.color = '#4cd964';
+            };
+        }(i);
+    }
+
+
+    for (var j = 0; j < editGroupBtns.length; j++) {
+        editGroupBtns[j].onclick = function(j) {
+            return async  function () {
+                var groupName = modals[j].getElementsByClassName("edit-group-name")[0].value;
+                var id_group = modals[j].getElementsByClassName("edit-group-name")[0].id;
+                var newMembers = modals[j].getElementsByClassName("modal-invite-input");
+                var members = [];
+                for (var i =  0; i < newMembers.length; i++) {
+                    members.push(newMembers[i].value);
+                }
+
+                var newGroupFile = document.getElementById('edit_group_photo').files[0];
+
+                var fd = new FormData();
+
+                if (newGroupFile)
+                    fd.append('group_photo', newGroupFile, newGroupFile.name);
+                fd.append('group_name', groupName);
+                fd.append('group_members', JSON.stringify(members));
+                fd.append('id_group', JSON.stringify(+id_group));
+
+                let response = await fetch('/edit_group', {
+                    method: 'POST',
+                    body: fd
+                });
+
+                let result = await response.json();
+                console.log(result);
+                location.reload();
+            }
+        }(j);
+
+    }
+
+}
+
+edit_group();
 
 
 
