@@ -16,5 +16,6 @@ urlpatterns = [
     path('edit_group', views.edit_group, name='edit_group'),
     path('create_new_expense', views.create_new_expense, name='create_expense'),
     path('get_expense_info', views.get_expense_info, name='get_expense_info'),
-    path('settle_up', views.settle_up, name='settle_up')
+    path('settle_up', views.settle_up, name='settle_up'),
+    path('check_user_is_valid', views.check_user_is_valid, name='check_user_is_valid')
 ]

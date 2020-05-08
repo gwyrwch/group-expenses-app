@@ -1,12 +1,14 @@
 export function add_modal(modal, open_btn, close_btn, animate_top=false) {
-    open_btn.onclick = function() {
-        modal.style.display = "block";
+    if (open_btn) {
+        open_btn.onclick = function () {
+            modal.style.display = "block";
 
-        setTimeout(() => {
-            var content = modal.firstElementChild;
-            content.classList.add("modal-content-activate");
-        }, 1);
-    };
+            setTimeout(() => {
+                var content = modal.firstElementChild;
+                content.classList.add("modal-content-activate");
+            }, 1);
+        };
+    }
 
     close_btn.onclick = function() {
         var content = modal.firstElementChild;

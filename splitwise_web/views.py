@@ -129,11 +129,10 @@ class Profile(View):
 
 class SignInUP(View):
     def get(self, request):
-        return render(request, 'sign_in_up.html')
+        return render(request, 'sign_in_up.html', context={'no_such_user': False})
 
     def post(self, request):
         if request.POST.get('sign-in-username'):
-            # print(request.POST)
             username = request.POST.get('sign-in-username')
             password = request.POST.get('sign-in-password')
             user = authenticate(username=username, password=password)
@@ -142,8 +141,8 @@ class SignInUP(View):
                 login(request, user)
                 return HttpResponseRedirect(redirect_to='/')
             else:
-                # todo: show that data is invalid with context={'invalid_data': True} or somehow
-                return HttpResponseRedirect(redirect_to='/sign_in_up')
+                print('kek')
+                return render(request, 'sign_in_up.html', context={'no_such_user': True})
 
         elif request.POST.get('sign-up-username'):
             username = request.POST.get('sign-up-username')
@@ -157,9 +156,10 @@ class SignInUP(View):
                 login(request, user)
                 return HttpResponseRedirect(redirect_to='/')
 
-            return HttpResponseRedirect(redirect_to='/sign_in_up')
+            return HttpResponseRedirect(redirect_to='/sign_in_up', context={'no_such_user': False})
 
-        return HttpResponseRedirect(redirect_to='/sign_in_up')
+        return HttpResponseRedirect(redirect_to='/sign_in_up', context={'no_such_user': False})
+
 
 
 def index_mobile(request):
@@ -306,3 +306,10 @@ def settle_up(request):
     settle_up_by_id_exp(id_exp)
 
     return JsonResponse({})
+
+
+@csrf_exempt
+def check_user_is_valid(request):
+    resp = check_if_user_is_valid(json.loads(request.body))
+    print(resp)
+    return JsonResponse(resp)

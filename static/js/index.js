@@ -491,6 +491,8 @@ function save_percents() {
     var percentSave = document.getElementById('save-percents-btn');
 
     percentSave.onclick = function () {
+        var invalid = document.getElementById('percent-invalid-span');
+        invalid.style.display = 'none';
         var percents = document.getElementsByClassName('input-percent-append');
         var sm = 0.0;
         for (var i = 0; i < percents.length; i++) {
@@ -507,7 +509,6 @@ function save_percents() {
         }
 
         if (Math.abs(sm - 100.0) > eps) {
-            var invalid = document.getElementById('percent-invalid-span');
             invalid.style.display = 'block';
             return;
         }
@@ -572,10 +573,21 @@ set_onclick_to_expenses_cards();
 
 
 function add_settle_up(modal, open_btn, close_btn) {
+    var modal_no_exp  = document.getElementById('noExpenseChooseModal');
+
+    add_modal(
+        modal_no_exp,
+        null,
+        document.getElementsByClassName('close-no-expense-modal').item(0)
+    );
 
     open_btn.onclick = async function () {
         if (expenseId == null) {
-            alert("select an expense");
+            modal_no_exp.style.display = "block";
+            setTimeout(() => {
+                var content = modal_no_exp.firstElementChild;
+                content.classList.add("modal-content-activate");
+            }, 1);
             return;
         }
 

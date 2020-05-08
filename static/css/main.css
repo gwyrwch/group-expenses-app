@@ -583,11 +583,6 @@ input[type="date" i] {
     width: 18%;
 }
 
-.modal-padding-to-zero {
-    padding: 0 !important;
-    /*todo remove important*/
-}
-
 #who-settle-content li {
     text-decoration: none;
 }

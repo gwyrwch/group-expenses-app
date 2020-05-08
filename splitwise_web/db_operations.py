@@ -371,3 +371,19 @@ def get_expense_info_by_id(id_exp, id_current_user):
 def settle_up_by_id_exp(id_exp):
     Expense.objects.filter(id=id_exp).delete()
 
+
+def check_if_user_is_valid(user):
+    username = User.objects.filter(username=user['username']).first()
+    ans = dict()
+    if username:
+        ans['username'] = False
+    else:
+        ans['username'] = True
+
+    email = User.objects.filter(email=user['email']).first()
+    if email:
+        ans['email'] = False
+    else:
+        ans['email'] = True
+
+    return ans

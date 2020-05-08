@@ -39,30 +39,36 @@
                 </button>
             </div>
             <div class="sign_form_base">
-                <form class="sign_form" id="sign-in-form" method="post">
+                <form class="sign_form" id="sign-in-form" method="post" onkeydown="return event.key !== 'Enter';">
                     {% csrf_token %}
                     <h2>
                         Sign in to <span class="span-logo-text">Cashflow</span>
                     </h2>
+                    {% if no_such_user  %}
+                        <span id="no-such-user-span" style="display: block">No such user in database</span>
+                    {% endif %}
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input name="sign-in-username" placeholder="Username" required>
+                                <input name="sign-in-username" autocomplete="new-password" placeholder="Username">
+                                <span id="username-in-invalid-span">Username shouldn't be empty</span>
                             </label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input type="password" name="sign-in-password" placeholder="Password" required>
+                                <input type="password" name="sign-in-password" autocomplete="new-password" placeholder="Password">
+                                <span id="password-in-invalid-span">Password shouldn't be empty</span>
                             </label>
                         </div>
                     </div>
-                    <button class="btn-sign-in">
+                    <button type="button" class="btn-sign-in" id="btn-sign-in">
                         sign in
                     </button>
+                    <button id="btn-sign-in-user" style="display: none"></button>
                 </form>
-                <form class="sign_form" id="sign-up-form" method="post">
+                <form class="sign_form" id="sign-up-form" method="post" onkeydown="return event.key !== 'Enter';">
                     {% csrf_token %}
                     <h2>
                         Create an account in <span class="span-logo-text">Cashflow</span>
@@ -70,27 +76,34 @@
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input placeholder="Username" name="sign-up-username" required>
+                                <input placeholder="Username" name="sign-up-username" autocomplete="new-password">
+                                <span id="username-empty-up-invalid-span">Username shouldn't be empty</span>
+                                <span id="username-up-invalid-span">User with such username already exists</span>
                             </label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input type="email" placeholder="Email" name="sign-up-email" required>
+                                <input type="email" placeholder="Email" name="sign-up-email" autocomplete="new-password">
+                                <span id="email-empty-up-invalid-span">Email shouldn't be empty</span>
+                                <span id="email-up-invalid-span">User with such email already exists</span>
                             </label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input type="password" placeholder="Password" name="sign-up-password" required>
+                                <input type="password" placeholder="Password" name="sign-up-password" autocomplete="new-password">
+                                <span id="password-empty-up-invalid-span">Password should't be empty</span>
+                                <span id="password-up-invalid-span">Password should contain at least 5 symbols</span>
                             </label>
                         </div>
                     </div>
-                    <button class="btn-sign-in">
+                    <button  type="button" class="btn-sign-in" id="btn-sign-up">
                         sign up
                     </button>
+                    <button id="btn-sign-up-user" style="display: none"></button>
                 </form>
             </div>
         </div>
@@ -208,6 +221,7 @@
     }
 
 </script>
+<script src="{% static "js/sign_in_up.js" %}" type="module"></script>
 
 
 </html>

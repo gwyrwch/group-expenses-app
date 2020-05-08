@@ -50,6 +50,16 @@
     height: 34px;
 }
 
+
+#username-in-invalid-span, #password-in-invalid-span,
+#no-such-user-span, #password-up-invalid-span, #username-up-invalid-span,
+#email-up-invalid-span, #password-empty-up-invalid-span, #username-empty-up-invalid-span,
+#email-empty-up-invalid-span{
+    color: #ff3b30;
+    display: none;
+}
+
+
 .main-container {
     text-align: center;
 }
