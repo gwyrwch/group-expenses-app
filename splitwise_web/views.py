@@ -180,13 +180,23 @@ class IndexMobile(View):
 class FriendsGroupsMobile(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return render(request, 'friends_groups_mobile.html')
+            context = dict()
+            context['user'] = request.user
+            context['user_photo_path'] = find_user_photo(request.user.id)
+
+            if request.GET.get('friends'):
+                context['title'] = 'Friends'
+                context['cards_content'] = get_user_expenses_to_friends(request.user.id)
+                print(context['cards_content'])
+            else:
+                context['title'] = 'Groups'
+
+            return render(request, 'friends_groups_mobile.html', context=context)
         else:
             return HttpResponseRedirect(redirect_to='/sign_in_up')
 
     def post(self, request):
         pass
-
 
 
 def logout_view(request):

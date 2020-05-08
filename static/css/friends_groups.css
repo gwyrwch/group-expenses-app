@@ -13,6 +13,8 @@
     font-weight: 800;
     font-size: larger;
     margin: auto 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .main-container hr {
@@ -22,6 +24,8 @@
 
 .group-friend-card-photo {
     width: 60px;
+    height: 60px;
+    border-radius: 50%;
     display: block;
     margin: 0;
 }

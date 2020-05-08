@@ -26,8 +26,8 @@
             <div class="column-7" style="text-align: right">
                 <div class="dropdown">
                     <a class="profile-nav" href="profile">
-                        gwyrwch
-                        <img src="{% static "img/Plain_orange.png" %}">
+                        {{ user.username }}
+                        <img src="{{ user_photo_path }}">
                     </a>
                     <div class="dropdown-content">
                         <a href="profile">Your account</a>
@@ -40,85 +40,29 @@
     <main>
         <div class="main-container">
             <div class="header-text">
-                Friends
+                {{ title }}
             </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/profile_default.jpg" %}"/>
+            {% for card in cards_content %}
+                <div class="hr"></div>
+                <div class="row card">
+                    <div class="column-3">
+                        <img class="group-friend-card-photo" src="{{ card.photo }}"/>
+                    </div>
+                    <div class="column-5">
+                        <div class="friend-group-name">
+                            {{ card.name }}
+                        </div>
+                        <div class="owes-you-text">
+                            you lent {{ card.you_pay }}
+                        </div>
+                        <div class="you-owe-text">
+                            you owe {{ card.you_owe }}
+                        </div>
+                    </div>
+                    <div class="column-4"></div>
                 </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        James
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/profile_default.jpg" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Rev Shown
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/profile_default.jpg" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Will Kenny
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/profile_default.jpg" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Beth Williams
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
+                <div class="hr"></div>
+            {% endfor %}
         </div>
     </main>
     <footer>

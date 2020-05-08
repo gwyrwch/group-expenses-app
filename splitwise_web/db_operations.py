@@ -263,7 +263,7 @@ def get_user_expenses_with_friend(id_friend, id_user):
     expenses = Expense.objects.filter(
         id_user_owes=id_friend, id_user_paid=id_user
     ) | Expense.objects.filter(
-        id_user_owes=id_friend, id_user_paid=id_user
+        id_user_owes=id_user, id_user_paid=id_friend
     )
 
     res = []
@@ -387,3 +387,39 @@ def check_if_user_is_valid(user):
         ans['email'] = True
 
     return ans
+
+
+def get_user_expenses_to_friends(id_user):
+    id_friends = FriendShip.objects.filter(uid_1=id_user).values_list('uid_2')
+
+    expenses = []
+    for id_friend in id_friends:
+        cur_expenses = Expense.objects.filter(
+            id_user_paid=id_friend[0], id_user_owes=id_user
+        ) | Expense.objects.filter(
+            id_user_paid=id_user, id_user_owes=id_friend[0]
+        )
+
+        if cur_expenses:
+            ans = dict()
+            cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
+
+            you_pay = 0
+            you_owe = 0
+
+            currency = ''
+            for exp in cur_expenses:
+                currency = exp['currency']
+                # fixme if many currencies
+                if exp['id_user_paid'] == id_user:
+                    you_pay += exp['amount']
+                else:
+                    you_owe += exp['amount']
+
+            ans['you_pay'] = str(you_pay) + currency
+            ans['you_owe'] = str(you_owe) + currency
+            ans['name'] = User.objects.filter(id=id_friend[0]).get().username
+            ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
+            expenses.append(ans)
+
+    return expenses
