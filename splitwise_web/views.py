@@ -31,10 +31,11 @@ class Index(View):
                 context['notifications'] = user_notifications
 
             selected_group_id = request.GET.get('group')
+
             if selected_group_id:
                 selected_group_id = int(selected_group_id)
-                group_expenses = get_group_expenses(selected_group_id)
-                context['group_expenses'] = group_expenses
+                user_group_expenses = get_user_expenses_from_group(selected_group_id, request.user.id)
+                context['group_expenses'] = user_group_expenses
                 context['selected_group_id'] = selected_group_id
                 context['selected_group_name'] = get_group_name_by_id(selected_group_id)
                 context['selected_group_photo'] = get_group_photo_by_id(selected_group_id)
@@ -248,15 +249,26 @@ def create_new_expense(request):
     id_group = request.POST.get('id_group')
     amount = float(request.POST.get('amount'))
     date = request.POST.get('date')
-    percent_users = request.POST.get('percent_users')
+    percent_users = json.loads(request.POST.get('percent_users'))
     photo = request.FILES.get('photo')
     desc = request.POST.get('desc')
     paid_username = request.POST.get('paid_username')
+    equally = request.POST.get('equally')
+
+    if equally:
+        size = len(percent_users)
+        p = amount / size
+        for i in range(size):
+            percent_users[i]['percent'] = p
 
     pic = None
     if photo:
         pic = handle_uploaded_file(photo)
 
-    create_expense(int(id_group), desc, amount, date, json.loads(percent_users), paid_username, pic)
+    if paid_username == 'you':
+        paid_username = request.user.username
+
+    # print(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+    create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
 
     return JsonResponse({})

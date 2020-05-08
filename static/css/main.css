@@ -242,7 +242,7 @@ main {
 .group-header {
     display: inline-block;
     width: 93%;
-    padding: 10px 2% 10px 5%;
+    padding: 10px 2% 10px 2%;
 
 }
 
@@ -260,6 +260,7 @@ main {
     color: #007eff;
     background-color: #ffffff;
     outline: none;
+    margin-top: 20px;
 }
 
 .group-header .btn-add {
@@ -267,6 +268,7 @@ main {
     background-color: #007eff;
     border: none;
     outline: none;
+    margin-top: 20px;
 }
 
 .group-header .btn-add:hover {
@@ -865,7 +867,41 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
 }
 
 
-#percent-invalid-span {
+#percent-invalid-span, #amount-invalid-span {
     color: #ff3b30;
     display: none;
+}
+
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /*grid-template-rows: 50px 50px;*/
+}
+
+
+.lent-borrowed-text {
+    font-size: 12px;
+    text-align: right;
+    color: #5b5b5b;
+}
+
+.lent-money-text {
+    color: #00D95F;
+    text-align: right;
+}
+
+.borrowed-money-text {
+    color: #FF7A00;
+    text-align: right;
+}
+
+.group-card-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.empty-expenses-text {
+    padding: 5%;
 }

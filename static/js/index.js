@@ -88,10 +88,10 @@ function get_current_date() {
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
-    today = mm + '.' + dd + '.' + yyyy;
+    today = yyyy + '-' +  mm + '-' + dd;
 
     var date_btn = document.getElementById("btn-date-paid");
-    date_btn.innerText = today;
+    date_btn.value = today;
 
     return today;
 }
@@ -261,7 +261,9 @@ function create_new_group() {
             var fd = new FormData();
 
             fd.append('group_name', groupName);
-            fd.append('group_photo', groupFile, groupFile.name);
+            if (groupFile)
+                fd.append('group_photo', groupFile, groupFile.name);
+
 
             let response = await fetch('/create_new_group', {
                 method: 'POST',
@@ -439,6 +441,9 @@ function create_expense() {
     addOnclickToPhotoButton('expense-photo-btn', 'expense-photo-input-file');
 
     createBtn.onclick = async function () {
+        var invalid = document.getElementById('amount-invalid-span');
+        invalid.style.display = 'none';
+
         var id_group = createBtn.id.split('-')[2];
         var desc = document.getElementById('expense-description').value;
         var amount = document.getElementById('expense-amount').value;
@@ -453,7 +458,7 @@ function create_expense() {
             var username = p.getElementsByTagName('span')[0].innerText;
             var val = p.getElementsByClassName('input-percent-append')[0].value;
 
-            console.log(username, val); // insert into dict
+            // console.log(username, val); // insert into dict
             var percent_user = {
                 username: username,
                 percent: parseFloat(val)
@@ -461,22 +466,36 @@ function create_expense() {
             percent_users.push(percent_user);
         }
 
-        var fd = new FormData();
-
-        fd.append('id_group', id_group);
-        if (photo)
-            fd.append('photo', photo, photo.name);
-        fd.append('desc', desc);
-        fd.append('amount', amount);
-        fd.append('date', date);
-        fd.append('percent_users', JSON.stringify(percent_users));
-        fd.append('paid_username', paid_username);
+        var equally = document.getElementById('a-split').innerHTML;
+        equally = equally === 'equally';
+        console.log(equally);
 
 
-        let response = await fetch('/create_new_expense', {
-            method: 'POST',
-            body: fd
-        });
+        if (amount.length !== 0) {
+            var fd = new FormData();
+
+            fd.append('id_group', id_group);
+            if (photo)
+                fd.append('photo', photo, photo.name);
+            fd.append('desc', desc);
+            fd.append('amount', amount);
+            fd.append('date', date);
+            fd.append('percent_users', JSON.stringify(percent_users));
+            fd.append('paid_username', paid_username);
+            fd.append('equally', equally);
+
+
+            let response = await fetch('/create_new_expense', {
+                method: 'POST',
+                body: fd
+            });
+        }  else {
+            if (amount.length === 0) {
+                invalid.style.display = 'block';
+            }
+
+        }
+
 
         // console.log(id_group, desc, amount, photo);
 
@@ -493,8 +512,6 @@ function add_who_settle_to_new_expense() {
     for (var i = 0; i < whoBtns.length; i++) {
         console.log(whoBtns.item(i));
         whoBtns[i].onclick = function () {
-            console.log(this.id);
-            console.log("kek");
             var open_btn = document.getElementById("a-who-paid");
             open_btn.innerText = this.id;
             var closeModalBtn = document.getElementsByClassName('close-who-paid-modal').item(0);
@@ -512,11 +529,17 @@ function save_percents() {
         var percents = document.getElementsByClassName('input-percent-append');
         var sm = 0.0;
         for (var i = 0; i < percents.length; i++) {
-            sm += parseFloat(percents.item(i).value)
+            var val = parseFloat(percents.item(i).value);
+            if (isNaN(val))
+                val = 0;
+            sm += val;
         }
         var eps = 1e-10;
 
         // sm nan
+        if (isNaN(sm)) {
+            return;
+        }
 
         if (Math.abs(sm - 100.0) > eps) {
             var invalid = document.getElementById('percent-invalid-span');

@@ -446,7 +446,10 @@
                                             <input placeholder="Description" id="expense-description" class="modal-input">
                                         </label>
                                         <label>
-                                            <input placeholder="$0.00" id="expense-amount" class="modal-input">
+                                            <input placeholder="$0.00" id="expense-amount"
+                                                   type="number" class="modal-input"
+                                            >
+                                            <span id="amount-invalid-span">Amount field cannot be empty</span>
                                         </label>
                                         <div>
                                             <p>Paid by
@@ -540,56 +543,37 @@
                     </div>
                 </div>
                 <div class="hr"></div>
-                <div class="row">
+                <div class="card-container">
                     {% for exp in group_expenses %}
-                        <div class="column-6">
+                        <div>
                             <div class="row card">
                                 <div class="column-2">
-                                    <img class="group-card-photo" style="height: 40px" src="{% static "img/group_default.jpg" %}"/>
+                                    <img class="group-card-photo" src="{{ exp.photo }}"/>
                                 </div>
                                 <div class="column-4">
                                     <div class="exp-name-text">
                                         {{ exp.description }}
                                     </div>
                                     <div class="card-date">
-                                        20.01.2020
+                                        {{ exp.date }}
                                     </div>
                                 </div>
                                 <div class="column-3">
 
                                 </div>
                                 <div class="column-3">
-                                    <div class="lent-borrowed-text">you borrowed</div>
-                                    <div class="borrowed-money-text">5BYN</div>
+                                    <div class="lent-borrowed-text">{{ exp.text }}</div>
+                                    <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
                                 </div>
 
                             </div>
                         </div>
+                    {% empty %}
+                        <div class="empty-expenses-text">
+                            No active expenses in this group yet.
+                        </div>
                     {% endfor %}
 
-{#                    <div class="column-6">#}
-{#                        <div class="row card">#}
-{#                            <div class="column-2">#}
-{#                                <img class="group-card-photo" style="height: 40px" src="{% static "img/group_default.jpg" %}"/>#}
-{#                            </div>#}
-{#                            <div class="column-4">#}
-{#                                <div class="exp-name-text">#}
-{#                                    airport water#}
-{#                                </div>#}
-{#                                <div class="card-date">#}
-{#                                    20.01.2020#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="column-3">#}
-{##}
-{#                            </div>#}
-{#                            <div class="column-3">#}
-{#                                <div class="lent-borrowed-text">you borrowed</div>#}
-{#                                <div class="borrowed-money-text">5BYN</div>#}
-{#                            </div>#}
-{##}
-{#                        </div>#}
-{#                    </div>#}
                 </div>
             </div>
         </div>

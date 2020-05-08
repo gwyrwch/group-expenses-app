@@ -214,6 +214,26 @@ def get_group_expenses(id_group):
     return res
 
 
+def get_user_expenses_from_group(id_group, id_user):
+    expenses = get_group_expenses(id_group)
+    res = []
+
+    for exp in expenses:
+        if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
+            continue
+        if exp['id_paid'] == id_user:
+            owed = User.objects.filter(id=exp['id_owed']).first().username
+            exp['text'] = 'you lent {}'.format(owed)
+        elif exp['id_owed'] == id_user:
+            paid = User.objects.filter(id=exp['id_paid']).first().username
+            exp['text'] = '{} lent you'.format(paid)
+        else:
+            continue
+        res.append(exp)
+
+    return res
+
+
 def get_group_name_by_id(id_group):
     group = Group.objects.filter(id=id_group).first()
     if group:
@@ -233,7 +253,7 @@ def get_some_user_group_expenses(id_user):
     if not user_group:
         return [], -1
 
-    return get_group_expenses(user_group.id_group), user_group.id_group
+    return get_user_expenses_from_group(user_group.id_group, id_user), user_group.id_group
 
 
 def create_expense(id_group, desc, amount, date, percent_users, paid_username, pic):
