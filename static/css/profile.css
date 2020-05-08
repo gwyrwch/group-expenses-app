@@ -133,6 +133,10 @@
         display: block;
     }
 
+    .modal .row {
+        display: flex;
+    }
+
     .profile-form input {
         height: 45px;
     }
@@ -156,6 +160,11 @@
     .navbar-logout {
         margin-right: 0;
     }
+
+    .modal-content {
+        width: 95%;
+    }
+
 
 }
 
@@ -181,6 +190,11 @@
     .navbar-logout {
         margin-right: 0;
     }
+
+
+    .modal-content {
+        width: 95%;
+    }
 }
 
 
@@ -201,3 +215,4 @@
         margin-right: 0;
     }
 }
+

@@ -1,7 +1,9 @@
 .group-photo {
     width: 80px;
+    height: 80px;
     margin: 0 auto 4px;
     display: block;
+    border-radius: 50%;
 }
 
 .group-card-photo {
@@ -102,4 +104,9 @@
 
 .modal-content {
     width: 80%;
+}
+
+
+.btn-to-right p, .btn-to-right h3 {
+     text-align: left;
 }

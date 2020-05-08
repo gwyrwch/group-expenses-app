@@ -278,11 +278,7 @@
                             <img src="{{ selected_group_photo }}" class="main-group-photo" alt="">
                         </div>
                         <div class="column-6">
-                            {% if selected_group_id %}
-                                <h1>{{ selected_group_name }}</h1>
-                            {% else %}
-                                <h1>{{ selected_friend_name }}</h1>
-                            {% endif %}
+                            <h1>{{ selected_group_name }}</h1>
                         </div>
                         <div class="column-1">
                         </div>
@@ -586,5 +582,7 @@
     </footer>
 </body>
 <script src="{% static "js/index.js" %}" type="module"></script>
-<script src="{% static "js/lib.js" %}" type="module"></script>
+{#<script src="{% static "js/lib.js" %}" type="module"></script>#}
+{#<script src="{% static "js/common_index.js" %}" type="module"></script>#}
+
 </html>

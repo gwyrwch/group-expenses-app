@@ -20,53 +20,56 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 
+def get_index_context(request):
+    context = dict()
+    context['user'] = request.user
+
+    user_notifications = get_user_notifications(request.user.id)
+    if user_notifications:
+        context['notifications'] = user_notifications
+
+    selected_group_id = request.GET.get('group')
+    selected_friend_id = request.GET.get('friend')
+
+    if selected_group_id:
+        selected_group_id = int(selected_group_id)
+        user_group_expenses = get_user_expenses_from_group(selected_group_id, request.user.id)
+        context['group_expenses'] = user_group_expenses
+        context['selected_group_id'] = selected_group_id
+        context['selected_group_name'] = get_group_name_by_id(selected_group_id)
+        context['selected_group_photo'] = get_group_photo_by_id(selected_group_id)
+    elif selected_friend_id:
+        selected_friend_id = int(selected_friend_id)
+        user_friend_expenses = get_user_expenses_with_friend(selected_friend_id, request.user.id)
+        context['group_expenses'] = user_friend_expenses
+        context['selected_friend_id'] = selected_friend_id
+        context['selected_group_name'] = get_friend_name_by_id(selected_friend_id)
+        context['selected_group_photo'] = find_user_photo(selected_friend_id)
+
+    else:
+        context['group_expenses'], context['selected_group_id'] = \
+            get_some_user_group_expenses(request.user.id)
+        context['selected_group_name'] = get_group_name_by_id(context['selected_group_id'])
+        context['selected_group_photo'] = get_group_photo_by_id(context['selected_group_id'])
+
+    user_friends = get_user_friends(request.user.id)
+    user_groups = get_user_groups(request.user.id)
+
+    context['user_friends'] = user_friends
+    context['user_photo_path'] = find_user_photo(request.user.id)
+    context['user_groups'] = user_groups
+    if not selected_friend_id:
+        context['group_members'] = get_user_group_members(request.user.id)
+    else:
+        context['group_members'] = get_user_friend_members(request.user.id, selected_friend_id)
+
+    return context
+
+
 class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
-            context = dict()
-            context['user'] = request.user
-
-            user_notifications = get_user_notifications(request.user.id)
-            if user_notifications:
-                context['notifications'] = user_notifications
-
-            selected_group_id = request.GET.get('group')
-            selected_friend_id = request.GET.get('friend')
-
-            print("DEBUG")
-            print(selected_group_id,  selected_friend_id)
-
-            if selected_group_id:
-                selected_group_id = int(selected_group_id)
-                user_group_expenses = get_user_expenses_from_group(selected_group_id, request.user.id)
-                context['group_expenses'] = user_group_expenses
-                context['selected_group_id'] = selected_group_id
-                context['selected_group_name'] = get_group_name_by_id(selected_group_id)
-                context['selected_group_photo'] = get_group_photo_by_id(selected_group_id)
-            elif selected_friend_id:
-                selected_friend_id = int(selected_friend_id)
-                user_friend_expenses = get_user_expenses_with_friend(selected_friend_id, request.user.id)
-                context['group_expenses'] = user_friend_expenses
-                context['selected_friend_id'] = selected_friend_id
-                context['selected_friend_name'] = get_friend_name_by_id(selected_friend_id)
-                context['selected_group_photo'] = find_user_photo(selected_friend_id)
-
-            else:
-                context['group_expenses'], context['selected_group_id'] = \
-                    get_some_user_group_expenses(request.user.id)
-                context['selected_group_name'] = get_group_name_by_id(context['selected_group_id'])
-                context['selected_group_photo'] = get_group_photo_by_id(context['selected_group_id'])
-
-            user_friends = get_user_friends(request.user.id)
-            user_groups = get_user_groups(request.user.id)
-
-            context['user_friends'] = user_friends
-            context['user_photo_path'] = find_user_photo(request.user.id)
-            context['user_groups'] = user_groups
-            if not selected_friend_id:
-                context['group_members'] = get_user_group_members(request.user.id)
-            else:
-                context['group_members'] = get_user_friend_members(request.user.id, selected_friend_id)
+            context = get_index_context(request)
 
             return render(request, 'index.html', context=context)
         else:
@@ -161,19 +164,29 @@ class SignInUP(View):
         return HttpResponseRedirect(redirect_to='/sign_in_up', context={'no_such_user': False})
 
 
+class IndexMobile(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            context = get_index_context(request)
 
-def index_mobile(request):
-    if request.user.is_authenticated:
-        return render(request, 'index_mobile.html')
-    else:
-        return HttpResponseRedirect(redirect_to='/sign_in_up')
+            return render(request, 'index_mobile.html', context=context)
+        else:
+            return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+    def post(self, request):
+        pass
 
 
-def friends_groups_mobile(request):
-    if request.user.is_authenticated:
-        return render(request, 'friends_groups_mobile.html')
-    else:
-        return HttpResponseRedirect(redirect_to='/sign_in_up')
+class FriendsGroupsMobile(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, 'friends_groups_mobile.html')
+        else:
+            return HttpResponseRedirect(redirect_to='/sign_in_up')
+
+    def post(self, request):
+        pass
+
 
 
 def logout_view(request):
@@ -187,8 +200,6 @@ def send_friend_invitation(request):
     friend_username = r.get('username')
     try:
         user_friend = User.objects.filter(username=friend_username).get()
-        # print(user_friend.id)
-        # print(user_friend.username)
         notification = Notification(
             id_sender=request.user.id,
             id_recipient=user_friend.id,
@@ -196,7 +207,6 @@ def send_friend_invitation(request):
         )
         notification.save()
     except:
-        # no such user
         pass
     return JsonResponse({})
 
@@ -265,6 +275,8 @@ def create_new_expense(request):
     amount = float(request.POST.get('amount'))
     date = request.POST.get('date')
     percent_users = json.loads(request.POST.get('percent_users'))
+    if not len(percent_users):
+        return JsonResponse({})
     photo = request.FILES.get('photo')
     desc = request.POST.get('desc')
     paid_username = request.POST.get('paid_username')

@@ -27,8 +27,8 @@
             <div class="column-7" style="text-align: right">
                 <div class="dropdown">
                     <a class="profile-nav" href="profile">
-                        gwyrwch
-                        <img src="{% static "img/profile_default.jpg" %}">
+                        {{ user.username }}
+                        <img src="{{ user_photo_path }}">
                     </a>
                     <div class="dropdown-content">
                         <a href="profile">Your account</a>
@@ -41,10 +41,10 @@
     <main>
         <div class="main-container">
             <div class="row">
-                <img class="group-photo" src="{% static "img/profile_default.jpg" %}"/>
+                <img class="group-photo" src="{{ selected_group_photo }}"/>
             </div>
             <div class="group-name-text">
-                Flat 102
+                {{ selected_group_name}}
             </div>
             <div class="row row-btns">
                 <div class="column-3">
@@ -58,7 +58,7 @@
                     </button>
                 </div>
                 <div class="column-3 btn-to-right">
-                    <button id="btn-settle-up" class="btn-set btn-white">
+                    <button id="btnSet" class="btn-set btn-white">
                         settle up
                     </button>
                     <div id="settleModal" class="modal">
@@ -68,7 +68,7 @@
                                     <h3><strong>Settle up</strong></h3>
                                 </div>
                                 <div class="column-2">
-                                    <i class="material-icons close">
+                                    <i class="material-icons close close-settle-modal">
                                         close
                                     </i>
                                 </div>
@@ -77,20 +77,37 @@
                             <div class="modal-body">
                                 <div>
                                     <p style="align-content: center">
-                                        <button class='btn-modal-links' id='a-who-settle'>You</button> paid
-                                        <button class="btn-modal-links" id="a-who-recipient">you</button>.
+                                        <span class='btn-modal-links' id='a-who-settle'>You</span> paid
+                                        <span class="btn-modal-links" id="a-who-recipient">you</span>.
                                     </p>
                                 </div>
                                 <label>
-                                    <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
+                                    <input style="margin-top: 0" id="settle-expense-amount" class="modal-input">
                                 </label>
-                                <button>Save</button>
+                                <button id="btn-settle-up-confirm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="noExpenseChooseModal" class="modal">
+                        <div class="modal-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>You should select some expense to settle up</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <i class="material-icons close close-no-expense-modal">
+                                        close
+                                    </i>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="column-3 btn-to-right">
-                    <button id="btn-add-new" class="btn-set btn-blue">
+                    <button id="btnAdd" class="btn-set btn-blue">
                         add new
                     </button>
                     <div id="addModal" class="modal">
@@ -100,7 +117,7 @@
                                     <h3><strong>Add an expense</strong></h3>
                                 </div>
                                 <div class="column-2">
-                                    <i class="material-icons close">
+                                    <i class="material-icons close-add-expense-modal">
                                         close
                                     </i>
                                 </div>
@@ -125,90 +142,44 @@
                     </div>
                 </div>
             </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        airport water
-                    </div>
-                    <div class="card-date">
-                        20.01.2020
-                    </div>
-                </div>
-                <div class="column-3">
+            {% for exp in group_expenses %}
+                <div>
+                    <div class="row card expenses-card" id="{{ exp.id }}-card">
+                        <div class="column-2">
+                            <img class="group-card-photo" src="{{ exp.photo }}"/>
+                        </div>
+                        <div class="column-4">
+                            <div class="exp-name-text">
+                                {{ exp.description }}
+                            </div>
+                            <div class="card-date">
+                                {{ exp.date }}
+                            </div>
+                            <div class="show-group-name-on-card">
+                            {% if selected_friend_id and exp.group_name %}
+                                group: {{ exp.group_name }}
+                            {% endif %}
+                            </div>
+                        </div>
+                        <div class="column-2">
 
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">5BYN</div>
-                </div>
+                        </div>
+                        <div class="column-4">
+                            <div class="lent-borrowed-text">{{ exp.text }}</div>
+                            {% if exp.lent %}
+                                <div class="lent-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                            {% else %}
+                                <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                            {% endif %}
+                        </div>
 
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        Tenerife cafe
-                    </div>
-                    <div class="card-date">
-                        28.01.2020
-                    </div>
-                </div>
-                <div class="column-3">
-
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">72.00$</div>
-                </div>
-
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        restaurant Gvozd
-                    </div>
-                    <div class="card-date">
-                        20.02.2020
                     </div>
                 </div>
-                <div class="column-3">
-
+            {% empty %}
+                <div class="empty-expenses-text">
+                    No active expenses in this group yet.
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">462.77$</div>
-                </div>
-
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/profile_default.jpg" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        petrol
-                    </div>
-                    <div class="card-date">
-                        03.03.2020
-                    </div>
-                </div>
-                <div class="column-3">
-
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">223BYN</div>
-                </div>
-
-            </div>
+            {% endfor %}
         </div>
 
     </main>
@@ -235,7 +206,6 @@
             <div class="hr"></div>
             <div class="row">
                 <div class="column-9">
-
                 </div>
                 <div class="column-3 follow-us">
                     <ul>
