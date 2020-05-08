@@ -31,6 +31,10 @@ class Index(View):
                 context['notifications'] = user_notifications
 
             selected_group_id = request.GET.get('group')
+            selected_friend_id = request.GET.get('friend')
+
+            print("DEBUG")
+            print(selected_group_id,  selected_friend_id)
 
             if selected_group_id:
                 selected_group_id = int(selected_group_id)
@@ -39,6 +43,14 @@ class Index(View):
                 context['selected_group_id'] = selected_group_id
                 context['selected_group_name'] = get_group_name_by_id(selected_group_id)
                 context['selected_group_photo'] = get_group_photo_by_id(selected_group_id)
+            elif selected_friend_id:
+                selected_friend_id = int(selected_friend_id)
+                user_friend_expenses = get_user_expenses_with_friend(selected_friend_id, request.user.id)
+                context['group_expenses'] = user_friend_expenses
+                context['selected_friend_id'] = selected_friend_id
+                context['selected_friend_name'] = get_friend_name_by_id(selected_friend_id)
+                context['selected_group_photo'] = find_user_photo(selected_friend_id)
+
             else:
                 context['group_expenses'], context['selected_group_id'] = \
                     get_some_user_group_expenses(request.user.id)
@@ -51,7 +63,10 @@ class Index(View):
             context['user_friends'] = user_friends
             context['user_photo_path'] = find_user_photo(request.user.id)
             context['user_groups'] = user_groups
-            context['group_members'] = get_user_group_members(request.user.id)
+            if not selected_friend_id:
+                context['group_members'] = get_user_group_members(request.user.id)
+            else:
+                context['group_members'] = get_user_friend_members(request.user.id, selected_friend_id)
 
             return render(request, 'index.html', context=context)
         else:
@@ -254,10 +269,11 @@ def create_new_expense(request):
     desc = request.POST.get('desc')
     paid_username = request.POST.get('paid_username')
     equally = request.POST.get('equally')
+    is_friend =  True if request.POST.get('is_friend') == 'true' else False
 
-    if equally:
+    if equally == 'true':
         size = len(percent_users)
-        p = amount / size
+        p = 100 / size
         for i in range(size):
             percent_users[i]['percent'] = p
 
@@ -268,7 +284,11 @@ def create_new_expense(request):
     if paid_username == 'you':
         paid_username = request.user.username
 
-    # print(int(id_group), desc, amount, date, percent_users, paid_username, pic)
-    create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+    print(int(id_group), desc, amount, date, percent_users, paid_username, pic, equally,  is_friend)
+
+    if is_friend:
+        create_expense(None, desc, amount, date, percent_users, paid_username, pic)
+    else:
+        create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
 
     return JsonResponse({})

@@ -163,7 +163,7 @@
                         <ul class="ul-sidebar">
                         {% for friend in user_friends %}
                             <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
-                                <a href="#">
+                                <a href="/?friend={{ friend.id }}">
                                     {% if friend.photo_path %}
                                         <img src="{{ friend.photo_path }}" alt="">
                                     {% else %}
@@ -278,7 +278,11 @@
                             <img src="{{ selected_group_photo }}" class="main-group-photo" alt="">
                         </div>
                         <div class="column-6">
-                            <h1>{{ selected_group_name }}</h1>
+                            {% if selected_group_id %}
+                                <h1>{{ selected_group_name }}</h1>
+                            {% else %}
+                                <h1>{{ selected_friend_name }}</h1>
+                            {% endif %}
                         </div>
                         <div class="column-1">
                         </div>
@@ -469,7 +473,11 @@
                                             </div>
 
                                         </div>
-                                        <button id="create-expense-{{ selected_group_id }}" class="btn-create_expense">Save</button>
+                                        {% if selected_group_id %}
+                                            <button id="create-expense-{{ selected_group_id }}-group" class="btn-create_expense">Save</button>
+                                        {% else %}
+                                            <button id="create-expense-{{ selected_friend_id }}-friend" class="btn-create_expense">Save</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -489,6 +497,7 @@
                                     <div id="who-settle-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
+                                            {% if selected_group_id %}
                                                 {% for member in group_members|get_item:selected_group_id %}
                                                 <li id="{{ member|get_item:'username' }}"
                                                     class="modal-settle-li who-settle-li"
@@ -497,6 +506,16 @@
                                                     <span>{{ member|get_item:'username'}}</span>
                                                 </li>
                                                 {% endfor %}
+                                            {% else %}
+                                                {% for member in group_members|get_item:selected_friend_id %}
+                                                <li id="{{ member|get_item:'username' }}"
+                                                    class="modal-settle-li who-settle-li"
+                                                >
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username'}}</span>
+                                                </li>
+                                                {% endfor %}
+                                            {% endif %}
                                             </ul>
                                         </div>
                                     </div>
@@ -518,7 +537,8 @@
                                     <div id="split-body" class="modal-body">
                                         <div>
                                             <ul class="modal-settle-ul">
-                                            {% for member in group_members|get_item:selected_group_id %}
+                                            {% if selected_group_id %}
+                                                {% for member in group_members|get_item:selected_group_id %}
                                                 <li class="modal-settle-li percentage">
                                                     <div class="row">
                                                         <div class="column-8">
@@ -532,6 +552,23 @@
                                                     </div>
                                                 </li>
                                             {% endfor %}
+                                            {% else %}
+                                                {% for member in group_members|get_item:selected_friend_id %}
+                                                <li class="modal-settle-li percentage">
+                                                    <div class="row">
+                                                        <div class="column-8">
+                                                            <img src="{{ member|get_item:'photo' }}">
+                                                            <span>{{ member|get_item:'username' }}</span>
+                                                        </div>
+                                                        <div class="column-4 percent-border">
+                                                            <input class="input-percent-append">
+                                                            <span class="percent">%</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            {% endif %}
+
                                             </ul>
                                             <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
                                             <button id="save-percents-btn" type="button">Save</button>
@@ -556,6 +593,11 @@
                                     </div>
                                     <div class="card-date">
                                         {{ exp.date }}
+                                    </div>
+                                    <div class="show-group-name-on-card">
+                                    {% if selected_friend_id and exp.group_name %}
+                                        group: {{ exp.group_name }}
+                                    {% endif %}
                                     </div>
                                 </div>
                                 <div class="column-3">

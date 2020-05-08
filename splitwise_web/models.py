@@ -25,7 +25,7 @@ class Expense(models.Model):
     amount = models.FloatField()
     id_user_paid = models.IntegerField()
     id_user_owes = models.IntegerField()
-    id_group = models.IntegerField()
+    id_group = models.IntegerField(null=True)
     pic_file_path = models.CharField(max_length=100, default=None)
 
 

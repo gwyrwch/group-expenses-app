@@ -281,6 +281,7 @@ main {
 
 .group-header img {
     width: 70px;
+    height: 70px;
     border-radius: 50%;
 }
 
@@ -904,4 +905,9 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
 
 .empty-expenses-text {
     padding: 5%;
+}
+
+.show-group-name-on-card {
+    font-size: smaller;
+    color: #5b5b5b;
 }

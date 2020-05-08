@@ -253,10 +253,6 @@ function create_new_group() {
         var groupName = document.getElementById('create-group-name').value;
         var groupFile = document.getElementById('add_group_photo').files[0];
 
-        // if (groupFile.type.startsWith('image'))
-
-        // console.log(groupName, groupFile);
-
         if (groupName.length > 0) {
             var fd = new FormData();
 
@@ -298,7 +294,6 @@ edit_group_modal();
 
 function delete_member_from_group() {
     var deleteBtns = document.getElementsByClassName('close-delete-member');
-    // console.log(deleteBtns);
 
     for (var i = 0; i < deleteBtns.length; i++) {
         deleteBtns.item(i).onclick = async function () {
@@ -315,7 +310,6 @@ function delete_member_from_group() {
             });
 
             let result = await response.json();
-            // console.log(result);
 
             location.reload();
         };
@@ -333,7 +327,6 @@ function invite_member() {
             return function() {
                 var id_input = getRandomInt(1,10000);
                 var id_close = id_input + '_close';
-                // любой айдишник рандомный
 
                 var members = members_div.item(i);
                 var input = document.createElement('input');
@@ -346,7 +339,6 @@ function invite_member() {
                 icon.classList.add("close-delete-new-member", "material-icons", "close");
                 icon.id = id_close;
                 icon.innerText = 'close';
-
 
                 icon.onclick = function () {
                     var input = document.getElementById(this.id.split('_')[0]);
@@ -410,7 +402,6 @@ function edit_group() {
                 });
 
                 let result = await response.json();
-                console.log(result);
                 location.reload();
             }
         }(j);
@@ -431,7 +422,6 @@ function addOnclickToPhotoButton(idAddPhotoBtn, fileInputId) {
 
 
     document.getElementById(fileInputId).onchange = function () {
-        console.log(groupPhotoBtn);
         groupPhotoBtn.style.color = '#4cd964';
     };
 }
@@ -445,6 +435,7 @@ function create_expense() {
         invalid.style.display = 'none';
 
         var id_group = createBtn.id.split('-')[2];
+        var is_friend = createBtn.id.split('-')[3] === 'friend';
         var desc = document.getElementById('expense-description').value;
         var amount = document.getElementById('expense-amount').value;
         var photo = document.getElementById('expense-photo-input-file').files[0];
@@ -455,10 +446,10 @@ function create_expense() {
         var percent_users = [];
         for (var i = 0; i < percentage_li.length; i++) {
             var p = percentage_li[i];
+
             var username = p.getElementsByTagName('span')[0].innerText;
             var val = p.getElementsByClassName('input-percent-append')[0].value;
 
-            // console.log(username, val); // insert into dict
             var percent_user = {
                 username: username,
                 percent: parseFloat(val)
@@ -468,8 +459,8 @@ function create_expense() {
 
         var equally = document.getElementById('a-split').innerHTML;
         equally = equally === 'equally';
-        console.log(equally);
 
+        console.log(equally);
 
         if (amount.length !== 0) {
             var fd = new FormData();
@@ -483,6 +474,7 @@ function create_expense() {
             fd.append('percent_users', JSON.stringify(percent_users));
             fd.append('paid_username', paid_username);
             fd.append('equally', equally);
+            fd.append('is_friend', is_friend);
 
 
             let response = await fetch('/create_new_expense', {
@@ -496,9 +488,6 @@ function create_expense() {
 
         }
 
-
-        // console.log(id_group, desc, amount, photo);
-
     };
 }
 
@@ -507,10 +496,8 @@ create_expense();
 
 function add_who_settle_to_new_expense() {
     var whoBtns = document.getElementsByClassName('who-settle-li');
-    console.log(whoBtns);
 
     for (var i = 0; i < whoBtns.length; i++) {
-        console.log(whoBtns.item(i));
         whoBtns[i].onclick = function () {
             var open_btn = document.getElementById("a-who-paid");
             open_btn.innerText = this.id;
