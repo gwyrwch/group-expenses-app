@@ -228,6 +228,7 @@ def get_group_expenses(id_group):
         exp['currency'] = expense.currency
         exp['photo'] = expense.pic_file_path
         exp['id_group'] = id_group
+        exp['id'] = expense.id
 
         res.append(exp)
 
@@ -244,12 +245,16 @@ def get_user_expenses_from_group(id_group, id_user):
         if exp['id_paid'] == id_user:
             owed = User.objects.filter(id=exp['id_owed']).first().username
             exp['text'] = 'you lent {}'.format(owed)
+            exp['lent'] = True
         elif exp['id_owed'] == id_user:
             paid = User.objects.filter(id=exp['id_paid']).first().username
             exp['text'] = '{} lent you'.format(paid)
+            exp['lent'] = False
         else:
             continue
         res.append(exp)
+
+    res.reverse()
 
     return res
 
@@ -272,6 +277,7 @@ def get_user_expenses_with_friend(id_friend, id_user):
         exp['currency'] = expense.currency
         exp['photo'] = expense.pic_file_path
         exp['id_group'] = expense.id_group
+        exp['id'] = expense.id
         if expense.id_group:
             exp['group_name'] = Group.objects.filter(id=expense.id_group).first().name
 
@@ -280,12 +286,16 @@ def get_user_expenses_with_friend(id_friend, id_user):
         if exp['id_paid'] == id_user:
             owed = User.objects.filter(id=exp['id_owed']).first().username
             exp['text'] = 'you lent {}'.format(owed)
+            exp['lent'] = True
         elif exp['id_owed'] == id_user:
             paid = User.objects.filter(id=exp['id_paid']).first().username
             exp['text'] = '{} lent you'.format(paid)
+            exp['lent'] = False
         else:
             continue
         res.append(exp)
+
+    res.reverse()
 
     return res
 
@@ -323,6 +333,8 @@ def create_expense(id_group, desc, amount, date, percent_users, paid_username, p
     for d in percent_users:
         id_user_owes = User.objects.filter(username=d['username']).first().id
 
+        if d['percent'] is None:
+            d['percent'] = 0
         user_amount = float(d['percent']) / 100 * amount
 
         expense = Expense(
@@ -336,3 +348,26 @@ def create_expense(id_group, desc, amount, date, percent_users, paid_username, p
             id_user_owes=id_user_owes
         )
         expense.save()
+
+
+def get_expense_info_by_id(id_exp, id_current_user):
+    exp = Expense.objects.filter(id=id_exp).get()
+
+    res = dict()
+    if exp.id_user_owes == id_current_user:
+        res['username_pay'] = 'You'
+    else:
+        res['username_pay'] = User.objects.filter(id=exp.id_user_owes).get().username
+
+    if exp.id_user_paid == id_current_user:
+        res['username_get'] = 'you'
+    else:
+        res['username_get'] = User.objects.filter(id=exp.id_user_paid).get().username
+    res['amount'] = str(exp.amount) + exp.currency
+
+    return res
+
+
+def settle_up_by_id_exp(id_exp):
+    Expense.objects.filter(id=id_exp).delete()
+

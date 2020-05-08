@@ -304,128 +304,16 @@
                                     <div class="modal-body">
                                         <div>
                                             <p style="align-content: center">
-                                                <button class='btn-modal-links' id='a-who-settle'>You</button> paid
-                                                <button class="btn-modal-links" id="a-who-recipient">you</button>.
+                                                <span class='btn-modal-links' id='a-who-settle'>You</span> paid
+                                                <span class="btn-modal-links" id="a-who-recipient">you</span>.
+
                                             </p>
                                         </div>
                                         <label>
-                                            <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
+                                            <input id="settle-expense-amount" style="margin-top: 0" readonly class="modal-input">
                                         </label>
-                                        <button>Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="who_settle" class="modal">
-                                <div class="modal-content modal-content-right" id="who-settle-content">
-                                    <div class="row modal-header">
-                                        <div class="column-10">
-                                            <h3><strong>Choose  payer</strong></h3>
-                                        </div>
-                                        <div class="column-2">
-                                            <i class="material-icons close close-who-settle-modal">
-                                                close
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
-                                        <div>
-                                            <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="who_recipient" class="modal">
-                                <div class="modal-content modal-content-right" id="who-settle-content">
-                                    <div class="row modal-header">
-                                        <div class="column-10">
-                                            <h3><strong>Choose a recipient</strong></h3>
-                                        </div>
-                                        <div class="column-2">
-                                            <i class="material-icons close close-who-recipient-modal">
-                                                close
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div class="hr"></div>
-                                    <div id="who-2-settle-body" class="modal-body">
-                                        <div>
-                                            <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <button id="btn-settle-up-confirm">Save</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -494,7 +382,7 @@
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
+                                    <div id="who-settle-body" class="modal-body modal-padding-to-zero">
                                         <div>
                                             <ul class="modal-settle-ul">
                                             {% if selected_group_id %}
@@ -534,7 +422,7 @@
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="split-body" class="modal-body">
+                                    <div id="split-body" class="modal-body modal-padding-to-zero">
                                         <div>
                                             <ul class="modal-settle-ul">
                                             {% if selected_group_id %}
@@ -583,7 +471,7 @@
                 <div class="card-container">
                     {% for exp in group_expenses %}
                         <div>
-                            <div class="row card">
+                            <div class="row card expenses-card" id="{{ exp.id }}-card">
                                 <div class="column-2">
                                     <img class="group-card-photo" src="{{ exp.photo }}"/>
                                 </div>
@@ -600,12 +488,16 @@
                                     {% endif %}
                                     </div>
                                 </div>
-                                <div class="column-3">
+                                <div class="column-2">
 
                                 </div>
-                                <div class="column-3">
+                                <div class="column-4">
                                     <div class="lent-borrowed-text">{{ exp.text }}</div>
-                                    <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                                    {% if exp.lent %}
+                                        <div class="lent-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                                    {% else %}
+                                        <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                                    {% endif %}
                                 </div>
 
                             </div>

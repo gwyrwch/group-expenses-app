@@ -241,7 +241,7 @@ main {
 
 .group-header {
     display: inline-block;
-    width: 93%;
+    width: 97%;
     padding: 10px 2% 10px 2%;
 
 }
@@ -583,12 +583,13 @@ input[type="date" i] {
     width: 18%;
 }
 
-#who-settle-content li {
-    text-decoration: none;
+.modal-padding-to-zero {
+    padding: 0 !important;
+    /*todo remove important*/
 }
 
-#who-settle-body {
-    padding: 0;
+#who-settle-content li {
+    text-decoration: none;
 }
 
 .modal-settle-li:hover {

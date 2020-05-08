@@ -269,7 +269,7 @@ def create_new_expense(request):
     desc = request.POST.get('desc')
     paid_username = request.POST.get('paid_username')
     equally = request.POST.get('equally')
-    is_friend =  True if request.POST.get('is_friend') == 'true' else False
+    is_friend = True if request.POST.get('is_friend') == 'true' else False
 
     if equally == 'true':
         size = len(percent_users)
@@ -284,11 +284,25 @@ def create_new_expense(request):
     if paid_username == 'you':
         paid_username = request.user.username
 
-    print(int(id_group), desc, amount, date, percent_users, paid_username, pic, equally,  is_friend)
-
     if is_friend:
         create_expense(None, desc, amount, date, percent_users, paid_username, pic)
     else:
         create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+
+    return JsonResponse({})
+
+
+@csrf_exempt
+def get_expense_info(request):
+    id_exp = int(request.body.decode("utf-8"))
+    res = get_expense_info_by_id(id_exp, request.user.id)
+
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def settle_up(request):
+    id_exp = int(request.body.decode("utf-8"))
+    settle_up_by_id_exp(id_exp)
 
     return JsonResponse({})
