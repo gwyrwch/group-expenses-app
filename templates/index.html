@@ -24,16 +24,16 @@
             <div class="column-8"></div>
             <div class="column-2" style="text-align: right">
                 <div class="dropdown">
-                    <a class="profile-nav" href="profile">
+                    <span class="profile-nav">
                         {{ user.username }}
                         {% if user_photo_path %}
                             <img class="profile-photo" src="{{ user_photo_path }}" alt="..."/>
                         {% else %}
                             <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
                         {% endif %}
-                    </a>
+                    </span>
                     <div class="dropdown-content">
-                        <a href="profile">Your account</a>
+                        <a href="profile">Profile</a>
                         <a id="btnOpenNotifications">Notifications
                             <span style="font-size: smaller">({{ notifications|length }})</span>
                         </a>
@@ -265,6 +265,8 @@
                                 </div>
                             {% endif %}
                         </div>
+                        {% empty %}
+                            <div>No new notifications</div>
                         {% endfor %}
 
                         <button>Save</button>
@@ -581,8 +583,12 @@
             </div>
     </footer>
 </body>
+<script>
+    if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        window.location.replace("index_mobile");
+    }
+</script>
 <script src="{% static "js/index.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
-{#<script src="{% static "js/common_index.js" %}" type="module"></script>#}
 
 </html>

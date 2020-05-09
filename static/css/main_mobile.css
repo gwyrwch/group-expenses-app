@@ -126,3 +126,17 @@
     width: 30px;
     height: 30px;
 }
+
+
+.modal {
+    padding-top: 100px;
+}
+
+
+.dropdown-content {
+    width: 110px;
+}
+
+.footer {
+    height: auto;
+}

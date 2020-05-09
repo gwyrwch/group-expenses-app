@@ -424,7 +424,7 @@ def get_user_expenses_to_friends(id_user):
 
         ans['name'] = User.objects.filter(id=id_friend[0]).get().username
         ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
-        ans['id_friend'] = id_friend[0]
+        ans['id'] = id_friend[0]
         expenses.append(ans)
 
     return expenses

@@ -1,4 +1,4 @@
-import { add_modal } from './lib.js';
+import { addModal } from './lib.js';
 
 
 
@@ -8,4 +8,4 @@ var close = document.getElementsByClassName("close")[0];
 
 console.log(modal, btn, close);
 
-add_modal(modal, btn, close, true);
+addModal(modal, btn, close, true);
