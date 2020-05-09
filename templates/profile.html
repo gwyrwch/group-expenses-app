@@ -32,7 +32,7 @@
     </header>
     <main>
         <div class="main-container">
-            <form class="profile-form" method="post" enctype="multipart/form-data">
+            <form class="profile-form" method="post" enctype="multipart/form-data" onkeydown="return event.key !== 'Enter';">
                 {% csrf_token %}
                 <div class="row">
                     <div class="column-3 profile-photo-col-3">
@@ -83,7 +83,6 @@
                                 <button id="saveChanges" type="button" class="profile-submit-btn">SAVE</button>
                             </div>
                             <div id="confirmModal" class="modal">
-{#                                todo: mobile version#}
                                 <div class="modal-content" id="modal-content-kek">
                                     <div class="row modal-header">
                                         <div class="column-9">
@@ -100,7 +99,9 @@
                                         <label>
                                             <input placeholder="Current password" type="password" name="cur_password" class="modal-input">
                                         </label>
-                                        <button type="submit" class="profile-confirm-submit-btn">Save</button>
+                                        <span id="password-invalid-span">Incorrect password</span>
+                                        <button type="button" class="profile-confirm-submit-btn">Save</button>
+                                        <button id="submit-btn" type="submit" style="display: none"></button>
                                     </div>
                                 </div>
                             </div>

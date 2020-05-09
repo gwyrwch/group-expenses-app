@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 
 from splitwise_web.models import *
 
+eps = 10 ** -6
+
 
 def get_user_notifications(user_id):
     try:
@@ -224,7 +226,7 @@ def get_group_expenses(id_group):
         exp['date'] = expense.date
         exp['id_paid'] = expense.id_user_paid
         exp['id_owed'] = expense.id_user_owes
-        exp['amount'] = expense.amount
+        exp['amount'] = round(expense.amount, 5)
         exp['currency'] = expense.currency
         exp['photo'] = expense.pic_file_path
         exp['id_group'] = id_group
@@ -242,11 +244,11 @@ def get_user_expenses_from_group(id_group, id_user):
     for exp in expenses:
         if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
             continue
-        if exp['id_paid'] == id_user:
+        if exp['id_paid'] == id_user and exp['amount'] > eps:
             owed = User.objects.filter(id=exp['id_owed']).first().username
             exp['text'] = 'you lent {}'.format(owed)
             exp['lent'] = True
-        elif exp['id_owed'] == id_user:
+        elif exp['id_owed'] == id_user and exp['amount'] > eps:
             paid = User.objects.filter(id=exp['id_paid']).first().username
             exp['text'] = '{} lent you'.format(paid)
             exp['lent'] = False
@@ -273,7 +275,7 @@ def get_user_expenses_with_friend(id_friend, id_user):
         exp['date'] = expense.date
         exp['id_paid'] = expense.id_user_paid
         exp['id_owed'] = expense.id_user_owes
-        exp['amount'] = expense.amount
+        exp['amount'] = round(expense.amount, 5)
         exp['currency'] = expense.currency
         exp['photo'] = expense.pic_file_path
         exp['id_group'] = expense.id_group
@@ -283,11 +285,11 @@ def get_user_expenses_with_friend(id_friend, id_user):
 
         if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
             continue
-        if exp['id_paid'] == id_user:
+        if exp['id_paid'] == id_user and exp['amount'] > eps:
             owed = User.objects.filter(id=exp['id_owed']).first().username
             exp['text'] = 'you lent {}'.format(owed)
             exp['lent'] = True
-        elif exp['id_owed'] == id_user:
+        elif exp['id_owed'] == id_user and exp['amount'] > eps:
             paid = User.objects.filter(id=exp['id_paid']).first().username
             exp['text'] = '{} lent you'.format(paid)
             exp['lent'] = False
@@ -336,6 +338,7 @@ def create_expense(id_group, desc, amount, date, percent_users, paid_username, p
         if d['percent'] is None:
             d['percent'] = 0
         user_amount = float(d['percent']) / 100 * amount
+        print(user_amount)
 
         expense = Expense(
             id_group=id_group,
@@ -363,7 +366,7 @@ def get_expense_info_by_id(id_exp, id_current_user):
         res['username_get'] = 'you'
     else:
         res['username_get'] = User.objects.filter(id=exp.id_user_paid).get().username
-    res['amount'] = str(exp.amount) + exp.currency
+    res['amount'] = str(round(exp.amount, 5)) + exp.currency
 
     return res
 
@@ -411,9 +414,9 @@ def get_user_expenses_to_friends(id_user):
                 currency = exp['currency']
                 # fixme if many currencies
                 if exp['id_user_paid'] == id_user:
-                    you_pay += exp['amount']
+                    you_pay += round(exp['amount'], 5)
                 else:
-                    you_owe += exp['amount']
+                    you_owe += round(exp['amount'], 5)
 
             ans['you_pay'] = str(you_pay) + currency
             ans['you_owe'] = str(you_owe) + currency
@@ -453,9 +456,9 @@ def get_user_expenses_to_groups(id_user):
                 currency = exp['currency']
                 # fixme if many currencies
                 if exp['id_user_paid'] == id_user:
-                    you_pay += exp['amount']
+                    you_pay += round(exp['amount'], 5)
                 else:
-                    you_owe += exp['amount']
+                    you_owe += round(exp['amount'], 5)
 
             ans['you_pay'] = str(round(you_pay, 5)) + currency
             ans['you_owe'] = str(round(you_owe, 5)) + currency

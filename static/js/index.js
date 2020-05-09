@@ -386,7 +386,7 @@ function createExpense() {
             let username = p.getElementsByTagName('span')[0].innerText;
             let val = p.getElementsByClassName('input-percent-append')[0].value;
 
-            let percent_user = {
+            let percentUser = {
                 username: username,
                 percent: parseFloat(val)
             };

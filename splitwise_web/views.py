@@ -123,6 +123,11 @@ class Profile(View):
             request.user.email = email
             request.user.save()
 
+        if len(password) >= 5:
+            request.user.set_password(password)
+            request.user.save()
+            login(request, request.user)
+
         if photo:
             fs = handle_uploaded_file(photo)
             add_or_update_photo(request.user.id, fs)
@@ -310,6 +315,7 @@ def create_new_expense(request):
         create_expense(None, desc, amount, date, percent_users, paid_username, pic)
     else:
         create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+        print((int(id_group), desc, amount, date, percent_users, paid_username, pic))
 
     return JsonResponse({})
 
@@ -335,3 +341,14 @@ def check_user_is_valid(request):
     resp = check_if_user_is_valid(json.loads(request.body))
     print(resp)
     return JsonResponse(resp)
+
+
+@csrf_exempt
+def is_password_valid(request):
+    valid = None
+    if check_password(json.loads(request.body)['pass'], request.user.password):
+        valid = True
+    else:
+        valid = False
+
+    return JsonResponse({'valid':valid})

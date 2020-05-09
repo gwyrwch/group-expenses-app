@@ -216,3 +216,8 @@
     }
 }
 
+
+#password-invalid-span {
+    color: #ff3b30;
+    display: none;
+}
