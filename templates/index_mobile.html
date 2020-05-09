@@ -8,7 +8,7 @@
     <title>Cashflow</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -82,7 +82,7 @@
                                     </p>
                                 </div>
                                 <label>
-                                    <input style="margin-top: 0" id="settle-expense-amount" class="modal-input">
+                                    <input style="margin-top: 0" id="settle-expense-amount" readonly class="modal-input">
                                 </label>
                                 <button id="btn-settle-up-confirm">Save</button>
                             </div>
@@ -137,6 +137,101 @@
                                     </p>
                                 </div>
                                 <button>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="who_paid" class="modal">
+                        <div class="modal-content modal-content-right" id="who-settle-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Choose payer</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <i class="material-icons close close-who-paid-modal">
+                                        close
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="hr"></div>
+                            <div id="who-settle-body" class="modal-body modal-padding-to-zero">
+                                <div>
+                                    <ul class="modal-settle-ul">
+                                    {% if selected_group_id %}
+                                        {% for member in group_members|get_item:selected_group_id %}
+                                        <li id="{{ member|get_item:'username' }}"
+                                            class="modal-settle-li who-settle-li"
+                                        >
+                                            <img src="{{ member|get_item:'photo' }}">
+                                            <span>{{ member|get_item:'username'}}</span>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for member in group_members|get_item:selected_friend_id %}
+                                        <li id="{{ member|get_item:'username' }}"
+                                            class="modal-settle-li who-settle-li"
+                                        >
+                                            <img src="{{ member|get_item:'photo' }}">
+                                            <span>{{ member|get_item:'username'}}</span>
+                                        </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="split" class="modal">
+                        <div class="modal-content modal-content-right" id="percentage-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Split by percentages</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <i class="material-icons close close-split-modal" >
+                                        close
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="hr"></div>
+                            <div id="split-body" class="modal-body modal-padding-to-zero">
+                                <div>
+                                    <ul class="modal-settle-ul">
+                                    {% if selected_group_id %}
+                                        {% for member in group_members|get_item:selected_group_id %}
+                                        <li class="modal-settle-li percentage">
+                                            <div class="row">
+                                                <div class="column-8">
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username' }}</span>
+                                                </div>
+                                                <div class="column-4 percent-border">
+                                                    <input class="input-percent-append">
+                                                    <span class="percent">%</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                    {% else %}
+                                        {% for member in group_members|get_item:selected_friend_id %}
+                                        <li class="modal-settle-li percentage">
+                                            <div class="row">
+                                                <div class="column-8">
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username' }}</span>
+                                                </div>
+                                                <div class="column-4 percent-border">
+                                                    <input class="input-percent-append">
+                                                    <span class="percent">%</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    </ul>
+                                    <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
+                                    <button id="save-percents-btn" type="button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>

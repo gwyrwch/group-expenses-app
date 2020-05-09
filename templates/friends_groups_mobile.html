@@ -42,26 +42,27 @@
             <div class="header-text">
                 {{ title }}
             </div>
+            <div class="hr"></div>
             {% for card in cards_content %}
-                <div class="hr"></div>
-                <div class="row card">
-                    <div class="column-3">
-                        <img class="group-friend-card-photo" src="{{ card.photo }}"/>
-                    </div>
-                    <div class="column-5">
-                        <div class="friend-group-name">
-                            {{ card.name }}
-                        </div>
-                        <div class="owes-you-text">
-                            you lent {{ card.you_pay }}
-                        </div>
-                        <div class="you-owe-text">
-                            you owe {{ card.you_owe }}
-                        </div>
-                    </div>
-                    <div class="column-4"></div>
+            <div class="row card friend-group-cards" id="{{ title }}-{{ card.id }}">
+                <div class="column-3">
+                    <img class="group-friend-card-photo" src="{{ card.photo }}"/>
                 </div>
-                <div class="hr"></div>
+                <div class="column-5">
+                    <div class="friend-group-name">
+                        {{ card.name }}
+                    </div>
+                    <div class="owes-you-text">
+                        you lent {{ card.you_pay }}
+                    </div>
+                    <div class="you-owe-text">
+                        you owe {{ card.you_owe }}
+                    </div>
+                </div>
+                <div class="column-4"></div>
+            </div>
+            {% empty %}
+             <span>{{ title }} list is empty</span>
             {% endfor %}
         </div>
     </main>
@@ -126,4 +127,5 @@
         window.location.replace("/");
     }
 </script>
+<script src="{% static "js/friends_groups_mobile.js" %}" type="module"></script>
 </html>

@@ -187,9 +187,9 @@ class FriendsGroupsMobile(View):
             if request.GET.get('friends'):
                 context['title'] = 'Friends'
                 context['cards_content'] = get_user_expenses_to_friends(request.user.id)
-                print(context['cards_content'])
             else:
                 context['title'] = 'Groups'
+                context['cards_content'] = get_user_expenses_to_groups(request.user.id)
 
             return render(request, 'friends_groups_mobile.html', context=context)
         else:

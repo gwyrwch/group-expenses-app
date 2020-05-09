@@ -110,3 +110,19 @@
 .btn-to-right p, .btn-to-right h3 {
      text-align: left;
 }
+
+#who-settle-content, #percentage-content {
+    margin-right: auto;
+    opacity: 1;
+    width: 80%;
+}
+
+#who-settle-body, #split-body {
+    text-align: left;
+}
+
+#who-settle-body img, #split-body img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}

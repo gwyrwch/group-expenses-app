@@ -399,9 +399,8 @@ def get_user_expenses_to_friends(id_user):
         ) | Expense.objects.filter(
             id_user_paid=id_user, id_user_owes=id_friend[0]
         )
-
+        ans = dict()
         if cur_expenses:
-            ans = dict()
             cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
 
             you_pay = 0
@@ -418,8 +417,56 @@ def get_user_expenses_to_friends(id_user):
 
             ans['you_pay'] = str(you_pay) + currency
             ans['you_owe'] = str(you_owe) + currency
-            ans['name'] = User.objects.filter(id=id_friend[0]).get().username
-            ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
-            expenses.append(ans)
+
+        else:
+            ans['you_pay'] = '0$'
+            ans['you_owe'] = '0$'
+
+        ans['name'] = User.objects.filter(id=id_friend[0]).get().username
+        ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
+        ans['id_friend'] = id_friend[0]
+        expenses.append(ans)
+
+    return expenses
+
+
+def get_user_expenses_to_groups(id_user):
+    id_groups = UserToGroup.objects.filter(id_user=id_user).values_list('id_group')
+
+    expenses = []
+    for id_group in id_groups:
+        cur_expenses = Expense.objects.filter(
+            id_user_owes=id_user, id_group=id_group[0]
+        ) | Expense.objects.filter(
+            id_user_paid=id_user, id_group=id_group[0]
+        )
+
+        ans = dict()
+        if cur_expenses:
+            cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
+
+            you_pay = 0
+            you_owe = 0
+
+            currency = ''
+            for exp in cur_expenses:
+                currency = exp['currency']
+                # fixme if many currencies
+                if exp['id_user_paid'] == id_user:
+                    you_pay += exp['amount']
+                else:
+                    you_owe += exp['amount']
+
+            ans['you_pay'] = str(round(you_pay, 5)) + currency
+            ans['you_owe'] = str(round(you_owe, 5)) + currency
+
+        else:
+            ans['you_pay'] = '0$'
+            ans['you_owe'] = '0$'
+
+        ans['name'] = Group.objects.filter(id=id_group[0]).get().name
+        ans['photo'] = Group.objects.filter(id=id_group[0]).get().group_logo_path
+        ans['id'] = id_group[0]
+        expenses.append(ans)
 
     return expenses

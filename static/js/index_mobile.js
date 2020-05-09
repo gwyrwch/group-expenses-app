@@ -149,3 +149,23 @@ function settle_up() {
 }
 
 settle_up();
+
+
+
+
+function add_who_paid_modal() {
+    var modal = document.getElementById("who_paid");
+    var open_btn = document.getElementById("a-who-paid");
+    var close_btn = document.getElementsByClassName("close-who-paid-modal")[0];
+    add_modal(modal, open_btn, close_btn);
+}
+add_who_paid_modal();
+
+
+function add_how_split_modal() {
+    var modal = document.getElementById("split");
+    var open_btn = document.getElementById("a-split");
+    var close_btn = document.getElementsByClassName("close-split-modal")[0];
+    add_modal(modal, open_btn, close_btn);
+}
+add_how_split_modal();
