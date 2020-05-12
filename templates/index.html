@@ -54,9 +54,9 @@
                                 <h3>GROUPS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons add-icon" id="btnCreateGroup">
+                                <button class="material-icons add-icon" id="btnCreateGroup">
                                     add
-                                </i>
+                                </button>
                             </div>
                         </div>
                         <div class="hr"></div>
@@ -76,9 +76,9 @@
                                         </a>
                                     </div>
                                     <div class="column-2 settings-col">
-                                        <i class="material-icons settings btnEditGroup">
+                                        <button class="material-icons settings btnEditGroup">
                                             settings
-                                        </i>
+                                        </button>
                                     </div>
                                 </div>
                             </li>
@@ -90,9 +90,9 @@
                                         </div>
                                         <div class="column-2">
 
-                                            <i class="close close-edit-group-modal material-icons">
+                                            <button class="close close-edit-group-modal material-icons">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
@@ -104,9 +104,9 @@
                                                 </label>
                                             </div>
                                             <div class="column-1 edit-group-photo-col">
-                                                <i class="material-icons add_a_photo edit-group-photo-button">
+                                                <button class="material-icons add_a_photo edit-group-photo-button">
                                                     add_a_photo
-                                                </i>
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -121,11 +121,11 @@
                                                             </a>
                                                         </div>
                                                         <div class="column-1">
-                                                            <i class="material-icons close close-delete-member"
+                                                            <button class="material-icons close close-delete-member"
                                                                id="delete-{{ member|get_item:'username'}}-{{ group.id }}"
                                                             >
                                                                 close
-                                                            </i>
+                                                            </button>
                                                         </div>
                                                         <div class="column-6"></div>
                                                     </div>
@@ -155,9 +155,9 @@
                                 <h3>FRIENDS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons add-icon" id="btnAddFriend">
+                                <button class="material-icons add-icon" id="btnAddFriend">
                                     add
-                                </i>
+                                </button>
                             </div>
                         </div>
                         <div class="hr"></div>
@@ -189,9 +189,9 @@
                             <h3><strong>Enter your friend username</strong></h3>
                         </div>
                         <div class="column-2">
-                            <i class="material-icons close close-friend-modal">
+                            <button class="material-icons close close-friend-modal">
                                 close
-                            </i>
+                            </button>
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -210,9 +210,9 @@
                             <h3><strong>Enter group name</strong></h3>
                         </div>
                         <div class="column-2">
-                            <i class="material-icons close close-create-group-modal">
+                            <button class="material-icons close close-create-group-modal">
                                 close
-                            </i>
+                            </button>
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -224,14 +224,12 @@
                                 </label>
                             </div>
                             <div class="column-1" id="add-group-photo-col">
-                                <i class="material-icons add_a_photo" id="add-group-photo-button">
+                                <button class="material-icons add_a_photo" id="add-group-photo-button">
                                     add_a_photo
-                                </i>
+                                </button>
                                 <input type="file" id="add_group_photo" name="add_group_photo" style="display: none;">
                             </div>
                         </div>
-
-
                         <button id="create-group" style="width: 130px;height: 34px;">Save</button>
                     </div>
                 </div>
@@ -243,9 +241,9 @@
                             <h3><strong>Notifications</strong></h3>
                         </div>
                         <div class="column-2">
-                            <i class="material-icons close close-notification-modal">
+                            <button class="material-icons close close-notification-modal">
                                 close
-                            </i>
+                            </button>
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -294,9 +292,9 @@
                                             <h3><strong>Settle up</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close close-settle-modal">
+                                            <button class="material-icons close close-settle-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
@@ -324,9 +322,9 @@
                                         <h3><strong>You should select some expense to settle up</strong></h3>
                                     </div>
                                     <div class="column-2">
-                                        <i class="material-icons close close-no-expense-modal">
+                                        <button class="material-icons close close-no-expense-modal">
                                             close
-                                        </i>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -343,9 +341,9 @@
                                             <h3><strong>Add an expense</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close close-add-expense-modal">
+                                            <button class="material-icons close close-add-expense-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
@@ -392,9 +390,9 @@
                                             <h3><strong>Choose payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close close-who-paid-modal">
+                                            <button class="material-icons close close-who-paid-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
@@ -432,9 +430,9 @@
                                             <h3><strong>Split by percentages</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close close-split-modal" >
+                                            <button class="material-icons close close-split-modal" >
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
@@ -487,7 +485,7 @@
                 <div class="card-container">
                     {% for exp in group_expenses %}
                         <div>
-                            <div class="row card expenses-card" id="{{ exp.id }}-card">
+                            <div class="row card expenses-card" tabindex="0" id="{{ exp.id }}-card">
                                 <div class="column-2">
                                     <img class="group-card-photo" src="{{ exp.photo }}"/>
                                 </div>

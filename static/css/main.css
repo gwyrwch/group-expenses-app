@@ -626,14 +626,43 @@ input[type="date" i] {
 }
 
 /* The Close Button */
-.close {
+.modal .close, .modal .add_a_photo {
     color: black;
-    font-size: 30px;
-    font-weight: bold;
+    width: auto;
+    height: auto;
+    padding: 0;
     margin-top: auto;
+    background-color: transparent;
+    outline: none;
+
 }
 
-.close:hover {
+.add-icon, .settings {
+    border: none;
+    color: #007eff;
+    padding: 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.modal .add_a_photo {
+    padding-top: 8px;
+}
+
+
+.ul-sidebar .settings {
+    font-size: 20px;
+    padding-top: 6px;
+}
+
+.settings:hover {
+    color: #007eff;
+    cursor: pointer;
+    background-color: transparent;
+
+}
+
+.modal .close:hover, .modal .add_a_photo:hover {
   color: #007eff;
   text-decoration: none;
   cursor: pointer;
@@ -643,30 +672,6 @@ input[type="date" i] {
     cursor: pointer;
 }
 
-.add_a_photo {
-    color: black;
-    font-weight: bold;
-    margin-top: auto;
-}
-
-.add_a_photo:hover {
-  color: #007eff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-.settings {
-    padding: 2px;
-    color: black;
-    font-size: 20px !important; /* todo: remove important */
-}
-
-.settings:hover {
-  color: #007eff;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 .modal .modal-header {
     padding: 2px 16px;
@@ -688,7 +693,6 @@ input[type="date" i] {
 
 .modal-input {
     width: 100%;
-    /*padding: 3%;*/
     height: 45px;
     box-sizing: border-box;
     border: rgba(72, 72, 72, 0.85) 0.5px solid;
@@ -822,14 +826,14 @@ input[type="date" i] {
     width: 100%;
 }
 
-i.close-delete-member, .modal-invite-input + i.close-delete-new-member {
+.modal button.close-delete-member, .modal-invite-input + i.close-delete-new-member {
     position:relative;
     top: calc(50% - 11px);
     font-size: 20px;
     color:  #ff3b30;
 }
 
-i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hover {
+.modal button.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hover {
     top: calc(50% - 13px);
     font-size: 24px;
     color:  #ff3b30;
@@ -913,6 +917,10 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
     color: #5b5b5b;
 }
 
+
+
 .expenses-card-selected {
     box-shadow: 0 0 3px rgb(0, 126, 255);
+    outline: none;
+
 }

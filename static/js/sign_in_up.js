@@ -10,7 +10,6 @@ function validate_sign_in() {
 
         const username = document.getElementsByName('sign-in-username').item(0).value;
         const password = document.getElementsByName('sign-in-password').item(0).value;
-        console.log(username, password);
 
         if (!username  || username.length === 0) {
             invalid_username.style.display = 'block';

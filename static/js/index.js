@@ -135,7 +135,6 @@ function replyToNotificationRequest() {
 
     for (let i = 0; i < okBtns.length; i++) {
         okBtns[i].onclick = async function() {
-            console.log(this.dataset, this.dataset.type, this.dataset.idSender);
 
             const res = {
                 accept: 'seen',
@@ -482,7 +481,7 @@ function setOnclickToExpensesCards() {
     const cards = document.getElementsByClassName('expenses-card');
 
     for (let i = 0; i < cards.length; i++) {
-        cards[i].onclick = function () {
+        cards[i].onfocus = function () {
             const selected = this.classList.contains('expenses-card-selected');
 
             for (let j = 0; j < cards.length; j++) {
@@ -491,7 +490,7 @@ function setOnclickToExpensesCards() {
 
             if (!selected) {
                 this.classList.add('expenses-card-selected');
-                expenseId = this.id.split('-')[0]
+                expenseId = this.id.split('-')[0];
             } else {
                 expenseId = null;
             }
@@ -600,7 +599,6 @@ function addDropDown() {
     };
 
     window.onclick = function(event) {
-        console.log(event.target);
         if (!dropDown.contains(event.target)) {
             content.style.display = "none";
         }
