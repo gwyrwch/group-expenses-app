@@ -2,25 +2,23 @@ import { addModal } from './lib.js';
 
 
 
-var modal = document.getElementById("confirmModal");
-var btn = document.getElementById("saveChanges");
-var close = document.getElementsByClassName("close")[0];
-
-console.log(modal, btn, close);
-
+const modal = document.getElementById("confirmModal");
+const btn = document.getElementById("saveChanges");
+const close = document.getElementsByClassName("close")[0];
 addModal(modal, btn, close, true);
 
+
 function saveData() {
-    let saveBtn = document.getElementsByClassName('profile-confirm-submit-btn').item(0);
+    const saveBtn = document.getElementsByClassName('profile-confirm-submit-btn').item(0);
     saveBtn.onclick = async function () {
-        let span =  document.getElementById('password-invalid-span');
+        const span =  document.getElementById('password-invalid-span');
         span.style.display = 'none';
 
-        let pass = {
+        const pass = {
             pass: document.getElementsByName('cur_password').item(0).value
         };
 
-        let result = await fetch('/is_password_valid', {
+        const result = await fetch('/is_password_valid', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -29,12 +27,12 @@ function saveData() {
             body: JSON.stringify(pass)
         });
 
-        let res = await result.json();
+        const res = await result.json();
 
         if (!res['valid']) {
             span.style.display = 'block';
         } else {
-            let submitBtn = document.getElementById('submit-btn');
+            const submitBtn = document.getElementById('submit-btn');
             submitBtn.click();
         }
 
@@ -42,3 +40,26 @@ function saveData() {
     };
 }
 saveData();
+
+function handleProfileImage() {
+    const btn = document.getElementsByClassName('profile-photo-button').item(0);
+    btn.onclick = function () {
+        const file_input = document.getElementById('photo');
+        file_input.click();
+
+        file_input.onchange = (event) => {
+            if (event.target.files) {
+                if (event.target.files[0]) {
+                    const objectURL = window.URL.createObjectURL(event.target.files[0]);
+
+                    const photo  = document.getElementsByClassName('profile-photo').item(0);
+                    photo.src = objectURL;
+                }
+            }
+        };
+
+    };
+
+}
+
+handleProfileImage();

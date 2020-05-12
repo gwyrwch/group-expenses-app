@@ -912,3 +912,7 @@ i.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hov
     font-size: smaller;
     color: #5b5b5b;
 }
+
+.expenses-card-selected {
+    box-shadow: 0 0 3px rgb(0, 126, 255);
+}

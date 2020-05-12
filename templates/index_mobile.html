@@ -153,9 +153,9 @@
                                     </div>
                                 </div>
                                 {% if selected_group_id %}
-                                    <button id="create-expense-{{ selected_group_id }}-group" class="btn-create_expense">Save</button>
+                                    <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
                                 {% else %}
-                                    <button id="create-expense-{{ selected_friend_id }}-friend" class="btn-create_expense">Save</button>
+                                    <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
                                 {% endif %}
                             </div>
                         </div>

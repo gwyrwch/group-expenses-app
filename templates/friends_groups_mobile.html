@@ -44,7 +44,7 @@
             </div>
             <div class="hr"></div>
             {% for card in cards_content %}
-            <div class="row card friend-group-cards" id="{{ title }}-{{ card.id }}">
+            <div class="row card friend-group-cards" data-type="{{ title }}" data-card="{{ card.id }}">
                 <div class="column-3">
                     <img class="group-friend-card-photo" src="{{ card.photo }}"/>
                 </div>

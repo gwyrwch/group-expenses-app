@@ -171,12 +171,5 @@
 <script src="{% static "js/profile.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
 <script>
-    var btn = document.getElementsByClassName('profile-photo-button').item(0);
-    btn.onclick = function () {
-        var file_input = document.getElementById('photo');
-        file_input.click();
-
-        btn.innerHTML = 'PHOTO SELECTED';
-    };
 </script>
 </html>

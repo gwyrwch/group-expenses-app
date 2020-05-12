@@ -89,6 +89,7 @@
                                             <h3><strong>Group settings</strong></h3>
                                         </div>
                                         <div class="column-2">
+
                                             <i class="close close-edit-group-modal material-icons">
                                                 close
                                             </i>
@@ -256,12 +257,12 @@
                             </div>
                             {% if notification.accept_decline %}
                                 <div class="column-4" style="text-align: right">
-                                    <button id="accept-{{ notification.type }}-{{ notification.id_sender }}" class="button-accept">Accept</button>
-                                    <button id="decline-{{ notification.type }}-{{ notification.id_sender }}" class="button-decline">Decline</button>
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-accept">Accept</button>
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-decline">Decline</button>
                                 </div>
                             {% else %}
                                 <div class="column-2" style="text-align: right">
-                                    <button id="seen-{{ notification.type }}-{{ notification.id_sender }}" class="button-seen">Ok</button>
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-seen">Ok</button>
                                 </div>
                             {% endif %}
                         </div>
@@ -377,9 +378,9 @@
 
                                         </div>
                                         {% if selected_group_id %}
-                                            <button id="create-expense-{{ selected_group_id }}-group" class="btn-create_expense">Save</button>
+                                            <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
                                         {% else %}
-                                            <button id="create-expense-{{ selected_friend_id }}-friend" class="btn-create_expense">Save</button>
+                                            <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
                                         {% endif %}
                                     </div>
                                 </div>

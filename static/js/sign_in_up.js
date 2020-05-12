@@ -1,15 +1,15 @@
 function validate_sign_in() {
-    var btn = document.getElementById('btn-sign-in');
+    const btn = document.getElementById('btn-sign-in');
 
     btn.onclick = async function () {
-        var invalid_pass = document.getElementById('password-in-invalid-span');
+        const invalid_pass = document.getElementById('password-in-invalid-span');
         invalid_pass.style.display = 'none';
 
-        var invalid_username = document.getElementById('username-in-invalid-span');
+        const invalid_username = document.getElementById('username-in-invalid-span');
         invalid_username.style.display = 'none';
 
-        var username = document.getElementsByName('sign-in-username').item(0).value;
-        var password = document.getElementsByName('sign-in-password').item(0).value;
+        const username = document.getElementsByName('sign-in-username').item(0).value;
+        const password = document.getElementsByName('sign-in-password').item(0).value;
         console.log(username, password);
 
         if (!username  || username.length === 0) {
@@ -35,31 +35,30 @@ if ( window.history.replaceState ) {
 
 
 function validate_sign_up() {
-    var btn = document.getElementById('btn-sign-up');
+    const btn = document.getElementById('btn-sign-up');
 
     btn.onclick = async function () {
-        var invalid_pass = document.getElementById('password-up-invalid-span');
+        const invalid_pass = document.getElementById('password-up-invalid-span');
         invalid_pass.style.display = 'none';
-        var invalid_pass_empty = document.getElementById('password-empty-up-invalid-span');
+        const invalid_pass_empty = document.getElementById('password-empty-up-invalid-span');
         invalid_pass_empty.style.display = 'none';
 
-        var invalid_username = document.getElementById('username-up-invalid-span');
+        const invalid_username = document.getElementById('username-up-invalid-span');
         invalid_username.style.display = 'none';
-        var invalid_username_empty = document.getElementById('username-empty-up-invalid-span');
+        const invalid_username_empty = document.getElementById('username-empty-up-invalid-span');
         invalid_username_empty.style.display = 'none';
 
 
-        var invalid_email_empty = document.getElementById('email-empty-up-invalid-span');
-        var invalid_email = document.getElementById('email-up-invalid-span');
+        const invalid_email_empty = document.getElementById('email-empty-up-invalid-span');
+        const invalid_email = document.getElementById('email-up-invalid-span');
         invalid_email.style.display = 'none';
         invalid_email_empty.style.display = 'none';
 
-        var username = document.getElementsByName('sign-up-username').item(0).value;
-        var password = document.getElementsByName('sign-up-password').item(0).value;
-        var email = document.getElementsByName('sign-up-email').item(0).value;
-        console.log(username, password, email);
+        const username = document.getElementsByName('sign-up-username').item(0).value;
+        const password = document.getElementsByName('sign-up-password').item(0).value;
+        const email = document.getElementsByName('sign-up-email').item(0).value;
 
-        var ret = false;
+        let ret = false;
         if (!username  || username.length === 0) {
             invalid_username_empty.style.display = 'block';
             ret = true;
@@ -78,12 +77,12 @@ function validate_sign_up() {
         if (ret)
             return;
 
-        let user = {
+        const user = {
             username: username,
             email: email
         };
 
-        let response = await fetch('/check_user_is_valid', {
+        const response = await fetch('/check_user_is_valid', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -92,10 +91,9 @@ function validate_sign_up() {
             body: JSON.stringify(user)
         });
 
-        let result = await response.json();
-        console.log(result);
-        var is_valid_username = result['username'];
-        var is_valid_email = result['email'];
+        const result = await response.json();
+        const is_valid_username = result['username'];
+        const is_valid_email = result['email'];
 
 
         if (!is_valid_email) {
@@ -116,7 +114,6 @@ function validate_sign_up() {
         if (ret)
             return;
 
-        console.log('kek');
         document.getElementById('btn-sign-up-user').click();
 
     }
