@@ -45,15 +45,16 @@ function validateInputOnSignUp(
 ) {
     const input =  document.getElementsByName(inputName).item(0);
     const span = document.getElementById(spanId);
-
     const div = document.getElementById(divId);
 
     input.oninput = async function () {
         const val = this.value;
+
         span.style.opacity = '0';
+        input.classList.remove('valid-input-value');
+        input.classList.remove('invalid-input-value');
 
         if (lengthSpanText && val.length < 3) {
-            input.classList.remove('valid-input-value');
             input.classList.add('invalid-input-value');
             span.style.opacity = '1';
             span.innerText = lengthSpanText;
@@ -63,8 +64,6 @@ function validateInputOnSignUp(
         const spinner = document.getElementsByClassName('ispinner')[spinnerIndex];
         spinner.style.display = "block";
         div.classList.add('neg-margin');
-        this.classList.remove('invalid-input-value');
-        this.classList.remove('valid-input-value');
 
         const response = await fetch(url, {
             method: 'POST',
@@ -85,16 +84,12 @@ function validateInputOnSignUp(
                 span.innerText = invalidEmailText;
                 input.classList.add('invalid-input-value');
             } else {
-                if (invalidEmailText)
-                    span.style.opacity = '0';
-
                 if (valid) {
                     if (inputName.includes('email')) {
                         isEmailCorrect = true;
                     } else {
                         isUsernameCorrect = true;
                     }
-
                     input.classList.add('valid-input-value');
                     span.style.opacity = '0';
                 } else {
@@ -103,7 +98,7 @@ function validateInputOnSignUp(
                     } else {
                         isUsernameCorrect = false;
                     }
-                    input.classList.remove('valid-input-value');
+
                     input.classList.add('invalid-input-value');
                     span.style.opacity = '1';
                     span.innerText = errorText;
@@ -115,10 +110,8 @@ function validateInputOnSignUp(
 
             const btn = document.getElementById('btn-sign-up');
             btn.disabled = !(isEmailCorrect && isUsernameCorrect && passwordStrength(document.getElementsByName('sign-up-password').item(0).value) > 1);
-        }, 1000);
-
+        }, 10);
     }
-
 }
 
 validateInputOnSignUp(
@@ -194,9 +187,16 @@ function validatePasswordOnSignUp() {
         const password = this.value;
         const strength = passwordStrength(password);
 
+        inputPassword.classList.remove('valid-input-value');
+        inputPassword.classList.remove('invalid-input-value');
         passwordInvalidSpan.style.opacity = '0';
-        if (strength <= 1)
+
+        if (strength <= 1) {
             passwordInvalidSpan.style.opacity = '1';
+            inputPassword.classList.add('invalid-input-value');
+        } else {
+            inputPassword.classList.add('valid-input-value');
+        }
 
         for (let i = 0; i < indicators.length; i++) {
             for (const c in colorClasses) {
