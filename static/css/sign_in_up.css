@@ -14,7 +14,6 @@
     overflow: auto;
     text-align: center;
     transition: opacity 1s  ease-in-out;
-    /*text-align: center;*/
 }
 
 .sign_form input {
@@ -39,7 +38,7 @@
 }
 
 .sign_form .row {
-    margin-bottom: 26px;
+    margin-bottom: 10px;
 }
 
 .main-container .sign_form h2 {
@@ -54,17 +53,18 @@
     margin-bottom: 35px;
     width: 130px;
     height: 34px;
+    outline: none;
 }
 
 
 #username-in-invalid-span, #password-in-invalid-span,
 #no-such-user-span, #password-up-invalid-span, #username-up-invalid-span,
-#email-up-invalid-span, #password-empty-up-invalid-span, #username-empty-up-invalid-span,
-#email-empty-up-invalid-span, #email-up-not-email-span {
+#password-empty-up-invalid-span, #username-empty-up-invalid-span,
+#email-up-not-email-span, #email-up-invalid-span {
     color: #ff3b30;
-    display: none;
+    opacity: 0;
+    font-size: smaller;
 }
-
 
 .main-container {
     text-align: center;
@@ -76,11 +76,6 @@
 
 .main-container h2 {
     margin-bottom: 50px;
-}
-
-.switch {
-    /*border: solid;*/
-
 }
 
 .switch button {
@@ -120,11 +115,6 @@
     outline:none;
 
 }
-
-/*.btn2:active {*/
-/*    background-color: #007eff;*/
-/*    color: #fff;*/
-/*}*/
 
 
 .span-logo-text {
@@ -220,4 +210,48 @@
 
 .neg-margin {
     margin-top: -30px;
+}
+
+
+.indicator {
+    border: rgba(0, 0, 0, 0.20) solid 1px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+
+.indicator-row {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    margin-bottom: 0;
+    margin-top: 10px;
+    width: 20%;
+    margin-left: 40%;
+}
+
+.indicator-darkred {
+    background-color: #8b151d;
+}
+
+
+.indicator-red {
+    background-color: #ff3b30;
+}
+
+.indicator-orange {
+    background-color: #FF7A00;
+}
+
+.indicator-yellow {
+    background-color: #ffcc00;
+}
+
+.indicator-green {
+    background-color: #4cd964;
+}
+
+#btn-sign-up:disabled {
+    background-color: rgb(161, 161, 161);
 }

@@ -95,10 +95,9 @@
                                 <input placeholder="Username" name="sign-up-username" autocomplete="new-password">
                             </label>
 
-                            <div class="row" style="margin-bottom: 0px">
+                            <div class="row" style="margin-bottom: 5px">
                                 <div class="column-12">
-                                    <span id="username-empty-up-invalid-span">Username should contain at least 3 symbols</span>
-                                    <span id="username-up-invalid-span">User with such username already exists</span>
+                                    <span id="username-up-invalid-span">.</span>
                                 </div>
                                 <div>
 
@@ -125,12 +124,9 @@
                             <label>
                                 <input type="email" placeholder="Email" name="sign-up-email" autocomplete="new-password">
                             </label>
-                            <div class="row" style="margin-bottom: 0px">
+                            <div class="row" style="margin-bottom: 0">
                                 <div class="column-12">
-                                    <span id="email-empty-up-invalid-span">Email shouldn't be empty</span>
-                                    <span id="email-up-invalid-span">User with such email already exists</span>
-                                    <span id="email-up-not-email-span">This should be email address</span>
-
+                                    <span id="email-up-invalid-span">.</span>
                                 </div>
                             </div>
                         </div>
@@ -139,12 +135,18 @@
                         <div class="column-12">
                             <label>
                                 <input type="password" placeholder="Password" name="sign-up-password" autocomplete="new-password">
-                                <span id="password-empty-up-invalid-span">Password should't be empty</span>
-                                <span id="password-up-invalid-span">Password should contain at least 5 symbols</span>
                             </label>
+                            <div class="indicator-row">
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                            </div>
+                            <span id="password-up-invalid-span">You need more strengthen password</span>
                         </div>
                     </div>
-                    <button  type="button" class="btn-sign-in" id="btn-sign-up">
+                    <button  type="button" class="btn-sign-in" id="btn-sign-up" disabled>
                         sign up
                     </button>
                     <button id="btn-sign-up-user" style="display: none"></button>
