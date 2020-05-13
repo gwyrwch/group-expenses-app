@@ -8,6 +8,8 @@
       <title>Cashflow</title>
       <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
       <link rel="stylesheet" type="text/css" href="{% static "css/sign_in_up.css" %}">
+      <link rel="stylesheet" type="text/css" href="{%  static "css/ispinner.css" %}">
+
       <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -74,21 +76,63 @@
                         Create an account in <span class="span-logo-text">Cashflow</span>
                     </h2>
                     <div class="row">
-                        <div class="column-12">
+                        <div class="column-12" id="username-spinner">
+                            <span class="ispinner gray animating" style="display: none;">
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                            </span>
                             <label>
                                 <input placeholder="Username" name="sign-up-username" autocomplete="new-password">
-                                <span id="username-empty-up-invalid-span">Username shouldn't be empty</span>
-                                <span id="username-up-invalid-span">User with such username already exists</span>
                             </label>
+
+                            <div class="row" style="margin-bottom: 0px">
+                                <div class="column-12">
+                                    <span id="username-empty-up-invalid-span">Username should contain at least 3 symbols</span>
+                                    <span id="username-up-invalid-span">User with such username already exists</span>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="column-12">
+                        <div class="column-12" id="email-spinner">
+                            <span class="ispinner gray animating" style="display: none;">
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                            </span>
                             <label>
                                 <input type="email" placeholder="Email" name="sign-up-email" autocomplete="new-password">
-                                <span id="email-empty-up-invalid-span">Email shouldn't be empty</span>
-                                <span id="email-up-invalid-span">User with such email already exists</span>
                             </label>
+                            <div class="row" style="margin-bottom: 0px">
+                                <div class="column-12">
+                                    <span id="email-empty-up-invalid-span">Email shouldn't be empty</span>
+                                    <span id="email-up-invalid-span">User with such email already exists</span>
+                                    <span id="email-up-not-email-span">This should be email address</span>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

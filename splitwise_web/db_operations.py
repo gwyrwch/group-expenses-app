@@ -392,6 +392,22 @@ def check_if_user_is_valid(user):
     return ans
 
 
+def check_is_username_valid(username):
+    username = User.objects.filter(username=username).first()
+    if username:
+        return False
+
+    return True
+
+
+def check_is_email_valid(email):
+    email = User.objects.filter(email=email).first()
+    if email:
+        return False
+
+    return True
+
+
 def get_user_expenses_to_friends(id_user):
     id_friends = FriendShip.objects.filter(uid_1=id_user).values_list('uid_2')
 

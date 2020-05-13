@@ -3,6 +3,8 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -352,3 +354,21 @@ def is_password_valid(request):
         valid = False
 
     return JsonResponse({'valid':valid})
+
+
+@csrf_exempt
+def check_username_used(request):
+    return JsonResponse({'valid': check_is_username_valid(json.loads(request.body))})
+
+
+@csrf_exempt
+def check_email_used(request):
+    email = json.loads(request.body)
+    invalid = False
+    try:
+        validate_email(email)
+    except:
+        invalid = True
+
+    return JsonResponse({'valid':check_is_email_valid(email), 'incorrect_email': invalid})
+

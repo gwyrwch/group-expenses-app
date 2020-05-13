@@ -33,6 +33,94 @@ if ( window.history.replaceState ) {
 }
 
 
+function validateInputOnSignUp(inputName, takenSpanId, lengthSpanId, url, divId, spinnerIndex, invalidEmailSpanId=null) {
+    const input =  document.getElementsByName(inputName).item(0);
+    const takenSpan = document.getElementById(takenSpanId);
+    const lengthInvalidSpan = document.getElementById(lengthSpanId);
+    let invalidEmailSpan;
+    if (invalidEmailSpanId) {
+        invalidEmailSpan = document.getElementById(invalidEmailSpanId);
+    }
+
+    const div = document.getElementById(divId);
+    console.log(div);
+
+    input.oninput = async function () {
+        const val = this.value;
+        takenSpan.style.display = 'none';
+        lengthInvalidSpan.style.display = 'none';
+        if (invalidEmailSpan)
+            invalidEmailSpan.style.display = 'none';
+        if (val.length < 3) {
+            input.classList.remove('valid-input-value');
+            input.classList.add('invalid-input-value');
+            lengthInvalidSpan.style.display = 'block';
+        } else {
+            const spinner = document.getElementsByClassName('ispinner')[spinnerIndex];
+            spinner.style.display = "block";
+            div.classList.add('neg-margin');
+            this.classList.remove('invalid-input-value');
+            this.classList.remove('valid-input-value');
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(this.value)
+            });
+
+            setTimeout(async function () {
+                const result = await response.json();
+                const valid = result['valid'];
+                const incorrect_email = result['incorrect_email'];
+
+                if (invalidEmailSpan && incorrect_email) {
+                    invalidEmailSpan.style.display = 'block';
+                    input.classList.add('invalid-input-value');
+                } else {
+                    if (invalidEmailSpan)
+                        invalidEmailSpan.style.display = 'none';
+
+                    if (valid) {
+                        input.classList.add('valid-input-value');
+                        takenSpan.style.display = 'none';
+                    } else {
+                        input.classList.remove('valid-input-value');
+                        input.classList.add('invalid-input-value');
+                        takenSpan.style.display = 'block';
+                    }
+                }
+
+                spinner.style.display = "none";
+                div.classList.remove('neg-margin');
+            }, 1000);
+        }
+    }
+
+}
+
+validateInputOnSignUp(
+    'sign-up-username',
+    'username-up-invalid-span',
+    'username-empty-up-invalid-span',
+    '/check_username_used',
+    'username-spinner',
+    0
+);
+
+
+validateInputOnSignUp(
+    'sign-up-email',
+    'email-up-invalid-span',
+    'email-empty-up-invalid-span',
+    '/check_email_used',
+    'email-spinner',
+    1,
+    'email-up-not-email-span'
+);
+
 function validate_sign_up() {
     const btn = document.getElementById('btn-sign-up');
 
@@ -58,7 +146,7 @@ function validate_sign_up() {
         const email = document.getElementsByName('sign-up-email').item(0).value;
 
         let ret = false;
-        if (!username  || username.length === 0) {
+        if (!username  || username.length < 3) {
             invalid_username_empty.style.display = 'block';
             ret = true;
         }
@@ -68,7 +156,7 @@ function validate_sign_up() {
             ret = true;
         }
 
-        if (!email || email.length === 0) {
+        if (!email || email.length < 3) {
             invalid_email.style.display = 'block';
             ret = true;
         }

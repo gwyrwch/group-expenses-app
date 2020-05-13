@@ -18,5 +18,7 @@ urlpatterns = [
     path('get_expense_info', views.get_expense_info, name='get_expense_info'),
     path('settle_up', views.settle_up, name='settle_up'),
     path('check_user_is_valid', views.check_user_is_valid, name='check_user_is_valid'),
-    path('is_password_valid', views.is_password_valid, name='is_password_valid')
+    path('is_password_valid', views.is_password_valid, name='is_password_valid'),
+    path('check_username_used', views.check_username_used, name='check_username_used'),
+    path('check_email_used', views.check_email_used, name='check_email_used')
 ]
