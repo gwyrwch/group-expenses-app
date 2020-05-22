@@ -5,3 +5,4 @@ splitwise/__pycache__/
 splitwise_web/__pycache__/
 static/img/.DS_Store
 static/.DS_Store
+__pycache__/

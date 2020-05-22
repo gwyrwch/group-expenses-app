@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -65,16 +69,19 @@ main {
     display: inline-block;
     color: white;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .profile-nav img {
     width: 40px;
+    height: 40px;
     vertical-align: middle;
     border: #f1f1f1 solid 1px;
     border-radius: 30px;
     box-shadow: 0 1px 0 1px rgba(0,0,0,0.07);
 
 }
+
 
 .navbar-logo-text {
     text-transform: uppercase;
@@ -126,9 +133,9 @@ main {
     color: #007eff;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+/*.dropdown:hover .dropdown-content {*/
+/*    display: block;*/
+/*}*/
 
 .row {
     display: flex;
@@ -204,7 +211,7 @@ main {
 }
 
 .sidebar-container li {
-    padding: 5px;
+    padding: 5px 10px 5px 5px;
 }
 
 .row .header-sidebar .column-2 {
@@ -239,15 +246,13 @@ main {
 
 .group-header {
     display: inline-block;
-    width: 93%;
-    padding: 30px 2% 30px 5%;
+    width: 97%;
+    padding: 10px 2% 10px 2%;
 
 }
 
 .group-header h1 {
-    padding: 0px;
-    margin: 0;
-    /*display: inline-block;*/
+    padding: 0 0 0 3%;
 }
 
 .group-header button {
@@ -260,6 +265,7 @@ main {
     color: #007eff;
     background-color: #ffffff;
     outline: none;
+    margin-top: 20px;
 }
 
 .group-header .btn-add {
@@ -267,6 +273,7 @@ main {
     background-color: #007eff;
     border: none;
     outline: none;
+    margin-top: 20px;
 }
 
 .group-header .btn-add:hover {
@@ -278,8 +285,11 @@ main {
 }
 
 .group-header img {
-    width: 36px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
 }
+
 
 table {
     padding-top: 40px;
@@ -329,12 +339,13 @@ th {
 }
 
 .li-sidebar img {
-    width: 24px;
-    padding-right: 2%;
+    width: 30px;
+    height: 30px;
+    margin-right: 2%;
+    border: #f1f1f1 solid 1px;
+    border-radius: 50%;
+
     vertical-align: middle;
-    /*border: rgba(0,0,0,0.25) solid 1px;*/
-    /*padding: 2px;*/
-    /*border-radius: 30px;*/
 }
 
 .li-sidebar a {
@@ -379,7 +390,7 @@ footer {
 
 .footer {
     background-color: #f1f1f1;
-    /*height: 100px;*/
+    height: 170px;
     padding: 0 10%;
 }
 
@@ -563,12 +574,13 @@ input[type="date" i] {
     background-color: #007eff;
 }
 
-.column-6 #btn-add-image {
+.column-6 #expense-photo-btn {
     padding: 3% 7%;
     margin: auto 0;
     border-radius: 10px;
     height: 100%;
 }
+
 
 #who-settle-content {
     margin-right: 15%;
@@ -580,29 +592,26 @@ input[type="date" i] {
     text-decoration: none;
 }
 
-#who-settle-body {
-    padding: 0;
-}
-
 .modal-settle-li:hover {
     background-color: #fafafa;
     border-radius: 8px;
 }
 
-.modal-settle-li a:hover {
+.modal-settle-li span:hover {
     color: #007eff;
+    cursor: pointer;
 }
 
 .modal-settle-li img {
     width: 20px;
+    height: 20px;
     padding: 3%;
     vertical-align: middle;
 }
 
-.modal-settle-li a {
+.modal-settle-li span {
     text-decoration: none;
     vertical-align: middle;
-    display: block;
     color: rgba(72, 72, 72, 0.85);
     background-color: transparent;
     border-radius: 0;
@@ -617,18 +626,52 @@ input[type="date" i] {
 }
 
 /* The Close Button */
-.close {
+.modal .close, .modal .add_a_photo {
     color: black;
-    font-size: 30px;
-    font-weight: bold;
+    width: auto;
+    height: auto;
+    padding: 0;
     margin-top: auto;
+    background-color: transparent;
+    outline: none;
+
 }
 
-.close:hover {
+.add-icon, .settings {
+    border: none;
+    color: #007eff;
+    padding: 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.modal .add_a_photo {
+    padding-top: 8px;
+}
+
+
+.ul-sidebar .settings {
+    font-size: 20px;
+    padding-top: 6px;
+}
+
+.settings:hover {
+    color: #007eff;
+    cursor: pointer;
+    background-color: transparent;
+
+}
+
+.modal .close:hover, .modal .add_a_photo:hover {
   color: #007eff;
   text-decoration: none;
   cursor: pointer;
 }
+
+.add-icon:hover {
+    cursor: pointer;
+}
+
 
 .modal .modal-header {
     padding: 2px 16px;
@@ -650,7 +693,6 @@ input[type="date" i] {
 
 .modal-input {
     width: 100%;
-    /*padding: 3%;*/
     height: 45px;
     box-sizing: border-box;
     border: rgba(72, 72, 72, 0.85) 0.5px solid;
@@ -709,3 +751,176 @@ input[type="date" i] {
 }
 
 
+#notificationModal .modal-content {
+    width: 35%;
+}
+
+#notificationModal button {
+    width: 70px;
+    height: 34px;
+}
+
+#notificationModal button.button-accept {
+    background-color: #4cd964;
+}
+
+#notificationModal button.button-decline {
+    background-color: #ff3b30;
+}
+
+#notificationModal button.button-seen {
+    margin-top: 4%;
+}
+
+#notificationModal .column-8 {
+    padding-top: 2%;
+}
+
+#notificationModal .row {
+    margin-bottom: 2%;
+}
+
+#add-group-photo-col, .edit-group-photo-col {
+    text-align: right;
+    margin: 20px 0 10px 0;
+}
+
+#add-group-photo-col > i, .edit-group-photo-col > i {
+    position:relative;
+    top: calc(50% - 13px); /*todo remove 13px vertical centering*/
+}
+
+.settings-col {
+    text-align: right;
+}
+
+.settings-col > i {
+    position:relative;
+    top: calc(50% - 13px); /*todo remove 13px vertical centering*/
+}
+
+
+.li-group-members img {
+    width: 30px;
+    height: 30px;
+    margin-right: 2%;
+    border: #f1f1f1 solid 1px;
+    border-radius: 50%;
+    vertical-align: middle;
+
+}
+
+.li-group-members a {
+    text-decoration: none;
+    vertical-align: middle;
+    display: block;
+    color: rgba(72, 72, 72, 0.85);
+    padding: 5px 10px 5px 5px;
+}
+
+.ul-group-members {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.modal button.close-delete-member, .modal-invite-input + i.close-delete-new-member {
+    position:relative;
+    top: calc(50% - 11px);
+    font-size: 20px;
+    color:  #ff3b30;
+}
+
+.modal button.close-delete-member:hover, .modal-invite-input + i.close-delete-new-member:hover {
+    top: calc(50% - 13px);
+    font-size: 24px;
+    color:  #ff3b30;
+}
+
+.groupSettingsModal .row {
+    margin-bottom: 1%;
+}
+
+.modal .invite-group-member {
+    background-color: white;
+    color: #007eff;
+    border-color: #007eff;
+    padding-left: 0;
+}
+
+.modal .invite-group-member:hover {
+    cursor: pointer;
+}
+
+.modal-invite-input {
+    display: inline-block;
+    margin-top: 5px;
+    height: 30px;
+    box-sizing: border-box;
+    border: rgba(72, 72, 72, 0.85) 0.5px solid;
+    font-size: 14px;
+    padding-left: 10px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+}
+
+.card {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.28);
+    margin: 3%;
+    padding: 3% 2%;
+    border-radius: 4px;
+}
+
+
+#percent-invalid-span, #amount-invalid-span {
+    color: #ff3b30;
+    display: none;
+}
+
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /*grid-template-rows: 50px 50px;*/
+}
+
+
+.lent-borrowed-text {
+    font-size: 12px;
+    text-align: right;
+    color: #5b5b5b;
+}
+
+.lent-money-text {
+    color: #00D95F;
+    text-align: right;
+}
+
+.borrowed-money-text {
+    color: #FF7A00;
+    text-align: right;
+}
+
+.group-card-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.empty-expenses-text {
+    padding: 5%;
+}
+
+.show-group-name-on-card {
+    font-size: smaller;
+    color: #5b5b5b;
+}
+
+
+
+.expenses-card-selected {
+    box-shadow: 0 0 3px rgb(0, 126, 255);
+    outline: none;
+
+}

@@ -1,7 +1,9 @@
 .group-photo {
     width: 80px;
+    height: 80px;
     margin: 0 auto 4px;
     display: block;
+    border-radius: 50%;
 }
 
 .group-card-photo {
@@ -45,13 +47,6 @@
 .main-container  {
     padding-left: 0;
     padding-right: 0;
-}
-
-.card {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.28);
-    margin: 3%;
-    padding: 3% 2%;
-    border-radius: 4px;
 }
 
 .card .column-3 {
@@ -102,4 +97,39 @@
 
 .modal-content {
     width: 80%;
+}
+
+
+.btn-to-right p, .btn-to-right h3 {
+     text-align: left;
+}
+
+#who-settle-content, #percentage-content {
+    margin-right: auto;
+    opacity: 1;
+    width: 80%;
+}
+
+#who-settle-body, #split-body {
+    text-align: left;
+}
+
+#who-settle-body img, #split-body img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+
+.modal {
+    padding-top: 100px;
+}
+
+
+.dropdown-content {
+    width: 110px;
+}
+
+.footer {
+    height: auto;
 }

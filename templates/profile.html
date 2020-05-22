@@ -24,7 +24,7 @@
             </div>
             <div class="column-8"></div>
             <div class="column-2" style="text-align: right">
-                <a class="navbar-item navbar-logout" href="sign_in_up">
+                <a class="navbar-item navbar-logout" href="logout_view">
                     Log out
                 </a>
             </div>
@@ -32,32 +32,39 @@
     </header>
     <main>
         <div class="main-container">
-            <form class="profile-form">
+            <form class="profile-form" method="post" enctype="multipart/form-data" onkeydown="return event.key !== 'Enter';">
+                {% csrf_token %}
                 <div class="row">
                     <div class="column-3 profile-photo-col-3">
-                        <img class="profile-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                        <button class="profile-photo-button">UPLOAD PHOTO</button>
+                        {% if photo_path %}
+                            <img class="profile-photo" src="{{ photo_path }}" alt="..."/>
+                        {% else %}
+                            <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
+                        {% endif %}
+
+                        <button type="button" class="profile-photo-button">UPLOAD PHOTO</button>
+                        <input type="file" id="photo" name="photo" style="display: none;">
                     </div>
                     <div class="column-6">
                         <div class="row">
                             <div class="column-5">
-                                <input class="input-small-device" type="text" name="name" placeholder="Rita">
+                                <input class="input-small-device" type="text" value="{{ user.first_name }}" name="name" placeholder="Rita">
                             </div>
                             <div class="column-1">
 
                             </div>
                             <div class="column-6">
-                                <input class="input-small-device" type="text" name="surname" placeholder="Gagarina">
+                                <input class="input-small-device" type="text" value="{{ user.last_name }}" name="surname" placeholder="Gagarina">
                             </div>
                         </div>
                         <div class="row">
                             <div class="column-12">
-                                <input type="text" name="email" placeholder="gwyrwch@mail.ru">
+                                <input type="email" value="{{ user.email }}" name="email" placeholder="gwyrwch@mail.ru">
                             </div>
                         </div>
                         <div class="row">
                             <div class="column-12">
-                                <input type="text" name="password" placeholder="New password">
+                                <input type="password" name="password" placeholder="New password">
                             </div>
                         </div>
                         <div class="row">
@@ -73,12 +80,34 @@
                         </div>
                         <div class="row" style="display: inline;">
                             <div class="column-12 profile-submit-btn-parent">
-                                <button class="profile-submit-btn" type="submit">SAVE</button>
+                                <button id="saveChanges" type="button" class="profile-submit-btn">SAVE</button>
+                            </div>
+                            <div id="confirmModal" class="modal">
+                                <div class="modal-content" id="modal-content-kek">
+                                    <div class="row modal-header">
+                                        <div class="column-9">
+                                            <h3><strong>Confirm changes</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+                                            <button class="material-icons close">
+                                                close
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="modal-body">
+                                        <label>
+                                            <input placeholder="Current password" type="password" name="cur_password" class="modal-input">
+                                        </label>
+                                        <span id="password-invalid-span">Incorrect password</span>
+                                        <button type="button" class="profile-confirm-submit-btn">Save</button>
+                                        <button id="submit-btn" type="submit" style="display: none"></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-{#                <button class="profile-submit-btn" type="submit">SAVE</button>#}
             </form>
         </div>
     </main>
@@ -139,4 +168,8 @@
             </div>
     </footer>
 </body>
+<script src="{% static "js/profile.js" %}" type="module"></script>
+<script src="{% static "js/lib.js" %}" type="module"></script>
+<script>
+</script>
 </html>

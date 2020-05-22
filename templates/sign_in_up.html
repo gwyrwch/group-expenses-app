@@ -8,6 +8,8 @@
       <title>Cashflow</title>
       <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
       <link rel="stylesheet" type="text/css" href="{% static "css/sign_in_up.css" %}">
+      <link rel="stylesheet" type="text/css" href="{%  static "css/ispinner.css" %}">
+
       <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -39,56 +41,115 @@
                 </button>
             </div>
             <div class="sign_form_base">
-                <form class="sign_form" id="sign-in-form">
+                <form class="sign_form" id="sign-in-form" method="post" onkeydown="return event.key !== 'Enter';">
+                    {% csrf_token %}
                     <h2>
                         Sign in to <span class="span-logo-text">Cashflow</span>
                     </h2>
+                    {% if no_such_user  %}
+                        <span id="no-such-user-span" style="display: block">No such user in database</span>
+                    {% endif %}
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input placeholder="Username">
+                                <input name="sign-in-username" autocomplete="new-password" placeholder="Username">
+                                <span id="username-in-invalid-span">Username shouldn't be empty</span>
                             </label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input placeholder="Password">
+                                <input type="password" name="sign-in-password" autocomplete="new-password" placeholder="Password">
+                                <span id="password-in-invalid-span">Password shouldn't be empty</span>
                             </label>
                         </div>
                     </div>
-                    <button class="btn-sign-in">
+                    <button type="button" class="btn-sign-in" id="btn-sign-in">
                         sign in
                     </button>
+                    <button id="btn-sign-in-user" style="display: none"></button>
                 </form>
-                <form class="sign_form" id="sign-up-form">
+                <form class="sign_form" id="sign-up-form" method="post" onkeydown="return event.key !== 'Enter';">
+                    {% csrf_token %}
                     <h2>
                         Create an account in <span class="span-logo-text">Cashflow</span>
                     </h2>
                     <div class="row">
-                        <div class="column-12">
+                        <div class="column-12" id="username-spinner">
+                            <span class="ispinner gray animating" style="display: none;">
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                            </span>
                             <label>
-                                <input placeholder="Username">
+                                <input placeholder="Username" name="sign-up-username" autocomplete="new-password">
                             </label>
+
+                            <div class="row" style="margin-bottom: 5px">
+                                <div class="column-12">
+                                    <span id="username-up-invalid-span">.</span>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column-12" id="email-spinner">
+                            <span class="ispinner gray animating" style="display: none;">
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                                <span class="ispinner-blade"></span>
+                            </span>
+                            <label>
+                                <input type="email" placeholder="Email" name="sign-up-email" autocomplete="new-password">
+                            </label>
+                            <div class="row" style="margin-bottom: 0">
+                                <div class="column-12">
+                                    <span id="email-up-invalid-span">.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="column-12">
                             <label>
-                                <input placeholder="Email">
+                                <input type="password" placeholder="Password" name="sign-up-password" autocomplete="new-password">
                             </label>
+                            <div class="indicator-row">
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                            </div>
+                            <span id="password-up-invalid-span">You need more strengthen password</span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="column-12">
-                            <label>
-                                <input placeholder="Password">
-                            </label>
-                        </div>
-                    </div>
-                    <button class="btn-sign-in">
+                    <button  type="button" class="btn-sign-in" id="btn-sign-up" disabled>
                         sign up
                     </button>
+                    <button id="btn-sign-up-user" style="display: none"></button>
                 </form>
             </div>
         </div>
@@ -206,4 +267,7 @@
     }
 
 </script>
+<script src="{% static "js/sign_in_up.js" %}" type="module"></script>
+
+
 </html>

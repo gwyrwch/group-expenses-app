@@ -8,7 +8,7 @@
     <title>Cashflow</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main_mobile.css" %}">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar row">
             <div class="column-3">
-                <a class="navbar-item" href="/">
+                <a class="navbar-item" href="index_mobile">
                     <div class="text navbar-logo-text">
                         Cashflow
                     </div>
@@ -26,13 +26,13 @@
             <div class="column-2"></div>
             <div class="column-7" style="text-align: right">
                 <div class="dropdown">
-                    <a class="profile-nav" href="profile">
-                        gwyrwch
-                        <img src="{% static "img/Disc_Plain_orange.png" %}">
-                    </a>
+                    <span class="profile-nav">
+                        {{ user.username }}
+                        <img src="{{ user_photo_path }}">
+                    </span>
                     <div class="dropdown-content">
-                        <a href="profile">Your account</a>
-                        <a href="sign_in_up">Log out</a>
+                        <a href="profile">Profile</a>
+                        <a href="logout_view">Log out</a>
                     </div>
                 </div>
             </div>
@@ -41,10 +41,10 @@
     <main>
         <div class="main-container">
             <div class="row">
-                <img class="group-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                <img class="group-photo" src="{{ selected_group_photo }}"/>
             </div>
             <div class="group-name-text">
-                Flat 102
+                {{ selected_group_name}}
             </div>
             <div class="row row-btns">
                 <div class="column-3">
@@ -53,12 +53,12 @@
                     </button>
                 </div>
                 <div class="column-3">
-                    <button class="btn-groups btn-blue" onclick="location.href='friends_groups';">
+                    <button class="btn-groups btn-blue" onclick="location.href='friends_groups?friends=true';">
                         friends
                     </button>
                 </div>
                 <div class="column-3 btn-to-right">
-                    <button id="btn-settle-up" class="btn-set btn-white">
+                    <button id="btnSet" class="btn-set btn-white">
                         settle up
                     </button>
                     <div id="settleModal" class="modal">
@@ -68,29 +68,46 @@
                                     <h3><strong>Settle up</strong></h3>
                                 </div>
                                 <div class="column-2">
-                                    <i class="material-icons close">
+                                    <button class="material-icons close close-settle-modal">
                                         close
-                                    </i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="hr"></div>
                             <div class="modal-body">
                                 <div>
                                     <p style="align-content: center">
-                                        <button class='btn-modal-links' id='a-who-settle'>You</button> paid
-                                        <button class="btn-modal-links" id="a-who-recipient">you</button>.
+                                        <span class='btn-modal-links' id='a-who-settle'>You</span> paid
+                                        <span class="btn-modal-links" id="a-who-recipient">you</span>.
                                     </p>
                                 </div>
                                 <label>
-                                    <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
+                                    <input style="margin-top: 0" id="settle-expense-amount" readonly class="modal-input">
                                 </label>
-                                <button>Save</button>
+                                <button id="btn-settle-up-confirm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="noExpenseChooseModal" class="modal">
+                        <div class="modal-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>You should select some expense to settle up</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <button class="material-icons close close-no-expense-modal">
+                                        close
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="column-3 btn-to-right">
-                    <button id="btn-add-new" class="btn-set btn-blue">
+                    <button id="btnAdd" class="btn-set btn-blue">
                         add new
                     </button>
                     <div id="addModal" class="modal">
@@ -100,18 +117,21 @@
                                     <h3><strong>Add an expense</strong></h3>
                                 </div>
                                 <div class="column-2">
-                                    <i class="material-icons close">
+                                    <button class="material-icons close close-add-expense-modal">
                                         close
-                                    </i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="hr"></div>
                             <div class="modal-body">
                                 <label>
-                                    <input placeholder="Description" class="modal-input">
+                                    <input placeholder="Description" id="expense-description" class="modal-input">
                                 </label>
                                 <label>
-                                    <input placeholder="$0.00" class="modal-input">
+                                    <input placeholder="$0.00" id="expense-amount"
+                                           type="number" class="modal-input"
+                                    >
+                                    <span id="amount-invalid-span">Amount field cannot be empty</span>
                                 </label>
                                 <div>
                                     <p>Paid by
@@ -119,96 +139,162 @@
                                         <button id="a-split" class="btn-modal-links">equally</button>. (0.00$/person)
                                     </p>
                                 </div>
-                                <button>Save</button>
+                                <div class="row">
+                                    <div class="column-6">
+                                        <label for="btn-date-paid">
+                                            <input type="date" id="btn-date-paid" class="btn-modal-links">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column-6">
+                                        <button id="expense-photo-btn" class="btn-modal-links">add image</button>
+                                        <input type="file" accept="image/*" id="expense-photo-input-file" name="edit_group_photo" style="display: none;">
+                                    </div>
+                                </div>
+                                {% if selected_group_id %}
+                                    <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
+                                {% else %}
+                                    <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="who_paid" class="modal">
+                        <div class="modal-content modal-content-right" id="who-settle-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Choose payer</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <button class="material-icons close close-who-paid-modal">
+                                        close
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hr"></div>
+                            <div id="who-settle-body" class="modal-body modal-padding-to-zero">
+                                <div>
+                                    <ul class="modal-settle-ul">
+                                    {% if selected_group_id %}
+                                        {% for member in group_members|get_item:selected_group_id %}
+                                        <li id="{{ member|get_item:'username' }}"
+                                            class="modal-settle-li who-settle-li"
+                                        >
+                                            <img src="{{ member|get_item:'photo' }}">
+                                            <span>{{ member|get_item:'username'}}</span>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for member in group_members|get_item:selected_friend_id %}
+                                        <li id="{{ member|get_item:'username' }}"
+                                            class="modal-settle-li who-settle-li"
+                                        >
+                                            <img src="{{ member|get_item:'photo' }}">
+                                            <span>{{ member|get_item:'username'}}</span>
+                                        </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="split" class="modal">
+                        <div class="modal-content modal-content-right" id="percentage-content">
+                            <div class="row modal-header">
+                                <div class="column-10">
+                                    <h3><strong>Split by percentages</strong></h3>
+                                </div>
+                                <div class="column-2">
+                                    <button class="material-icons close close-split-modal" >
+                                        close
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hr"></div>
+                            <div id="split-body" class="modal-body modal-padding-to-zero">
+                                <div>
+                                    <ul class="modal-settle-ul">
+                                    {% if selected_group_id %}
+                                        {% for member in group_members|get_item:selected_group_id %}
+                                        <li class="modal-settle-li percentage">
+                                            <div class="row">
+                                                <div class="column-8">
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username' }}</span>
+                                                </div>
+                                                <div class="column-4 percent-border">
+                                                    <input class="input-percent-append">
+                                                    <span class="percent">%</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                    {% else %}
+                                        {% for member in group_members|get_item:selected_friend_id %}
+                                        <li class="modal-settle-li percentage">
+                                            <div class="row">
+                                                <div class="column-8">
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username' }}</span>
+                                                </div>
+                                                <div class="column-4 percent-border">
+                                                    <input class="input-percent-append">
+                                                    <span class="percent">%</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    </ul>
+                                    <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
+                                    <button id="save-percents-btn" type="button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        airport water
-                    </div>
-                    <div class="card-date">
-                        20.01.2020
-                    </div>
-                </div>
-                <div class="column-3">
+            {% for exp in group_expenses %}
+                <div>
+                    <div class="row card expenses-card" tabindex="0" id="{{ exp.id }}-card">
+                        <div class="column-2">
+                            <img class="group-card-photo" src="{{ exp.photo }}"/>
+                        </div>
+                        <div class="column-4">
+                            <div class="exp-name-text">
+                                {{ exp.description }}
+                            </div>
+                            <div class="card-date">
+                                {{ exp.date }}
+                            </div>
+                            <div class="show-group-name-on-card">
+                            {% if selected_friend_id and exp.group_name %}
+                                group: {{ exp.group_name }}
+                            {% endif %}
+                            </div>
+                        </div>
+                        <div class="column-2">
 
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">5BYN</div>
-                </div>
+                        </div>
+                        <div class="column-4">
+                            <div class="lent-borrowed-text">{{ exp.text }}</div>
+                            {% if exp.lent %}
+                                <div class="lent-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                            {% else %}
+                                <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                            {% endif %}
+                        </div>
 
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        Tenerife cafe
-                    </div>
-                    <div class="card-date">
-                        28.01.2020
-                    </div>
-                </div>
-                <div class="column-3">
-
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">72.00$</div>
-                </div>
-
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        restaurant Gvozd
-                    </div>
-                    <div class="card-date">
-                        20.02.2020
                     </div>
                 </div>
-                <div class="column-3">
-
+            {% empty %}
+                <div class="empty-expenses-text">
+                    No active expenses in this group yet.
                 </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you lent</div>
-                    <div class="lent-money-text">462.77$</div>
-                </div>
-
-            </div>
-            <div class="row card">
-                <div class="column-2">
-                    <img class="group-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-4">
-                    <div class="exp-name-text">
-                        petrol
-                    </div>
-                    <div class="card-date">
-                        03.03.2020
-                    </div>
-                </div>
-                <div class="column-3">
-
-                </div>
-                <div class="column-3">
-                    <div class="lent-borrowed-text">you borrowed</div>
-                    <div class="borrowed-money-text">223BYN</div>
-                </div>
-
-            </div>
+            {% endfor %}
         </div>
 
     </main>
@@ -235,7 +321,6 @@
             <div class="hr"></div>
             <div class="row">
                 <div class="column-9">
-
                 </div>
                 <div class="column-3 follow-us">
                     <ul>
@@ -268,6 +353,7 @@
     </footer>
 </body>
 
+<script src="{% static "js/index.js" %}" type="module"></script>
 <script src="{% static "js/index_mobile.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
 

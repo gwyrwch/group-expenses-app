@@ -24,13 +24,21 @@
             <div class="column-8"></div>
             <div class="column-2" style="text-align: right">
                 <div class="dropdown">
-                    <a class="profile-nav" href="profile">
-                        gwyrwch
-                        <img src="{% static "img/Disc_Plain_orange.png" %}">
-                    </a>
+                    <span class="profile-nav">
+                        {{ user.username }}
+                        {% if user_photo_path %}
+                            <img class="profile-photo" src="{{ user_photo_path }}" alt="..."/>
+                        {% else %}
+                            <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
+                        {% endif %}
+                    </span>
                     <div class="dropdown-content">
-                        <a href="profile">Your account</a>
-                        <a href="sign_in_up">Log out</a>
+                        <a href="profile">Profile</a>
+                        <a id="btnOpenNotifications">Notifications
+                            <span style="font-size: smaller">({{ notifications|length }})</span>
+                        </a>
+                        <a href="logout_view">Log out</a>
+
                     </div>
                 </div>
             </div>
@@ -46,72 +54,221 @@
                                 <h3>GROUPS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons">
+                                <button class="material-icons add-icon" id="btnCreateGroup">
                                     add
-                                </i>
+                                </button>
                             </div>
                         </div>
                         <div class="hr"></div>
+
+                        <input type="file" accept="image/*" id="edit_group_photo" name="edit_group_photo" style="display: none;">
+
                         <ul class="ul-sidebar">
-                            <li class="li-sidebar li-sidebar-hover" id="gr1">
-                                <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
-                                         alt=""
-                                    >
-                                    <span>group1</span>
-                                </a>
+                        {% for group in user_groups %}
+                            <li class="li-sidebar li-sidebar-hover" id="gr_{{ group.id }}">
+                                <div class="row">
+                                    <div class="column-10">
+                                        <a href="/?group={{ group.id }}">
+                                            <img src="{{ group.logo_file_path }}"
+                                                 alt=""
+                                            >
+                                            <span>{{ group.name }}</span>
+                                        </a>
+                                    </div>
+                                    <div class="column-2 settings-col">
+                                        <button class="material-icons settings btnEditGroup">
+                                            settings
+                                        </button>
+                                    </div>
+                                </div>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="gr2">
-                                <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
-                                         alt=""
-                                    >
-                                    <span>group2</span>
-                                </a>
+                            <div class="groupSettingsModal modal">
+                                <div class="modal-content">
+                                    <div class="row modal-header">
+                                        <div class="column-10">
+                                            <h3><strong>Group settings</strong></h3>
+                                        </div>
+                                        <div class="column-2">
+
+                                            <button class="close close-edit-group-modal material-icons">
+                                                close
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="column-11">
+                                                <label>
+                                                    <input value="{{ group.name }}" id="{{ group.id }}" placeholder="groupname" class="modal-input edit-group-name">
+                                                </label>
+                                            </div>
+                                            <div class="column-1 edit-group-photo-col">
+                                                <button class="material-icons add_a_photo edit-group-photo-button">
+                                                    add_a_photo
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <ul class="ul-group-members">
+                                            {% for member in group_members|get_item:group.id %}
+                                                <li class="li-group-members">
+                                                    <div class="row">
+                                                        <div class="column-5">
+                                                            <a href="#">
+                                                                <img class="sidebar-photo" src="{{ member|get_item:'photo' }}" alt="">
+                                                                <span>{{ member|get_item:'username' }}</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="column-1">
+                                                            <button class="material-icons close close-delete-member"
+                                                               id="delete-{{ member|get_item:'username'}}-{{ group.id }}"
+                                                            >
+                                                                close
+                                                            </button>
+                                                        </div>
+                                                        <div class="column-6"></div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <button type='button' class="invite-group-member">Invite member</button>
+                                        </div>
+                                        <div class="add-members-div">
+                                        </div>
+                                        <button class="edit-group-save" style="width: 130px;height: 34px;">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li class="li-sidebar li-sidebar-hover">
+                                <span style="color: rgba(72, 72, 72, 0.85);">No active groups</span>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="gr3">
-                                <a href="#">
-                                    <img src="{% static "img/group2.png" %}"
-                                         alt=""
-                                    >
-                                    <span>group3</span>
-                                </a>
-                            </li>
+                        {% endfor %}
                         </ul>
                     </div>
-
                     <div class="sidebar-container">
                         <div class="row header-sidebar">
                             <div class="column-10">
                                 <h3>FRIENDS</h3>
                             </div>
                             <div class="column-2">
-                                <i class="material-icons">
+                                <button class="material-icons add-icon" id="btnAddFriend">
                                     add
-                                </i>
+                                </button>
                             </div>
                         </div>
                         <div class="hr"></div>
                         <ul class="ul-sidebar">
-                            <li class="li-sidebar li-sidebar-hover" id="fr1">
-                                <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend1</span>
+                        {% for friend in user_friends %}
+                            <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
+                                <a href="/?friend={{ friend.id }}">
+                                    {% if friend.photo_path %}
+                                        <img src="{{ friend.photo_path }}" alt="">
+                                    {% else %}
+                                        <img class="sidebar-photo" src="{% static "img/profile_default.jpg" %}" alt="">
+                                    {% endif %}
+                                    <span>{{ friend.friend_username }}</span>
                                 </a>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="fr2">
-                                <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend2</span>
-                                </a>
+                        {% empty %}
+                            <li class="li-sidebar li-sidebar-hover">
+                                <span style="color: rgba(72, 72, 72, 0.85);">No friends in your list</span>
                             </li>
-                            <li class="li-sidebar li-sidebar-hover" id="fr3">
-                                <a href="#">
-                                    <img src="{% static "img/friend.png" %}" alt="">
-                                    <span>friend3</span>
-                                </a>
-                            </li>
+                        {% endfor %}
                         </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="addFriendModal" class="modal">
+                <div class="modal-content">
+                    <div class="row modal-header">
+                        <div class="column-10">
+                            <h3><strong>Enter your friend username</strong></h3>
+                        </div>
+                        <div class="column-2">
+                            <button class="material-icons close close-friend-modal">
+                                close
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="modal-body">
+                        <label>
+                            <input placeholder="username" class="modal-input" id="add-friend-username">
+                        </label>
+                        <button id="send-friend-invitation" style="width: 130px;height: 34px;">Send invitation</button>
+                    </div>
+                </div>
+            </div>
+            <div id="createGroupModal" class="modal">
+                <div class="modal-content">
+                    <div class="row modal-header">
+                        <div class="column-10">
+                            <h3><strong>Enter group name</strong></h3>
+                        </div>
+                        <div class="column-2">
+                            <button class="material-icons close close-create-group-modal">
+                                close
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="column-11">
+                                <label>
+                                    <input placeholder="groupname" class="modal-input" id="create-group-name">
+                                </label>
+                            </div>
+                            <div class="column-1" id="add-group-photo-col">
+                                <button class="material-icons add_a_photo" id="add-group-photo-button">
+                                    add_a_photo
+                                </button>
+                                <input type="file" id="add_group_photo" name="add_group_photo" style="display: none;">
+                            </div>
+                        </div>
+                        <button id="create-group" style="width: 130px;height: 34px;">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div id="notificationModal" class="modal">
+                <div class="modal-content">
+                    <div class="row modal-header">
+                        <div class="column-10">
+                            <h3><strong>Notifications</strong></h3>
+                        </div>
+                        <div class="column-2">
+                            <button class="material-icons close close-notification-modal">
+                                close
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="modal-body">
+                        {% for notification in notifications %}
+                            <div class="row">
+                            <div class="column-8">
+                                {{ notification.text }}
+                            </div>
+                            {% if notification.accept_decline %}
+                                <div class="column-4" style="text-align: right">
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-accept">Accept</button>
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-decline">Decline</button>
+                                </div>
+                            {% else %}
+                                <div class="column-2" style="text-align: right">
+                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-seen">Ok</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                            <div>No new notifications</div>
+                        {% endfor %}
+
+                        <button>Save</button>
                     </div>
                 </div>
             </div>
@@ -119,13 +276,12 @@
                 <div class="group-header">
                     <div class="row">
                         <div class="column-1">
-                            <img src="{% static "img/outline_group_black_48dp.png" %}" alt="">
+                            <img src="{{ selected_group_photo }}" class="main-group-photo" alt="">
                         </div>
                         <div class="column-6">
-                            <h1>GROUPNAME</h1>
+                            <h1>{{ selected_group_name }}</h1>
                         </div>
                         <div class="column-1">
-
                         </div>
                         <div class="column-2" style="margin-right: 10px;">
                             <button id="btnSet" class="btn-set">settle up</button>
@@ -136,138 +292,43 @@
                                             <h3><strong>Settle up</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <button class="material-icons close close-settle-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
                                     <div class="modal-body">
                                         <div>
                                             <p style="align-content: center">
-                                                <button class='btn-modal-links' id='a-who-settle'>You</button> paid
-                                                <button class="btn-modal-links" id="a-who-recipient">you</button>.
+                                                <span class='btn-modal-links' id='a-who-settle'>You</span> paid
+                                                <span class="btn-modal-links" id="a-who-recipient">you</span>.
+
                                             </p>
                                         </div>
                                         <label>
-                                            <input style="margin-top: 0" placeholder="$0.00" class="modal-input">
+                                            <input id="settle-expense-amount" style="margin-top: 0" readonly class="modal-input">
                                         </label>
-                                        <button>Save</button>
+                                        <button id="btn-settle-up-confirm">Save</button>
+
                                     </div>
                                 </div>
                             </div>
-                            <div id="who_settle" class="modal">
-                                <div class="modal-content modal-content-right" id="who-settle-content">
-                                    <div class="row modal-header">
-                                        <div class="column-10">
-                                            <h3><strong>Choose  payer</strong></h3>
-                                        </div>
-                                        <div class="column-2">
-                                            <i class="material-icons close">
-                                                close
-                                            </i>
-                                        </div>
+                        </div>
+                        <div id="noExpenseChooseModal" class="modal">
+                            <div class="modal-content">
+                                <div class="row modal-header">
+                                    <div class="column-10">
+                                        <h3><strong>You should select some expense to settle up</strong></h3>
                                     </div>
-                                    <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
-                                        <div>
-                                            <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class="column-2">
+                                        <button class="material-icons close close-no-expense-modal">
+                                            close
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="who_recipient" class="modal">
-                                <div class="modal-content modal-content-right" id="who-settle-content">
-                                    <div class="row modal-header">
-                                        <div class="column-10">
-                                            <h3><strong>Choose a recipient</strong></h3>
-                                        </div>
-                                        <div class="column-2">
-                                            <i class="material-icons close">
-                                                close
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
-                                        <div>
-                                            <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+
+                                <div class="modal-body">
                                 </div>
                             </div>
                         </div>
@@ -280,18 +341,21 @@
                                             <h3><strong>Add an expense</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <button class="material-icons close close-add-expense-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
                                     <div class="modal-body">
                                         <label>
-                                            <input placeholder="Description" class="modal-input">
+                                            <input placeholder="Description" id="expense-description" class="modal-input">
                                         </label>
                                         <label>
-                                            <input placeholder="$0.00" class="modal-input">
+                                            <input placeholder="$0.00" id="expense-amount"
+                                                   type="number" class="modal-input"
+                                            >
+                                            <span id="amount-invalid-span">Amount field cannot be empty</span>
                                         </label>
                                         <div>
                                             <p>Paid by
@@ -306,11 +370,16 @@
                                                 </label>
                                             </div>
                                             <div class="column-6">
-                                                <button id="btn-add-image" class="btn-modal-links">add image</button>
+                                                <button id="expense-photo-btn" class="btn-modal-links">add image</button>
+                                                <input type="file" accept="image/*" id="expense-photo-input-file" name="edit_group_photo" style="display: none;">
                                             </div>
 
                                         </div>
-                                        <button>Save</button>
+                                        {% if selected_group_id %}
+                                            <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
+                                        {% else %}
+                                            <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -321,51 +390,34 @@
                                             <h3><strong>Choose payer</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close">
+                                            <button class="material-icons close close-who-paid-modal">
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
+                                    <div id="who-settle-body" class="modal-body modal-padding-to-zero">
                                         <div>
                                             <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Rita Gagarina
-                                                    </a>
+                                            {% if selected_group_id %}
+                                                {% for member in group_members|get_item:selected_group_id %}
+                                                <li id="{{ member|get_item:'username' }}"
+                                                    class="modal-settle-li who-settle-li"
+                                                >
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username'}}</span>
                                                 </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Alex Vistyazh
-                                                    </a>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for member in group_members|get_item:selected_friend_id %}
+                                                <li id="{{ member|get_item:'username' }}"
+                                                    class="modal-settle-li who-settle-li"
+                                                >
+                                                    <img src="{{ member|get_item:'photo' }}">
+                                                    <span>{{ member|get_item:'username'}}</span>
                                                 </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Olga Sotnikova
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Polina Lazuk
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Arina Gusakovskaya
-                                                    </a>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <a>
-                                                        <img src="{% static "img/group2.png" %}">
-                                                        Liza Sokolovskaya
-                                                    </a>
-                                                </li>
+                                                {% endfor %}
+                                            {% endif %}
                                             </ul>
                                         </div>
                                     </div>
@@ -378,20 +430,22 @@
                                             <h3><strong>Split by percentages</strong></h3>
                                         </div>
                                         <div class="column-2">
-                                            <i class="material-icons close" >
+                                            <button class="material-icons close close-split-modal" >
                                                 close
-                                            </i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="hr"></div>
-                                    <div id="who-settle-body" class="modal-body">
+                                    <div id="split-body" class="modal-body modal-padding-to-zero">
                                         <div>
                                             <ul class="modal-settle-ul">
-                                                <li class="modal-settle-li">
+                                            {% if selected_group_id %}
+                                                {% for member in group_members|get_item:selected_group_id %}
+                                                <li class="modal-settle-li percentage">
                                                     <div class="row">
                                                         <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Rita Gagarina
+                                                            <img src="{{ member|get_item:'photo' }}">
+                                                            <span>{{ member|get_item:'username' }}</span>
                                                         </div>
                                                         <div class="column-4 percent-border">
                                                             <input class="input-percent-append">
@@ -399,11 +453,14 @@
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="modal-settle-li">
+                                            {% endfor %}
+                                            {% else %}
+                                                {% for member in group_members|get_item:selected_friend_id %}
+                                                <li class="modal-settle-li percentage">
                                                     <div class="row">
                                                         <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Alex Vistyazh
+                                                            <img src="{{ member|get_item:'photo' }}">
+                                                            <span>{{ member|get_item:'username' }}</span>
                                                         </div>
                                                         <div class="column-4 percent-border">
                                                             <input class="input-percent-append">
@@ -411,55 +468,12 @@
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Olga Sotnikova
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Polina Lazuk
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Arina Gusakovskaya
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="modal-settle-li">
-                                                    <div class="row">
-                                                        <div class="column-8">
-                                                            <img src="{% static "img/group2.png" %}">
-                                                            Liza Sokolovskaya
-                                                        </div>
-                                                        <div class="column-4 percent-border">
-                                                            <input class="input-percent-append">
-                                                            <span class="percent">%</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                {% endfor %}
+                                            {% endif %}
+
                                             </ul>
+                                            <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
+                                            <button id="save-percents-btn" type="button">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -467,493 +481,53 @@
                         </div>
                     </div>
                 </div>
-                <div class="group-table">
-                    <table>
-                        <tr>
-                            <th>Date</th>
-                            <th>Logo</th>
-                            <th>Name</th>
-                            <th>Who paid</th>
-                            <th>Amount</th>
-                            <th>Who lent</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-active">
-                                Active
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                21/06/2019
-                            </td>
-                            <td>
-                                <img src="{% static "img/group2.png" %}">
-                            </td>
-                            <td>
-                                ...
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $228
-                            </td>
-                            <td>
-                                <img src="{% static "img/friend.png" %}">
-                            </td>
-                            <td>
-                                $2
-                            </td>
-                            <td class="td-status-closed">
-                                closed
-                            </td>
-                        </tr>
-                    </table>
+                <div class="hr"></div>
+                <div class="card-container">
+                    {% for exp in group_expenses %}
+                        <div>
+                            <div class="row card expenses-card" tabindex="0" id="{{ exp.id }}-card">
+                                <div class="column-2">
+                                    <img class="group-card-photo" src="{{ exp.photo }}"/>
+                                </div>
+                                <div class="column-4">
+                                    <div class="exp-name-text">
+                                        {{ exp.description }}
+                                    </div>
+                                    <div class="card-date">
+                                        {{ exp.date }}
+                                    </div>
+                                    <div class="show-group-name-on-card">
+                                    {% if selected_friend_id and exp.group_name %}
+                                        group: {{ exp.group_name }}
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                <div class="column-2">
+
+                                </div>
+                                <div class="column-4">
+                                    <div class="lent-borrowed-text">{{ exp.text }}</div>
+                                    {% if exp.lent %}
+                                        <div class="lent-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                                    {% else %}
+                                        <div class="borrowed-money-text">{{ exp.amount }}{{ exp.currency }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="empty-expenses-text">
+                            No active expenses in this group yet.
+                        </div>
+                    {% endfor %}
+
                 </div>
             </div>
         </div>
     </main>
     <footer>
         <div class="footer">
+            {# fixme: #}
             <div class="row">
                 <div class="column-9 logo">
                     <img src="{% static "img/logo.png" %}" alt="">
@@ -1007,6 +581,12 @@
             </div>
     </footer>
 </body>
+<script>
+    if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        window.location.replace("index_mobile");
+    }
+</script>
 <script src="{% static "js/index.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
+
 </html>

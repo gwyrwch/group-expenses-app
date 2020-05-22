@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>friends/groups</title>
+    <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/friends_groups.css" %}">
@@ -26,12 +26,12 @@
             <div class="column-7" style="text-align: right">
                 <div class="dropdown">
                     <a class="profile-nav" href="profile">
-                        gwyrwch
-                        <img src="{% static "img/Disc_Plain_orange.png" %}">
+                        {{ user.username }}
+                        <img src="{{ user_photo_path }}">
                     </a>
                     <div class="dropdown-content">
                         <a href="profile">Your account</a>
-                        <a href="sign_in_up">Log out</a>
+                        <a href="logout_view">Log out</a>
                     </div>
                 </div>
             </div>
@@ -40,85 +40,30 @@
     <main>
         <div class="main-container">
             <div class="header-text">
-                Friends
+                {{ title }}
             </div>
             <div class="hr"></div>
-            <div class="row card">
+            {% for card in cards_content %}
+            <div class="row card friend-group-cards" data-type="{{ title }}" data-card="{{ card.id }}">
                 <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
+                    <img class="group-friend-card-photo" src="{{ card.photo }}"/>
                 </div>
                 <div class="column-5">
                     <div class="friend-group-name">
-                        James
+                        {{ card.name }}
                     </div>
                     <div class="owes-you-text">
-                        owes you 20$
+                        you lent {{ card.you_pay }}
                     </div>
                     <div class="you-owe-text">
-                        you owe 40$
+                        you owe {{ card.you_owe }}
                     </div>
                 </div>
                 <div class="column-4"></div>
-
             </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Rev Shown
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Will Kenny
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
-            <div class="row card">
-                <div class="column-3">
-                    <img class="group-friend-card-photo" src="{% static "img/Disc_Plain_orange.png" %}"/>
-                </div>
-                <div class="column-5">
-                    <div class="friend-group-name">
-                        Beth Williams
-                    </div>
-                    <div class="owes-you-text">
-                        owes you 20$
-                    </div>
-                    <div class="you-owe-text">
-                        you owe 40$
-                    </div>
-                </div>
-                <div class="column-4"></div>
-
-            </div>
-            <div class="hr"></div>
+            {% empty %}
+             <span>{{ title }} list is empty</span>
+            {% endfor %}
         </div>
     </main>
     <footer>
@@ -182,4 +127,5 @@
         window.location.replace("/");
     }
 </script>
+<script src="{% static "js/friends_groups_mobile.js" %}" type="module"></script>
 </html>

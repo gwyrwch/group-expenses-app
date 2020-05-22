@@ -1,5 +1,6 @@
 .profile-photo {
     width: 200px;
+    height: 200px;
     /*box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.03) inset;*/
     box-shadow: -1px -1px 3px rgba(0, 0, 0, 0.07), 1px 1px 3px rgba(0, 0, 0, 0.07);
     border-radius: 100px;
@@ -80,6 +81,21 @@
 }
 
 
+.profile-confirm-submit-btn {
+    font-size: 12px;
+    width: 50%;
+    height: 34px;
+    text-transform: uppercase;
+}
+
+.modal-content {
+    border-width: 1px;
+}
+
+.modal-header {
+    font-size: 14px;
+}
+
 @media only screen and (max-width: 600px) {
     .main-container {
         width: 100%;
@@ -103,6 +119,7 @@
 
     .profile-photo {
         width: 100px;
+        height: 100px;
         border-radius: 50px;
         margin: 0 auto;
         display: block;
@@ -114,6 +131,10 @@
 
     .profile-form .row {
         display: block;
+    }
+
+    .modal .row {
+        display: flex;
     }
 
     .profile-form input {
@@ -140,6 +161,11 @@
         margin-right: 0;
     }
 
+    .modal-content {
+        width: 95%;
+    }
+
+
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -164,6 +190,11 @@
     .navbar-logout {
         margin-right: 0;
     }
+
+
+    .modal-content {
+        width: 95%;
+    }
 }
 
 
@@ -183,4 +214,10 @@
     .navbar-logout {
         margin-right: 0;
     }
+}
+
+
+#password-invalid-span {
+    color: #ff3b30;
+    display: none;
 }
