@@ -392,7 +392,7 @@ def check_if_user_is_valid(user):
     return ans
 
 
-def check_is_username_valid(username):
+def check_no_such_username(username):
     username = User.objects.filter(username=username).first()
     if username:
         return False

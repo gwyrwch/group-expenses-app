@@ -2,33 +2,62 @@ function validate_sign_in() {
     const btn = document.getElementById('btn-sign-in');
 
     btn.onclick = async function () {
-        const invalid_pass = document.getElementById('password-in-invalid-span');
-        invalid_pass.style.opacity = '0';
+        const invalidPass = document.getElementById('password-in-invalid-span');
+        invalidPass.style.opacity = '0';
 
-        const invalid_username = document.getElementById('username-in-invalid-span');
-        invalid_username.style.opacity = '0';
+        const invalidUsername = document.getElementById('username-in-invalid-span');
+        invalidUsername.style.opacity = '0';
 
         const username = document.getElementsByName('sign-in-username').item(0).value;
         const password = document.getElementsByName('sign-in-password').item(0).value;
 
         let ret = false;
         if (!username  || username.length === 0) {
-            invalid_username.style.opacity = '1';
+            invalidUsername.innerText = 'Username shouldn\'t be empty';
+            invalidUsername.style.opacity = '1';
             ret = true;
         }
 
         if (!password || password.length === 0) {
-            invalid_pass.style.opacity = '1';
+            invalidPass.innerText = 'Password shouldn\'t be empty';
+            invalidPass.style.opacity = '1';
             ret = true;
         }
 
         if (ret)
             return false;
 
-        document.getElementById('btn-sign-in-user').click();
+        const auth = {
+            username: username,
+            password: password
+        };
+
+        const response = await fetch('/check_sign_in_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(auth)
+        });
+
+        let res = await response.json();
+        let rUsername = res['username'];
+        let rPassword = res['password'];
+        if (rUsername === 'invalid') {
+            invalidUsername.innerText = 'No such user in database';
+            invalidUsername.style.opacity = '1';
+        } else if (!rPassword) {
+            invalidPass.innerText = 'Invalid password';
+            invalidPass.style.opacity = '1';
+        } else {
+            document.getElementById('btn-sign-in-user').click();
+        }
 
     }
 }
+
+
 
 validate_sign_in();
 

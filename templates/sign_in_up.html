@@ -46,14 +46,11 @@
                     <h2>
                         Sign in to <span class="span-logo-text">Cashflow</span>
                     </h2>
-                    {% if no_such_user  %}
-                        <span id="no-such-user-span" style="display: block">No such user in database</span>
-                    {% endif %}
                     <div class="row">
                         <div class="column-12">
                             <label>
                                 <input name="sign-in-username" autocomplete="new-password" placeholder="Username">
-                                <span id="username-in-invalid-span">Username shouldn't be empty</span>
+                                <span id="username-in-invalid-span">.</span>
                             </label>
                         </div>
                     </div>

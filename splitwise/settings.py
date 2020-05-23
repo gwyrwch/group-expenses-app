@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'splitwise_web'
+    'splitwise_web',
+    'webpush',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+WEBPUSH_SETTINGS = {
+   "VAPID_PUBLIC_KEY": "BKsZLz57npuaMW-F08o9YPkZ5r43EFFO3y__iz5TceRZ61D87v--yemmpoqaqfOa_JRHjek-nEQskX4TBcfnCeU",
+   "VAPID_PRIVATE_KEY": "7lquqvICbKdQN7YIgHIb26oUc9gpgWU_XMj8EiYykn0",
+   "VAPID_ADMIN_EMAIL": "gwyrwch@gmail.com"
+}
 
 
 # Internationalization

@@ -10,6 +10,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.base import View
+from webpush import send_user_notification
 
 from splitwise_web.db_operations import *
 from splitwise_web.models import Notification
@@ -72,7 +73,9 @@ class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
             context = get_index_context(request)
-
+            print('kek')
+            # payload = {'head': 'Kek', 'body': 'Mda'}
+            # send_user_notification(user=request.user, payload=payload, ttl=1000)
             return render(request, 'index.html', context=context)
         else:
             return HttpResponseRedirect(redirect_to='/sign_in_up')
@@ -151,8 +154,7 @@ class SignInUP(View):
                 login(request, user)
                 return HttpResponseRedirect(redirect_to='/')
             else:
-                print('kek')
-                return render(request, 'sign_in_up.html', context={'no_such_user': True})
+                raise
 
         elif request.POST.get('sign-up-username'):
             username = request.POST.get('sign-up-username')
@@ -223,7 +225,16 @@ def send_friend_invitation(request):
             notification_type='friend_request'
         )
         notification.save()
-    except:
+
+        photo = find_user_photo(request.user.id)
+        payload = {
+            'head': 'friend request',
+            'body': '{} wants to be your friend'.format(request.user.username),
+            'icon': photo
+        }
+        send_user_notification(user=user_friend, payload=payload, ttl=1000)
+    except Exception as e:
+        print(e)
         pass
     return JsonResponse({})
 
@@ -346,6 +357,21 @@ def check_user_is_valid(request):
 
 
 @csrf_exempt
+def check_sign_in_user(request):
+    print('bla')
+    resp = json.loads(request.body)
+    ans = dict()
+    if check_no_such_username(resp.get('username')):
+        ans['username'] = 'invalid'
+        ans['password'] = None
+    else:
+        ans['username'] = 'valid'
+        ans['password'] = check_password(resp.get('password'), User.objects.filter(username=resp.get('username')).first().password)
+
+    return JsonResponse(ans)
+
+
+@csrf_exempt
 def is_password_valid(request):
     valid = None
     if check_password(json.loads(request.body)['pass'], request.user.password):
@@ -358,7 +384,7 @@ def is_password_valid(request):
 
 @csrf_exempt
 def check_username_used(request):
-    return JsonResponse({'valid': check_is_username_valid(json.loads(request.body))})
+    return JsonResponse({'valid': check_no_such_username(json.loads(request.body))})
 
 
 @csrf_exempt

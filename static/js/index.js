@@ -59,6 +59,8 @@ function sendInvitationToFriend() {
                 username: friendUsername
             };
 
+
+
             await fetch('/send_friend_invitation', {
                 method: 'POST',
                 headers: {
@@ -481,7 +483,6 @@ function setOnclickToExpensesCards() {
     const cards = document.getElementsByClassName('expenses-card');
 
     for (let i = 0; i < cards.length; i++) {
-        console.log('kek');
         cards[i].onfocus = function () {
             const selected = this.classList.contains('expenses-card-selected');
 
@@ -493,7 +494,6 @@ function setOnclickToExpensesCards() {
             if (!selected) {
                 this.classList.add('expenses-card-selected');
                 const selected1 = this.classList.contains('expenses-card-selected');
-                console.log('mda',selected1);
                 expenseId = this.id.split('-')[0];
             } else {
                 expenseId = null;
