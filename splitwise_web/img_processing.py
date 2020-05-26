@@ -4,8 +4,18 @@ from PIL import Image, ImageDraw
 
 def process_img(img_path, username):
     img = Image.open(img_path).convert("RGB")
-    np_image = np.array(img)
+
     height, width = img.size
+
+    min_size = min(height, width)
+
+    x = (height - min_size) // 2
+    y = (width - min_size) // 2
+
+    img = img.crop((x, y, x + min_size, y + min_size))
+
+    width, height = min_size, min_size
+    np_image = np.array(img)
 
     alpha = Image.new('L', img.size, 0)
     draw = ImageDraw.Draw(alpha)
@@ -20,4 +30,4 @@ def process_img(img_path, username):
 
 
 if __name__ == '__main__':
-    process_img('/Users/gwyrwch/PycharmProjects/splitwise/media/images/margarita_milinkevich.png', 'gwyrwch')
+    process_img('/Users/gwyrwch/PycharmProjects/splitwise/media/images/-tQK-RSMW_U.jpg', 'olya')

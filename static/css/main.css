@@ -1016,11 +1016,12 @@ button .done-icon {
 
 .dashboard:hover {
     cursor: pointer;
+    background-color: var(--href-bg-color);
+    border-radius: inherit;
 }
 
 .dashboard {
     text-decoration: none;
-    padding: 2px;
     margin: 0;
     color: var(--main-color);
     font-weight: bold;
