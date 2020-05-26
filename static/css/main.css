@@ -597,7 +597,7 @@ input[type="date" i] {
 }
 
 .modal-settle-li:hover {
-    background-color: #fafafa;
+    background-color: var(--href-bg-color);
     border-radius: 8px;
 }
 
@@ -737,10 +737,12 @@ input[type="date" i] {
     padding: 0 4px;
     border: 0;
     outline: none;
+    background-color: var(--background-color);
+    color: var(--main-text-color);
 }
 
 .percent-border {
-    border: 1px solid black;
+    border: 1px solid var(--main-text-color);
     margin: 2px;
     padding: 2px;
     border-radius: 3px;
@@ -900,7 +902,7 @@ input[type="date" i] {
 .lent-borrowed-text {
     font-size: 12px;
     text-align: right;
-    color: #5b5b5b;
+    color: var(--main-dark-color);
 }
 
 .lent-money-text {
@@ -931,7 +933,10 @@ input[type="date" i] {
 .expenses-card-selected {
     box-shadow: 0 0 3px var(--main-color);
     outline: none;
+}
 
+.card-date {
+    color: var(--main-dark-color);
 }
 
 #btnOpenNotifications, #btnChangeTheme {

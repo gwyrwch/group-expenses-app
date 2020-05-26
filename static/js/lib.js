@@ -39,3 +39,14 @@ export function setLogo(idLogo) {
         localStorage.setItem("logoSrc", document.getElementById(idLogo).src);
     }
 }
+
+export function setThemeColors() {
+    document.documentElement.style.setProperty("--main-color", localStorage.getItem("mainColor"));
+    document.documentElement.style.setProperty("--main-dark-color", localStorage.getItem("mainDarkColor"));
+    document.documentElement.style.setProperty("--main-light-color", localStorage.getItem("mainLightColor"));
+    document.documentElement.style.setProperty("--background-color", localStorage.getItem("backgroundColor"));
+    document.documentElement.style.setProperty("--main-text-color", localStorage.getItem("mainTextColor"));
+    document.documentElement.style.setProperty("--text-color", localStorage.getItem("textColor"));
+    document.documentElement.style.setProperty("--href-bg-color", localStorage.getItem("hrefBgColor"));
+    setLogo('logo');
+}

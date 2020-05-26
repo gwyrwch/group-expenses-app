@@ -1,6 +1,6 @@
 import { addModal } from './lib.js';
 import { getRandomInt } from './lib.js';
-import {setLogo} from "./lib.js";
+import {setThemeColors} from "./lib.js";
 
 
 function addNewExpenseModal() {
@@ -115,16 +115,8 @@ function setTempProperties(bgColor, textColor, mainTextColor, hrefBgColor, logoS
     document.getElementById('logo').src = logoSrc;
 }
 
+setThemeColors();
 function changeTheme() {
-    document.documentElement.style.setProperty("--main-color", localStorage.getItem("mainColor"));
-    document.documentElement.style.setProperty("--main-dark-color", localStorage.getItem("mainDarkColor"));
-    document.documentElement.style.setProperty("--main-light-color", localStorage.getItem("mainLightColor"));
-    document.documentElement.style.setProperty("--background-color", localStorage.getItem("backgroundColor"));
-    document.documentElement.style.setProperty("--main-text-color", localStorage.getItem("mainTextColor"));
-    document.documentElement.style.setProperty("--text-color", localStorage.getItem("textColor"));
-    document.documentElement.style.setProperty("--href-bg-color", localStorage.getItem("hrefBgColor"));
-    setLogo('logo');
-
     const mainInput = document.getElementById('mainColorInput');
     mainInput.value = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
 
