@@ -13,6 +13,7 @@ from django.views.generic.base import View
 from webpush import send_user_notification
 
 from splitwise_web.db_operations import *
+from splitwise_web.img_processing import process_img
 from splitwise_web.models import Notification
 
 from django.template.defaulttags import register
@@ -34,7 +35,6 @@ def get_index_context(request):
     selected_group_id = request.GET.get('group')
     selected_friend_id = request.GET.get('friend')
     dashboard = request.GET.get('dashboard')
-    print('kek', dashboard)
 
     if selected_group_id:
         selected_group_id = int(selected_group_id)
@@ -72,6 +72,10 @@ def get_index_context(request):
     else:
         context['group_members'] = get_user_friend_members(request.user.id, selected_friend_id)
 
+    notifications_modal = request.GET.get('notifications')
+    if notifications_modal:
+        context['show_notifications'] = True
+
     return context
 
 
@@ -79,6 +83,7 @@ class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
             context = get_index_context(request)
+
 
             return render(request, 'index.html', context=context)
         else:
@@ -136,7 +141,8 @@ class Profile(View):
 
         if photo:
             fs = handle_uploaded_file(photo)
-            add_or_update_photo(request.user.id, fs)
+            path = process_img(fs, request.user.username)
+            add_or_update_photo(request.user.id, path)
 
         return HttpResponseRedirect(redirect_to='/profile')
 
@@ -236,14 +242,13 @@ def send_friend_invitation(request):
         send_user_notification(user=user_friend, payload=payload, ttl=1000)
     except Exception as e:
         print(e)
-        pass
     return JsonResponse({})
 
 
 @csrf_exempt
 def reply_to_notification(request):
     r = json.loads(request.body)
-    # print(r)
+
     id_sender = int(r.get('n_sender_id'))
     accept = r.get('accept')
     notification_type = r.get('n_type')
@@ -255,6 +260,14 @@ def reply_to_notification(request):
         accept = None
 
     process_notification(id_sender, notification_type, accept, request.user.id)
+
+    photo = find_user_photo(request.user.id)
+    # payload = {
+    #     'head': 'friend reply',
+    #     'body': '{} {} you invitation'.format(request.user.username, 'accepted' if accept else 'declined'),
+    #     'icon': photo
+    # }
+    # send_user_notification(user=User.objects.filter(id=id_sender).first(), payload=payload, ttl=1000)
 
     return JsonResponse({})
 

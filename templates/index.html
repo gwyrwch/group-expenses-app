@@ -239,8 +239,13 @@
                     </div>
                 </div>
             </div>
+            {% if show_notifications %}
+            <div id="notificationModal" class="modal" style="display: block">
+                <div class="modal-content modal-content-activate">
+            {% else %}
             <div id="notificationModal" class="modal">
                 <div class="modal-content">
+            {% endif %}
                     <div class="row modal-header">
                         <div class="column-10">
                             <h3><strong>Notifications</strong></h3>

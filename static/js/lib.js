@@ -13,7 +13,9 @@ export function addModal(modal, openBtn, closeBtn) {
     closeBtn.onclick = function() {
         const content = modal.firstElementChild;
         content.classList.remove("modal-content-activate");
-
+        if (location.toString().endsWith('?notifications=1')) {
+            location.replace('/');
+        }
         modal.style.display = "none";
     };
 

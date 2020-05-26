@@ -1,28 +1,28 @@
 const registerSw = async () => {
     if ('serviceWorker' in navigator) {
         const reg = await navigator.serviceWorker.register('service.js');
-        initialiseState(reg)
-
+        initialiseState(reg);
     } else {
-        showNotAllowed("You can't send push notifications ☹️😢")
+        showNotAllowed("You can't send push notifications ️😢")
     }
 };
 
 const initialiseState = (reg) => {
     if (!reg.showNotification) {
-        showNotAllowed('Showing notifications isn\'t supported ☹️😢');
-        return
+        showNotAllowed('Showing notifications isn\'t supported in your browser 😢');
+        return;
     }
     if (Notification.permission === 'denied') {
-        showNotAllowed('You prevented us from showing notifications ☹️🤔');
-        return
+        showNotAllowed('You prevented us from showing notifications ️🤔');
+        return;
     }
     if (!'PushManager' in window) {
         showNotAllowed("Push isn't allowed in your browser 🤔");
-        return
+        return;
     }
+
     subscribe(reg);
-}
+};
 
 const showNotAllowed = (message) => {
     alert(message);
@@ -31,14 +31,12 @@ const showNotAllowed = (message) => {
 function urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
+        .replace(/-/g, '+')
         .replace(/_/g, '/');
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
-    const outputData = outputArray.map((output, index) => rawData.charCodeAt(index));
-
-    return outputData;
+    return outputArray.map((output, index) => rawData.charCodeAt(index));
 }
 
 const subscribe = async (reg) => {
@@ -79,7 +77,9 @@ const sendSubData = async (subscription) => {
     handleResponse(res);
 };
 
-const handleResponse = (res) => {
+const handleResponse = async (res) => {
+    if (res.status !== 201)
+        console.log("error in sw subscribing");
 };
 
 registerSw();

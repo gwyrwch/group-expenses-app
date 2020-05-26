@@ -771,6 +771,11 @@ input[type="date" i] {
     height: 34px;
 }
 
+#notificationModal .close {
+    width: auto;
+    height: auto;
+}
+
 #notificationModal button.button-accept {
     background-color: #4cd964;
 }
@@ -945,7 +950,7 @@ input[type="date" i] {
     cursor: pointer;
 }
 
-#themeModal .row {
+#themeModal .modal-body .row {
     margin-top: 4%;
 }
 
