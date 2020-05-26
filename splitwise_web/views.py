@@ -33,6 +33,8 @@ def get_index_context(request):
 
     selected_group_id = request.GET.get('group')
     selected_friend_id = request.GET.get('friend')
+    dashboard = request.GET.get('dashboard')
+    print('kek', dashboard)
 
     if selected_group_id:
         selected_group_id = int(selected_group_id)
@@ -48,7 +50,11 @@ def get_index_context(request):
         context['selected_friend_id'] = selected_friend_id
         context['selected_group_name'] = get_friend_name_by_id(selected_friend_id)
         context['selected_group_photo'] = find_user_photo(selected_friend_id)
-
+    elif dashboard:
+        context['group_expenses'] = get_user_dashboard_expenses(id_user=request.user.id)
+        # context['selected_friend_id'] = None
+        context['selected_group_name'] = 'DASHBOARD'
+        context['selected_group_photo'] = find_user_photo(request.user.id)
     else:
         context['group_expenses'], context['selected_group_id'] = \
             get_some_user_group_expenses(request.user.id)
@@ -73,9 +79,7 @@ class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
             context = get_index_context(request)
-            print('kek')
-            # payload = {'head': 'Kek', 'body': 'Mda'}
-            # send_user_notification(user=request.user, payload=payload, ttl=1000)
+
             return render(request, 'index.html', context=context)
         else:
             return HttpResponseRedirect(redirect_to='/sign_in_up')
@@ -110,10 +114,7 @@ class Profile(View):
         email = request.POST.get('email')
         currency = request.POST.get('currency')
 
-        # print(request.POST)
-
         if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
-            # todo: show error msg
             return HttpResponseRedirect('/profile')
 
         if len(name) > 0 and name != request.user.first_name:

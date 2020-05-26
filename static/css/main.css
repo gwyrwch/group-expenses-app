@@ -370,6 +370,8 @@ th {
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
+    height: 140px;
+    overflow: auto;
 }
 
 .td-status-active {
@@ -1001,4 +1003,21 @@ input[type="date" i] {
 button .done-icon {
     font-size: 12px;
     font-weight: bold;
+}
+
+.dashboard {
+
+}
+
+.dashboard:hover {
+    cursor: pointer;
+}
+
+.dashboard {
+    text-decoration: none;
+    padding: 2px;
+    margin: 0;
+    color: var(--main-color);
+    font-weight: bold;
+    font-size: 1.17em;
 }

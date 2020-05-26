@@ -149,6 +149,7 @@ function changeTheme() {
         const newLogoSrc = document.getElementById('logo').src.replace(/logowhite.png/gi, 'logo.png');
 
         setTempProperties(lightColor, lightColor, darkColor, hrefBgLight, newLogoSrc);
+
         localStorage.setItem("tempBackgroundColor", lightColor);
         localStorage.setItem("tempLogoSrc", newLogoSrc);
     };
@@ -178,12 +179,8 @@ function changeTheme() {
         localStorage.setItem("hrefBgColor", newBgColor === lightColor ? hrefBgLight : hrefBgDark);
         localStorage.setItem("logoSrc", localStorage.getItem("tempLogoSrc"));
 
-
         location.reload();
     };
-
-
-    // console.log('kek', );
 }
 
 
@@ -469,6 +466,10 @@ function addOnclickToPhotoButton(idAddPhotoBtn, fileInputId) {
 
 function createExpense() {
     const createBtn = document.getElementsByClassName('btn-create_expense').item(0);
+
+    if (!createBtn)
+        return;
+
     addOnclickToPhotoButton('expense-photo-btn', 'expense-photo-input-file');
 
     createBtn.onclick = async function () {
@@ -592,7 +593,6 @@ function setOnclickToExpensesCards() {
             const selected = this.classList.contains('expenses-card-selected');
 
             for (let j = 0; j < cards.length; j++) {
-                // console.log(selected);
                 cards[j].classList.remove('expenses-card-selected');
             }
 
@@ -610,6 +610,9 @@ setOnclickToExpensesCards();
 
 
 function addSettleUp(modal, openBtn, closeBtn) {
+    if (!openBtn)
+        return;
+
     const modalNoExp  = document.getElementById('noExpenseChooseModal');
 
     addModal(

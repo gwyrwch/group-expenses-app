@@ -1,5 +1,7 @@
-from django.contrib.auth.models import User
+from collections import defaultdict
 
+from django.contrib.auth.models import User
+from django.db.models import Sum
 from splitwise_web.models import *
 
 eps = 10 ** -6
@@ -216,6 +218,41 @@ def edit_group_db(id_group, pic, name, group_members):
             user_to_group.save()
 
 
+def get_user_dashboard_expenses(id_user):
+    expenses_owes = Expense.objects.filter(id_user_owes=id_user)
+    expenses_owed = Expense.objects.filter(id_user_paid=id_user) # мы заплатили
+
+    sums = defaultdict(int)
+    for ex in expenses_owes:
+        sums[ex.id_user_paid] -= ex.amount
+    for ex in expenses_owed:
+        sums[ex.id_user_owes] += ex.amount
+
+    res = []
+    for id_friend, total_sum in sums.items():
+        exp = dict()
+        exp['description'] = ''
+        exp['date'] = ''
+
+        if total_sum > 0:
+            exp['id_paid'] = id_user
+            exp['id_owed'] = id_friend
+            exp['amount'] = round(total_sum, 5)
+        else:
+            exp['id_paid'] = id_friend
+            exp['id_owed'] = id_user
+            exp['amount'] = -round(total_sum, 5)
+
+        exp['currency'] = '$'
+        exp['photo'] = find_user_photo(id_friend)
+        exp['id_group'] = None
+        exp['id'] = ''
+
+        res.append(exp)
+
+    return prepare_expenses(id_user, res)
+
+
 def get_group_expenses(id_group):
     expenses = Expense.objects.filter(id_group=id_group)
 
@@ -237,8 +274,7 @@ def get_group_expenses(id_group):
     return res
 
 
-def get_user_expenses_from_group(id_group, id_user):
-    expenses = get_group_expenses(id_group)
+def prepare_expenses(id_user, expenses):
     res = []
 
     for exp in expenses:
@@ -260,6 +296,11 @@ def get_user_expenses_from_group(id_group, id_user):
 
     return res
 
+
+
+def get_user_expenses_from_group(id_group, id_user):
+    expenses = get_group_expenses(id_group)
+    return prepare_expenses(id_user, expenses)
 
 def get_user_expenses_with_friend(id_friend, id_user):
     expenses = Expense.objects.filter(

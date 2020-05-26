@@ -51,6 +51,9 @@
             <div class="column-3">
                 <div class="sidebar">
                     <div class="sidebar-container">
+                        <a class="row header-sidebar dashboard" href="/?dashboard=1">DASHBOARD</a>
+                    </div>
+                    <div class="sidebar-container">
                         <div class="row header-sidebar">
                             <div class="column-10">
                                 <h3>GROUPS</h3>
@@ -326,7 +329,9 @@
                         <div class="column-1">
                         </div>
                         <div class="column-2" style="margin-right: 10px;">
-                            <button id="btnSet" class="btn-set">settle up</button>
+                            {% if selected_friend_id or selected_group_id %}
+                                <button id="btnSet" class="btn-set">settle up</button>
+                            {% endif %}
                             <div id="settleModal" class="modal">
                                 <div class="modal-content">
                                     <div class="row modal-header">
@@ -375,7 +380,9 @@
                             </div>
                         </div>
                         <div class="column-2">
+                            {% if selected_friend_id or selected_group_id %}
                             <button id="btnAdd" class="btn-add">add new</button>
+                            {% endif %}
                             <div id="addModal" class="modal">
                                 <div class="modal-content">
                                     <div class="row modal-header">
@@ -419,7 +426,7 @@
                                         </div>
                                         {% if selected_group_id %}
                                             <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
-                                        {% else %}
+                                        {% elif selected_friend_id %}
                                             <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
                                         {% endif %}
                                     </div>
@@ -450,7 +457,7 @@
                                                     <span>{{ member|get_item:'username'}}</span>
                                                 </li>
                                                 {% endfor %}
-                                            {% else %}
+                                            {% elif selected_friend_id %}
                                                 {% for member in group_members|get_item:selected_friend_id %}
                                                 <li id="{{ member|get_item:'username' }}"
                                                     class="modal-settle-li who-settle-li"
@@ -495,8 +502,8 @@
                                                         </div>
                                                     </div>
                                                 </li>
-                                            {% endfor %}
-                                            {% else %}
+                                                {% endfor %}
+                                            {% elif selected_friend_id %}
                                                 {% for member in group_members|get_item:selected_friend_id %}
                                                 <li class="modal-settle-li percentage">
                                                     <div class="row">
@@ -573,7 +580,6 @@
             <div class="row">
                 <div class="column-9 logo">
                     <img src="{% static "img/logo.png" %}" alt="" id="logo">
-{#                    todo: change logo when theming#}
                 </div>
                 <div class="column-3">
                     <div class="company">
@@ -632,6 +638,5 @@
 <script src="{% static "js/index.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
 <script src="{% static '/js/register_sw.js' %}"></script>
-
 
 </html>
