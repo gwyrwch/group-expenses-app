@@ -29,3 +29,13 @@ export function addModal(modal, openBtn, closeBtn) {
 export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
+
+export function setLogo(idLogo) {
+    const logoSrc = localStorage.getItem("logoSrc");
+    if (logoSrc) {
+        document.getElementById(idLogo).src = logoSrc;
+    } else {
+        localStorage.setItem("logoSrc", document.getElementById(idLogo).src);
+    }
+}

@@ -1,5 +1,6 @@
 import { addModal } from './lib.js';
 import { getRandomInt } from './lib.js';
+import {setLogo} from "./lib.js";
 
 
 function addNewExpenseModal() {
@@ -83,6 +84,116 @@ function addNotificationFriendModal() {
     const closeBtn = document.getElementsByClassName("close-notification-modal")[0];
     addModal(modal, openBtn, closeBtn);
 }
+
+
+function addThemeModal() {
+    const modal = document.getElementById("themeModal");
+    const openBtn = document.getElementById("btnChangeTheme");
+    const closeBtn = document.getElementsByClassName("close-theme-modal")[0];
+    addModal(modal, openBtn, closeBtn);
+}
+
+function adjust(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(
+        /../g, color => (
+            '0' + Math.min(
+                255, Math.max(0, parseInt(color, 16) + amount)
+            ).toString(16)).substr(-2)
+    );
+}
+
+function hexToRgba(hex, alpha = 1) {
+    const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function setTempProperties(bgColor, textColor, mainTextColor, hrefBgColor, logoSrc) {
+    document.documentElement.style.setProperty("--background-color", bgColor);
+    document.documentElement.style.setProperty("--text-color", textColor);
+    document.documentElement.style.setProperty("--main-text-color", mainTextColor);
+    document.documentElement.style.setProperty("--href-bg-color", hrefBgColor);
+    document.getElementById('logo').src = logoSrc;
+}
+
+function changeTheme() {
+    document.documentElement.style.setProperty("--main-color", localStorage.getItem("mainColor"));
+    document.documentElement.style.setProperty("--main-dark-color", localStorage.getItem("mainDarkColor"));
+    document.documentElement.style.setProperty("--main-light-color", localStorage.getItem("mainLightColor"));
+    document.documentElement.style.setProperty("--background-color", localStorage.getItem("backgroundColor"));
+    document.documentElement.style.setProperty("--main-text-color", localStorage.getItem("mainTextColor"));
+    document.documentElement.style.setProperty("--text-color", localStorage.getItem("textColor"));
+    document.documentElement.style.setProperty("--href-bg-color", localStorage.getItem("hrefBgColor"));
+    setLogo('logo');
+
+    const mainInput = document.getElementById('mainColorInput');
+    mainInput.value = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
+
+    mainInput.addEventListener("change", function() {
+        document.documentElement.style.setProperty("--main-color", this.value);
+        document.documentElement.style.setProperty("--main-dark-color", adjust(this.value, -20));
+        document.documentElement.style.setProperty("--main-light-color", hexToRgba(this.value, 0.2));
+        localStorage.setItem("tempMainColor", this.value);
+    });
+
+    const lightColor = '#ffffff';
+    const darkColor = '#272933';
+    const lightColorBtn = document.getElementById('lightThemeBtn');
+    const darkColorBtn = document.getElementById('darkThemeBtn');
+
+    const hrefBgLight = '#f1f1f1';
+    const hrefBgDark = '#1b1b1b';
+
+    const bgColor = localStorage.getItem('backgroundColor');
+    if (!bgColor || bgColor === lightColor) {
+        lightColorBtn.classList.add("selected-theme-btn");
+    } else {
+        darkColorBtn.classList.add("selected-theme-btn");
+    }
+
+    lightColorBtn.onclick = function () {
+        this.classList.add("selected-theme-btn");
+        darkColorBtn.classList.remove("selected-theme-btn");
+
+        const newLogoSrc = document.getElementById('logo').src.replace(/logowhite.png/gi, 'logo.png');
+
+        setTempProperties(lightColor, lightColor, darkColor, hrefBgLight, newLogoSrc);
+        localStorage.setItem("tempBackgroundColor", lightColor);
+        localStorage.setItem("tempLogoSrc", newLogoSrc);
+    };
+
+    darkColorBtn.onclick = function () {
+        this.classList.add("selected-theme-btn");
+        lightColorBtn.classList.remove("selected-theme-btn");
+        const newLogoSrc = document.getElementById('logo').src.replace(/logo.png/gi, 'logowhite.png');
+
+        setTempProperties(darkColor, darkColor, lightColor, hrefBgDark, newLogoSrc);
+
+        localStorage.setItem("tempBackgroundColor", darkColor);
+        localStorage.setItem("tempLogoSrc", newLogoSrc);
+    };
+
+
+    const saveBtn = document.getElementById('saveThemeBtn');
+    saveBtn.onclick = function () {
+        const newMainColor = localStorage.getItem("tempMainColor");
+        localStorage.setItem("mainColor", newMainColor);
+        localStorage.setItem("mainDarkColor", adjust(newMainColor, -20));
+        localStorage.setItem("mainLightColor", hexToRgba(newMainColor, 0.2));
+        const newBgColor = localStorage.getItem("tempBackgroundColor");
+        localStorage.setItem("textColor", newBgColor);
+        localStorage.setItem("backgroundColor", newBgColor);
+        localStorage.setItem("mainTextColor", newBgColor === lightColor ? darkColor : lightColor);
+        localStorage.setItem("hrefBgColor", newBgColor === lightColor ? hrefBgLight : hrefBgDark);
+        localStorage.setItem("logoSrc", localStorage.getItem("tempLogoSrc"));
+
+
+        location.reload();
+    };
+
+
+    // console.log('kek', );
+}
+
 
 function replyToNotificationRequest() {
     const acceptBtns = document.getElementsByClassName('button-accept');
@@ -207,6 +318,8 @@ if (!isMobile()) {
     addFindFriendModal();
     sendInvitationToFriend();
     addNotificationFriendModal();
+    addThemeModal();
+    changeTheme();
     replyToNotificationRequest();
     createGroupModal();
     createNewGroup();
@@ -584,7 +697,7 @@ function settleUp() {
             body: expenseId
         });
 
-        location.reload();
+         location.reload();
 
     }
 }

@@ -1,3 +1,5 @@
+import {setLogo} from "./lib.js";
+
 function validate_sign_in() {
     const btn = document.getElementById('btn-sign-in');
 
@@ -254,3 +256,16 @@ function sign_up_user() {
 }
 
 sign_up_user();
+
+
+function setColors() {
+    document.documentElement.style.setProperty("--main-color", localStorage.getItem("mainColor"));
+    document.documentElement.style.setProperty("--main-dark-color", localStorage.getItem("mainDarkColor"));
+    document.documentElement.style.setProperty("--main-light-color", localStorage.getItem("mainLightColor"));
+    document.documentElement.style.setProperty("--background-color", localStorage.getItem("backgroundColor"));
+    document.documentElement.style.setProperty("--main-text-color", localStorage.getItem("mainTextColor"));
+    document.documentElement.style.setProperty("--text-color", localStorage.getItem("textColor"));
+    document.documentElement.style.setProperty("--href-bg-color", localStorage.getItem("hrefBgColor"));
+    setLogo('logo');
+}
+setColors();
