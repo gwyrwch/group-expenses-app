@@ -122,6 +122,9 @@
         display: block;
     }
 
+    .profile-photo-col-3 {
+        position: initial;
+    }
     .profile-photo-button {
         display: none;
     }

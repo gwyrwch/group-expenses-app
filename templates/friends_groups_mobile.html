@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load i18n %}
+
 
 <html lang="en">
 <head>
@@ -32,8 +34,8 @@
                         <img src="{{ user_photo_path }}">
                     </a>
                     <div class="dropdown-content">
-                        <a href="profile">Your account</a>
-                        <a href="logout_view">Log out</a>
+                        <a href="profile">{% trans 'Your account' %}</a>
+                        <a href="logout_view">{% trans 'Log out' %}</a>
                     </div>
                 </div>
             </div>
@@ -55,16 +57,16 @@
                         {{ card.name }}
                     </div>
                     <div class="owes-you-text">
-                        you lent {{ card.you_pay }}
+                        {% trans 'you lent' %} {{ card.you_pay }}
                     </div>
                     <div class="you-owe-text">
-                        you owe {{ card.you_owe }}
+                        {% trans 'you owe' %} {{ card.you_owe }}
                     </div>
                 </div>
                 <div class="column-4"></div>
             </div>
             {% empty %}
-             <span>{{ title }} list is empty</span>
+             <span>{{ title }} {% trans 'list is empty' %}</span>
             {% endfor %}
         </div>
     </main>
@@ -77,13 +79,13 @@
                 <div class="column-3">
                     <div class="company">
                         <h4>
-                            Company
+                            {% trans 'Company' %}
                         </h4>
                         <a href="#">
-                            About us
+                            {% trans 'About us' %}
                         </a>
                         <a href="#">
-                            Contact us
+                            {% trans 'Contact us' %}
                         </a>
                     </div>
                 </div>

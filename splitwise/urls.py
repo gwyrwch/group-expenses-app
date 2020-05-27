@@ -18,6 +18,8 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.i18n import JavaScriptCatalog
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +27,11 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 i18_pat = i18n_patterns(
-    *(path('', include('splitwise_web.urls')),path('i18n/', include('django.conf.urls.i18n')),),prefix_default_language=False
+    *(
+        path('', include('splitwise_web.urls')),
+        path('i18n/', include('django.conf.urls.i18n')),),
+        path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog')
+    ,prefix_default_language=False
 )
 
 print(i18_pat)

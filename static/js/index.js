@@ -576,7 +576,7 @@ function savePercents() {
         }
 
         const equallyBtn = document.getElementById("a-split");
-        equallyBtn.innerText = 'by percentage';
+        equallyBtn.innerText = gettext('by percentage');
         const closeModalBtn = document.getElementsByClassName('close-split-modal').item(0);
         closeModalBtn.click();
     }
@@ -650,10 +650,16 @@ function addSettleUp(modal, openBtn, closeBtn) {
 
         const result = await response.json();
 
-        const pay = result['username_pay'];
-        const get = result['username_get'];
+        let pay = result['username_pay'];
+        let get = result['username_get'];
         const amount = result['amount'];
-        console.log(result);
+
+        if (pay === 'You') {
+            pay = gettext('You')
+        }
+        if (get === 'you') {
+            get = gettext('you')
+        }
 
         document.getElementById('a-who-settle').innerText = pay;
         document.getElementById('a-who-recipient').innerHTML = get;

@@ -393,13 +393,13 @@ def get_expense_info_by_id(id_exp, id_current_user):
 
     res = dict()
     if exp.id_user_owes == id_current_user:
-        res['username_pay'] = _('You pay')
+        res['username_pay'] = 'You'
 
     else:
         res['username_pay'] = User.objects.filter(id=exp.id_user_owes).get().username
 
     if exp.id_user_paid == id_current_user:
-        res['username_get'] = _('to you')
+        res['username_get'] = 'you'
     else:
         res['username_get'] = User.objects.filter(id=exp.id_user_paid).get().username
     res['amount'] = str(round(exp.amount, 5)) + exp.currency
@@ -471,8 +471,8 @@ def get_user_expenses_to_friends(id_user):
                 else:
                     you_owe += round(exp['amount'], 5)
 
-            ans['you_pay'] = str(you_pay) + currency
-            ans['you_owe'] = str(you_owe) + currency
+            ans['you_pay'] = str(round(you_pay, 5)) + currency
+            ans['you_owe'] = str(round(you_owe, 5)) + currency
 
         else:
             ans['you_pay'] = '0$'
@@ -526,3 +526,22 @@ def get_user_expenses_to_groups(id_user):
         expenses.append(ans)
 
     return expenses
+
+
+def update_or_set_lang_user(id_user, lang_code):
+    language = UserLang.objects.filter(id_user=id_user)
+
+    if not len(language):
+        lang = UserLang(id_user=id_user, lang=lang_code)
+        lang.save()
+    else:
+        lang = language.get()
+        lang.lang = lang_code
+        lang.save()
+
+
+def get_user_lang(id_user):
+    try:
+        return UserLang.objects.filter(id_user=id_user).get().lang
+    except Exception as e:
+        return 'en-us'

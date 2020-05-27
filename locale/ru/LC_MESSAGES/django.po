@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 14:38+0000\n"
+"POT-Creation-Date: 2020-05-27 15:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,7 @@ msgid "was declined"
 msgstr "был отклонен"
 
 #: splitwise_web/db_operations.py:279 splitwise_web/db_operations.py:325
+#: templates/friends_groups_mobile.html:60
 msgid "you lent"
 msgstr "Ты одолжил(а)"
 
@@ -48,15 +49,49 @@ msgstr "одолжил(а) тебе"
 msgid "GROUP NAME"
 msgstr "НАЗВАНИЕ ГРУППЫ"
 
-#: splitwise_web/db_operations.py:396
-msgid "You pay"
-msgstr "Ты"
+#: splitwise_web/views.py:206
+msgid "Friends"
+msgstr "Друзья"
 
-#: splitwise_web/db_operations.py:402
-msgid "to you"
-msgstr "тебе"
+#: splitwise_web/views.py:209
+#, fuzzy
+#| msgid "groups"
+msgid "Groups"
+msgstr "группы"
 
-#: templates/index.html:39
+#: templates/friends_groups_mobile.html:37
+msgid "Your account"
+msgstr "Профиль"
+
+#: templates/friends_groups_mobile.html:38 templates/index.html:44
+#: templates/index_mobile.html:38 templates/profile.html:29
+msgid "Log out"
+msgstr "Выйти"
+
+#: templates/friends_groups_mobile.html:63
+msgid "you owe"
+msgstr "Ты должен(на)"
+
+#: templates/friends_groups_mobile.html:69
+msgid "list is empty"
+msgstr "список пуст"
+
+#: templates/friends_groups_mobile.html:82 templates/index.html:610
+#: templates/index_mobile.html:321 templates/profile.html:139
+msgid "Company"
+msgstr "Компания"
+
+#: templates/friends_groups_mobile.html:85 templates/index.html:613
+#: templates/index_mobile.html:324 templates/profile.html:142
+msgid "About us"
+msgstr "О нас"
+
+#: templates/friends_groups_mobile.html:88 templates/index.html:616
+#: templates/index_mobile.html:327 templates/profile.html:145
+msgid "Contact us"
+msgstr "Контакты"
+
+#: templates/index.html:39 templates/index_mobile.html:37
 msgid "Profile"
 msgstr "Профиль"
 
@@ -67,10 +102,6 @@ msgstr "Уведомления"
 #: templates/index.html:43
 msgid "Appearance"
 msgstr "Тема"
-
-#: templates/index.html:44 templates/profile.html:29
-msgid "Log out"
-msgstr "Выйти"
 
 #: templates/index.html:61
 msgid "GROUPS"
@@ -86,7 +117,9 @@ msgstr "Пригласить друга"
 
 #: templates/index.html:148 templates/index.html:240 templates/index.html:330
 #: templates/index.html:373 templates/index.html:447 templates/index.html:452
-#: templates/index.html:548 templates/profile.html:119
+#: templates/index.html:548 templates/index_mobile.html:91
+#: templates/index_mobile.html:163 templates/index_mobile.html:168
+#: templates/index_mobile.html:264 templates/profile.html:119
 msgid "Save"
 msgstr "Сохранить"
 
@@ -146,31 +179,31 @@ msgstr "Цвет фона"
 msgid "settle up"
 msgstr "рассчитаться"
 
-#: templates/index.html:353
+#: templates/index.html:353 templates/index_mobile.html:71
 msgid "Settle up"
 msgstr "Рассчитаться"
 
-#: templates/index.html:365
+#: templates/index.html:365 templates/index_mobile.html:83
 msgid "You"
 msgstr "Ты"
 
-#: templates/index.html:366
+#: templates/index.html:366 templates/index_mobile.html:84
 msgid "paid"
 msgstr "заплатил(а)"
 
-#: templates/index.html:367
+#: templates/index.html:367 templates/index_mobile.html:85
 msgid "you"
 msgstr "тебе"
 
-#: templates/index.html:383
+#: templates/index.html:383 templates/index_mobile.html:99
 msgid "You should select some expense to settle up"
 msgstr "Выберите расход, чтобы рассчитаться"
 
-#: templates/index.html:398
+#: templates/index.html:398 templates/index_mobile.html:115
 msgid "add new"
 msgstr "добавить"
 
-#: templates/index.html:404
+#: templates/index.html:404 templates/index_mobile.html:121
 msgid "Add an expense"
 msgstr "Добавить расход"
 
@@ -178,58 +211,62 @@ msgstr "Добавить расход"
 msgid "Description"
 msgstr "Описание"
 
-#: templates/index.html:421
+#: templates/index.html:421 templates/index_mobile.html:138
 msgid "Amount field cannot be empty"
 msgstr "Сумма не может быть пустой"
 
-#: templates/index.html:424
+#: templates/index.html:424 templates/index_mobile.html:141
 msgid "Paid by"
 msgstr "Заплачено"
 
-#: templates/index.html:425
+#: templates/index.html:425 templates/index_mobile.html:142
 msgid "you_whom"
 msgstr "тобой"
 
-#: templates/index.html:426
+#: templates/index.html:426 templates/index_mobile.html:143
 msgid "and split"
 msgstr "и разделено"
 
-#: templates/index.html:427
+#: templates/index.html:427 templates/index_mobile.html:144
 msgid "equally"
 msgstr "поровну"
 
-#: templates/index.html:437
+#: templates/index.html:437 templates/index_mobile.html:156
 msgid "add image"
 msgstr "фото"
 
-#: templates/index.html:462
+#: templates/index.html:462 templates/index_mobile.html:178
 msgid "Choose payer"
 msgstr "Выбрать плательщика"
 
-#: templates/index.html:502
+#: templates/index.html:502 templates/index_mobile.html:218
 msgid "Split by percentages"
 msgstr "Разделить по процентам"
 
-#: templates/index.html:547
+#: templates/index.html:547 templates/index_mobile.html:263
 #, python-format
 msgid "Sum should be equal to 100%%"
 msgstr "Сумма должна быть 100%%"
 
-#: templates/index.html:592
+#: templates/index.html:573 templates/index_mobile.html:286
+msgid "group"
+msgstr "группа"
+
+#: templates/index.html:592 templates/index_mobile.html:306
 msgid "No active expenses in this group yet."
 msgstr "Нет активных расходов в этой группе"
 
-#: templates/index.html:610 templates/profile.html:139
-msgid "Company"
-msgstr "Компания"
+#: templates/index_mobile.html:55
+msgid "groups"
+msgstr "группы"
 
-#: templates/index.html:613 templates/profile.html:142
-msgid "About us"
-msgstr "О нас"
+#: templates/index_mobile.html:60
+msgid "friends"
+msgstr "друзья"
 
-#: templates/index.html:616 templates/profile.html:145
-msgid "Contact us"
-msgstr "Контакты"
+#: templates/index_mobile.html:65
+msgid "settle up mobile"
+msgstr "рассчёт"
 
 #: templates/profile.html:46
 msgid "UPLOAD PHOTO"
@@ -254,6 +291,10 @@ msgstr "СОХРАНИТЬ"
 #: templates/profile.html:105
 msgid "Confirm changes"
 msgstr "Подтвердить изменения"
+
+#: templates/profile.html:116
+msgid "Current password"
+msgstr "Текущий пароль"
 
 #: templates/profile.html:118
 msgid "Incorrect password"

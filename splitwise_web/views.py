@@ -2,25 +2,19 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.utils.translation import check_for_language
+from django.template.defaulttags import register
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
-
 from django.views.generic.base import View
 from django.views.i18n import set_language
 from webpush import send_user_notification
-from django.utils import translation
-
 
 from splitwise_web.db_operations import *
 from splitwise_web.img_processing import process_img
 from splitwise_web.models import Notification
-
-from django.template.defaulttags import register
 
 
 @register.filter
@@ -124,6 +118,7 @@ class Profile(View):
         lang_code = request.POST.get('language')
 
         print(lang_code)
+        update_or_set_lang_user(request.user.id, lang_code)
 
         if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
             return HttpResponseRedirect('/profile')
@@ -152,7 +147,7 @@ class Profile(View):
 
         resp = set_language(request)
         return resp
-        return HttpResponseRedirect(redirect_to='/profile')
+        # return HttpResponseRedirect(redirect_to='/profile')
 
 
 class SignInUP(View):
@@ -167,7 +162,7 @@ class SignInUP(View):
 
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(redirect_to='/')
+                return HttpResponseRedirect(redirect_to='/ru' if get_user_lang(user.id) == 'ru' else '/')
             else:
                 raise
 
@@ -176,8 +171,8 @@ class SignInUP(View):
             password = request.POST.get('sign-up-password')
             email = request.POST.get('sign-up-email')
             user = User.objects.create_user(username, password=password, email=email)
-            # print(user)
-
+            update_or_set_lang_user(user.id, 'en-us')
+            print(get_user_lang(user.id))
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -209,10 +204,10 @@ class FriendsGroupsMobile(View):
             context['user_photo_path'] = find_user_photo(request.user.id)
 
             if request.GET.get('friends'):
-                context['title'] = 'Friends'
+                context['title'] = _('Friends')
                 context['cards_content'] = get_user_expenses_to_friends(request.user.id)
             else:
-                context['title'] = 'Groups'
+                context['title'] = _('Groups')
                 context['cards_content'] = get_user_expenses_to_groups(request.user.id)
 
             return render(request, 'friends_groups_mobile.html', context=context)
@@ -321,7 +316,6 @@ def delete_member_from_group(request):
 
 @csrf_exempt
 def create_new_expense(request):
-    # print(get_current_language())
     id_group = request.POST.get('id_group')
     amount = float(request.POST.get('amount'))
     date = request.POST.get('date')

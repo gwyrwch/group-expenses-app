@@ -570,7 +570,7 @@
                                     </div>
                                     <div class="show-group-name-on-card">
                                     {% if selected_friend_id and exp.group_name %}
-                                        group: {{ exp.group_name }}
+                                        {% trans 'group' %}: {{ exp.group_name }}
                                     {% endif %}
                                     </div>
                                 </div>
@@ -657,6 +657,7 @@
         window.location.replace("index_mobile");
     }
 </script>
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 <script src="{% static "js/index.js" %}" type="module"></script>
 <script src="{% static "js/lib.js" %}" type="module"></script>
 <script src="{% static '/js/register_sw.js' %}"></script>
