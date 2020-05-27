@@ -1,8 +1,10 @@
 from collections import defaultdict
+from time import strftime
 
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from splitwise_web.models import *
+from django.utils.translation import to_locale, get_language
 
 eps = 10 ** -6
 
@@ -254,7 +256,13 @@ def get_group_expenses(id_group):
     for expense in expenses:
         exp = dict()
         exp['description'] = expense.description
-        exp['date'] = expense.date
+
+        if to_locale(get_language()) == 'ru':
+            exp['date'] = strftime("%d.%m.%Y")
+        else:
+            exp['date'] = expense.date
+        print(exp['date'])
+
         exp['id_paid'] = expense.id_user_paid
         exp['id_owed'] = expense.id_user_owes
         exp['amount'] = round(expense.amount, 5)

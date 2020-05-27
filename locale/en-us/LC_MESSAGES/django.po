@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 15:37+0000\n"
+"POT-Creation-Date: 2020-05-27 16:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,44 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: splitwise_web/db_operations.py:21
+#: splitwise_web/db_operations.py:23
 msgid "New friend request from"
 msgstr "New friend request from"
 
-#: splitwise_web/db_operations.py:25 splitwise_web/db_operations.py:29
+#: splitwise_web/db_operations.py:27 splitwise_web/db_operations.py:31
 msgid "Your friend request to"
 msgstr "Your friend request to"
 
-#: splitwise_web/db_operations.py:25
+#: splitwise_web/db_operations.py:27
 msgid "was accepted"
 msgstr "was accepted"
 
-#: splitwise_web/db_operations.py:29
+#: splitwise_web/db_operations.py:31
 msgid "was declined"
 msgstr "was declined"
 
-#: splitwise_web/db_operations.py:279 splitwise_web/db_operations.py:325
+#: splitwise_web/db_operations.py:287 splitwise_web/db_operations.py:333
 #: templates/friends_groups_mobile.html:60
 msgid "you lent"
 msgstr "you lent"
 
-#: splitwise_web/db_operations.py:283 splitwise_web/db_operations.py:329
+#: splitwise_web/db_operations.py:291 splitwise_web/db_operations.py:337
 msgid "lent you"
 msgstr "lent you"
 
-#: splitwise_web/db_operations.py:344
+#: splitwise_web/db_operations.py:352
 msgid "GROUP NAME"
 msgstr "GROUP NAME"
 
-#: splitwise_web/views.py:206
+#: splitwise_web/views.py:54 templates/index.html:56
+msgid "DASHBOARD"
+msgstr "DASHBOARD"
+
+#: splitwise_web/views.py:207
 msgid "Friends"
 msgstr "Friends"
 
-#: splitwise_web/views.py:209
-#, fuzzy
-#| msgid "groups"
+#: splitwise_web/views.py:210
 msgid "Groups"
-msgstr "groups"
+msgstr "Groups"
+
+#: splitwise_web/views.py:241
+msgid "friend request"
+msgstr "friend request"
+
+#: splitwise_web/views.py:242
+msgid "wants to be your friend"
+msgstr "wants to be your friend"
+
+#: splitwise_web/views.py:269
+msgid "friend reply"
+msgstr "friend reply"
+
+#: splitwise_web/views.py:270
+msgid "accepted"
+msgstr "accepted"
+
+#: splitwise_web/views.py:270
+msgid "declined"
+msgstr "declined"
+
+#: splitwise_web/views.py:270
+msgid "your invitation"
+msgstr "your invitation"
 
 #: templates/friends_groups_mobile.html:37
 msgid "Your account"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 15:37+0000\n"
+"POT-Creation-Date: 2020-05-27 16:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,44 +20,70 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: splitwise_web/db_operations.py:21
+#: splitwise_web/db_operations.py:23
 msgid "New friend request from"
 msgstr "Новый запрос в друзья от"
 
-#: splitwise_web/db_operations.py:25 splitwise_web/db_operations.py:29
+#: splitwise_web/db_operations.py:27 splitwise_web/db_operations.py:31
 msgid "Your friend request to"
 msgstr "Ваш запрос на добавление в друзья"
 
-#: splitwise_web/db_operations.py:25
+#: splitwise_web/db_operations.py:27
 msgid "was accepted"
 msgstr "был принят"
 
-#: splitwise_web/db_operations.py:29
+#: splitwise_web/db_operations.py:31
 msgid "was declined"
 msgstr "был отклонен"
 
-#: splitwise_web/db_operations.py:279 splitwise_web/db_operations.py:325
+#: splitwise_web/db_operations.py:287 splitwise_web/db_operations.py:333
 #: templates/friends_groups_mobile.html:60
 msgid "you lent"
 msgstr "Ты одолжил(а)"
 
-#: splitwise_web/db_operations.py:283 splitwise_web/db_operations.py:329
+#: splitwise_web/db_operations.py:291 splitwise_web/db_operations.py:337
 msgid "lent you"
 msgstr "одолжил(а) тебе"
 
-#: splitwise_web/db_operations.py:344
+#: splitwise_web/db_operations.py:352
 msgid "GROUP NAME"
 msgstr "НАЗВАНИЕ ГРУППЫ"
 
-#: splitwise_web/views.py:206
+#: splitwise_web/views.py:54 templates/index.html:56
+msgid "DASHBOARD"
+msgstr "СТАТИСТИКА"
+
+#: splitwise_web/views.py:207
 msgid "Friends"
 msgstr "Друзья"
 
-#: splitwise_web/views.py:209
-#, fuzzy
-#| msgid "groups"
+#: splitwise_web/views.py:210
 msgid "Groups"
-msgstr "группы"
+msgstr "Группы"
+
+#: splitwise_web/views.py:241
+msgid "friend request"
+msgstr "Запрос на добавление в друзья"
+
+#: splitwise_web/views.py:242
+msgid "wants to be your friend"
+msgstr "хочет добавить тебя в друзья"
+
+#: splitwise_web/views.py:269
+msgid "friend reply"
+msgstr "Ответ на запрос"
+
+#: splitwise_web/views.py:270
+msgid "accepted"
+msgstr "принял(а)"
+
+#: splitwise_web/views.py:270
+msgid "declined"
+msgstr "отклонил(а)"
+
+#: splitwise_web/views.py:270
+msgid "your invitation"
+msgstr "твое приглашение"
 
 #: templates/friends_groups_mobile.html:37
 msgid "Your account"
@@ -1022,99 +1048,99 @@ msgstr ""
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "January"
-msgstr ""
+msgstr "Январь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "February"
-msgstr ""
+msgstr "Февраль"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "March"
-msgstr ""
+msgstr "Март"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "April"
-msgstr ""
+msgstr "Апрель"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "May"
-msgstr ""
+msgstr "Май"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:14
 msgid "June"
-msgstr ""
+msgstr "Июнь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:15
 msgid "July"
-msgstr ""
+msgstr "Июль"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:15
 msgid "August"
-msgstr ""
+msgstr "Август"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:15
 msgid "September"
-msgstr ""
+msgstr "Сентябрь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:15
 msgid "October"
-msgstr ""
+msgstr "Октябрь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:15
 msgid "November"
-msgstr ""
+msgstr "Ноябрь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:16
 msgid "December"
-msgstr ""
+msgstr "Декабрь"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "jan"
-msgstr ""
+msgstr "янв"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "feb"
-msgstr ""
+msgstr "февр"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "mar"
-msgstr ""
+msgstr "март"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "apr"
-msgstr ""
+msgstr "апр"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "may"
-msgstr ""
+msgstr "май"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:19
 msgid "jun"
-msgstr ""
+msgstr "июн"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "jul"
-msgstr ""
+msgstr "июл"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "aug"
-msgstr ""
+msgstr "авг"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "sep"
-msgstr ""
+msgstr "сент"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "oct"
-msgstr ""
+msgstr "окт"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "nov"
-msgstr ""
+msgstr "нояб"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:20
 msgid "dec"
-msgstr ""
+msgstr "дек"
 
 #: venv/lib/python3.7/site-packages/django/utils/dates.py:23
 msgctxt "abbrev. month"

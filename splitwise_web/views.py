@@ -51,7 +51,7 @@ def get_index_context(request):
     elif dashboard:
         context['group_expenses'] = get_user_dashboard_expenses(id_user=request.user.id)
         # context['selected_friend_id'] = None
-        context['selected_group_name'] = 'DASHBOARD'
+        context['selected_group_name'] = _('DASHBOARD')
         context['selected_group_photo'] = find_user_photo(request.user.id)
     else:
         context['group_expenses'], context['selected_group_id'] = \
@@ -238,8 +238,8 @@ def send_friend_invitation(request):
 
         photo = find_user_photo(request.user.id)
         payload = {
-            'head': 'friend request',
-            'body': '{} wants to be your friend'.format(request.user.username),
+            'head': _('friend request'),
+            'body': '{} {}'.format(request.user.username, _('wants to be your friend')),
             'icon': photo
         }
         send_user_notification(user=user_friend, payload=payload, ttl=1000)
@@ -265,12 +265,12 @@ def reply_to_notification(request):
     process_notification(id_sender, notification_type, accept, request.user.id)
 
     photo = find_user_photo(request.user.id)
-    # payload = {
-    #     'head': 'friend reply',
-    #     'body': '{} {} you invitation'.format(request.user.username, 'accepted' if accept else 'declined'),
-    #     'icon': photo
-    # }
-    # send_user_notification(user=User.objects.filter(id=id_sender).first(), payload=payload, ttl=1000)
+    payload = {
+        'head': _('friend reply'),
+        'body': '{} {} {}'.format(request.user.username, _('accepted') if accept else _('declined'), _('your invitation')),
+        'icon': photo
+    }
+    send_user_notification(user=User.objects.filter(id=id_sender).first(), payload=payload, ttl=1000)
 
     return JsonResponse({})
 
@@ -416,5 +416,5 @@ def check_email_used(request):
     except:
         invalid = True
 
-    return JsonResponse({'valid':check_is_email_valid(email), 'incorrect_email': invalid})
+    return JsonResponse({'valid': check_is_email_valid(email), 'incorrect_email': invalid})
 
