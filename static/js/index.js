@@ -500,7 +500,7 @@ function createExpense() {
         }
 
         let equally = document.getElementById('a-split').innerHTML;
-        equally = equally === 'equally';
+        equally = equally === 'equally' || equally === 'поровну';
 
         if (amount.length !== 0) {
             let fd = new FormData();
@@ -649,9 +649,11 @@ function addSettleUp(modal, openBtn, closeBtn) {
         });
 
         const result = await response.json();
+
         const pay = result['username_pay'];
         const get = result['username_get'];
         const amount = result['amount'];
+        console.log(result);
 
         document.getElementById('a-who-settle').innerText = pay;
         document.getElementById('a-who-recipient').innerHTML = get;

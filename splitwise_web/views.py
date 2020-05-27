@@ -7,10 +7,14 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils.translation import check_for_language
 from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.base import View
+from django.views.i18n import set_language
 from webpush import send_user_notification
+from django.utils import translation
+
 
 from splitwise_web.db_operations import *
 from splitwise_web.img_processing import process_img
@@ -98,7 +102,7 @@ def handle_uploaded_file(f):
     with open('./media/images/{}'.format(name), 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-    return 'media/images/{}'.format(name)
+    return '/media/images/{}'.format(name)
 
 
 class Profile(View):
@@ -117,7 +121,9 @@ class Profile(View):
         surname = request.POST.get('surname')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        currency = request.POST.get('currency')
+        lang_code = request.POST.get('language')
+
+        print(lang_code)
 
         if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
             return HttpResponseRedirect('/profile')
@@ -144,6 +150,8 @@ class Profile(View):
             path = process_img(fs, request.user.username)
             add_or_update_photo(request.user.id, path)
 
+        resp = set_language(request)
+        return resp
         return HttpResponseRedirect(redirect_to='/profile')
 
 
@@ -313,6 +321,7 @@ def delete_member_from_group(request):
 
 @csrf_exempt
 def create_new_expense(request):
+    # print(get_current_language())
     id_group = request.POST.get('id_group')
     amount = float(request.POST.get('amount'))
     date = request.POST.get('date')
@@ -335,14 +344,17 @@ def create_new_expense(request):
     if photo:
         pic = handle_uploaded_file(photo)
 
-    if paid_username == 'you':
+    if paid_username == 'you' or paid_username == 'тобой':
+        # fixme:
+
         paid_username = request.user.username
 
     if is_friend:
         create_expense(None, desc, amount, date, percent_users, paid_username, pic)
     else:
-        create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
         print((int(id_group), desc, amount, date, percent_users, paid_username, pic))
+        create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+        # print((int(id_group), desc, amount, date, percent_users, paid_username, pic))
 
     return JsonResponse({})
 

@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 
 
 def process_img(img_path, username):
+    img_path = './' + img_path
     img = Image.open(img_path).convert("RGB")
 
     height, width = img.size
@@ -26,8 +27,8 @@ def process_img(img_path, username):
 
     Image.fromarray(np_image).save('./media/images/{}.png'.format(username))
 
-    return 'media/images/{}.png'.format(username)
+    return '/media/images/{}.png'.format(username)
 
 
 if __name__ == '__main__':
-    process_img('/Users/gwyrwch/PycharmProjects/splitwise/media/images/-tQK-RSMW_U.jpg', 'olya')
+    process_img('/Users/gwyrwch/PycharmProjects/splitwise/media/images/group_default.jpg', 'group_default')

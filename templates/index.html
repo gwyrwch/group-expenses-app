@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load i18n %}
+
 
 <html lang="en">
   <head>
@@ -16,7 +18,7 @@
     <header>
         <nav class="navbar row">
             <div class="column-2">
-                <a class="navbar-item" href="/">
+                <a class="navbar-item" href="./">
                     <div class="text navbar-logo-text">
                         Cashflow
                     </div>
@@ -34,12 +36,12 @@
                         {% endif %}
                     </span>
                     <div class="dropdown-content">
-                        <a href="profile">Profile</a>
-                        <a id="btnOpenNotifications">Notifications
+                        <a href="profile">{% trans 'Profile' %}</a>
+                        <a id="btnOpenNotifications">{% trans 'Notifications' %}
                             <span style="font-size: smaller">({{ notifications|length }})</span>
                         </a>
-                        <a id="btnChangeTheme">Appearance</a>
-                        <a href="logout_view">Log out</a>
+                        <a id="btnChangeTheme">{% trans 'Appearance' %}</a>
+                        <a href="logout_view">{% trans 'Log out' %}</a>
 
                     </div>
                 </div>
@@ -51,12 +53,12 @@
             <div class="column-3">
                 <div class="sidebar">
                     <div class="sidebar-container">
-                        <a class="row header-sidebar dashboard" href="/?dashboard=1">DASHBOARD</a>
+                        <a class="row header-sidebar dashboard" href="./?dashboard=1">DASHBOARD</a>
                     </div>
                     <div class="sidebar-container">
                         <div class="row header-sidebar">
                             <div class="column-10">
-                                <h3>GROUPS</h3>
+                                <h3>{% trans 'GROUPS' %}</h3>
                             </div>
                             <div class="column-2">
                                 <button class="material-icons add-icon" id="btnCreateGroup">
@@ -73,7 +75,7 @@
                             <li class="li-sidebar li-sidebar-hover" id="gr_{{ group.id }}">
                                 <div class="row">
                                     <div class="column-10">
-                                        <a href="/?group={{ group.id }}">
+                                        <a href="./?group={{ group.id }}">
                                             <img src="{{ group.logo_file_path }}"
                                                  alt=""
                                             >
@@ -91,7 +93,7 @@
                                 <div class="modal-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
-                                            <h3><strong>Group settings</strong></h3>
+                                            <h3><strong>{% trans 'Group settings' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
 
@@ -139,17 +141,17 @@
                                             </ul>
                                         </div>
                                         <div class="row">
-                                            <button type='button' class="invite-group-member">Invite member</button>
+                                            <button type='button' class="invite-group-member">{% trans 'Invite member' %}</button>
                                         </div>
                                         <div class="add-members-div">
                                         </div>
-                                        <button class="edit-group-save" style="width: 130px;height: 34px;">Save</button>
+                                        <button class="edit-group-save" style="width: 130px;height: 34px;">{% trans 'Save' %}</button>
                                     </div>
                                 </div>
                             </div>
                         {% empty %}
                             <li class="li-sidebar li-sidebar-hover">
-                                <span style="color: var(--main-text-color)">No active groups</span>
+                                <span style="color: var(--main-text-color)">{% trans 'No active groups' %}</span>
                             </li>
                         {% endfor %}
                         </ul>
@@ -157,7 +159,7 @@
                     <div class="sidebar-container">
                         <div class="row header-sidebar">
                             <div class="column-10">
-                                <h3>FRIENDS</h3>
+                                <h3>{% trans 'FRIENDS' %}</h3>
                             </div>
                             <div class="column-2">
                                 <button class="material-icons add-icon" id="btnAddFriend">
@@ -169,7 +171,7 @@
                         <ul class="ul-sidebar">
                         {% for friend in user_friends %}
                             <li class="li-sidebar li-sidebar-hover" id="fr_{{ friend.friend_username }}">
-                                <a href="/?friend={{ friend.id }}">
+                                <a href="./?friend={{ friend.id }}">
                                     {% if friend.photo_path %}
                                         <img src="{{ friend.photo_path }}" alt="">
                                     {% else %}
@@ -180,7 +182,7 @@
                             </li>
                         {% empty %}
                             <li class="li-sidebar li-sidebar-hover">
-                                <span style="color: var(--main-text-color)">No friends in your list</span>
+                                <span style="color: var(--main-text-color)">{% trans 'No friends in your list' %}</span>
                             </li>
                         {% endfor %}
                         </ul>
@@ -191,7 +193,7 @@
                 <div class="modal-content">
                     <div class="row modal-header">
                         <div class="column-10">
-                            <h3><strong>Enter your friend username</strong></h3>
+                            <h3><strong>{% trans 'Enter your friend username' %}</strong></h3>
                         </div>
                         <div class="column-2">
                             <button class="material-icons close close-friend-modal">
@@ -204,7 +206,7 @@
                         <label>
                             <input placeholder="username" class="modal-input" id="add-friend-username">
                         </label>
-                        <button id="send-friend-invitation" style="width: 130px;height: 34px;">Send invitation</button>
+                        <button id="send-friend-invitation" style="height: 34px;">{% trans 'Send invitation' %}</button>
                     </div>
                 </div>
             </div>
@@ -212,7 +214,7 @@
                 <div class="modal-content">
                     <div class="row modal-header">
                         <div class="column-10">
-                            <h3><strong>Enter group name</strong></h3>
+                            <h3><strong>{% trans 'Enter group name' %}</strong></h3>
                         </div>
                         <div class="column-2">
                             <button class="material-icons close close-create-group-modal">
@@ -235,7 +237,7 @@
                                 <input type="file" id="add_group_photo" name="add_group_photo" style="display: none;">
                             </div>
                         </div>
-                        <button id="create-group" style="width: 130px;height: 34px;">Save</button>
+                        <button id="create-group" style="width: 130px;height: 34px;">{% trans 'Save' %}</button>
                     </div>
                 </div>
             </div>
@@ -248,7 +250,7 @@
             {% endif %}
                     <div class="row modal-header">
                         <div class="column-10">
-                            <h3><strong>Notifications</strong></h3>
+                            <h3><strong>{% trans 'Notifications' %}</strong></h3>
                         </div>
                         <div class="column-2">
                             <button class="material-icons close close-notification-modal">
@@ -265,20 +267,27 @@
                             </div>
                             {% if notification.accept_decline %}
                                 <div class="column-4" style="text-align: right">
-                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-accept">Accept</button>
-                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-decline">Decline</button>
+                                    <button data-type="{{ notification.type }}"
+                                            data-sender="{{ notification.id_sender }}"
+                                            class="button-accept">{% trans 'Accept' %}
+                                    </button>
+                                    <button data-type="{{ notification.type }}"
+                                            data-sender="{{ notification.id_sender }}"
+                                            class="button-decline">{% trans 'Decline' %}
+                                    </button>
                                 </div>
                             {% else %}
                                 <div class="column-2" style="text-align: right">
-                                    <button data-type="{{ notification.type }}" data-sender="{{ notification.id_sender }}" class="button-seen">Ok</button>
+                                    <button data-type="{{ notification.type }}"
+                                            data-sender="{{ notification.id_sender }}"
+                                            class="button-seen">{% trans 'Ok' %}
+                                    </button>
                                 </div>
                             {% endif %}
                         </div>
                         {% empty %}
-                            <div>No new notifications</div>
+                            <div>{% trans 'No new notifications' %}</div>
                         {% endfor %}
-
-                        <button>Save</button>
                     </div>
                 </div>
             </div>
@@ -286,7 +295,7 @@
                 <div class="modal-content">
                     <div class="row modal-header">
                         <div class="column-10">
-                            <h3><strong>Changing theme</strong></h3>
+                            <h3><strong>{% trans 'Changing theme' %}</strong></h3>
                         </div>
                         <div class="column-2">
                             <button class="material-icons close close-theme-modal">
@@ -298,13 +307,13 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="column-5">
-                                <span>Main color:</span>
+                                <span>{% trans 'Main color' %}:</span>
                                 <label>
                                     <input id="mainColorInput" type="color">
                                 </label>
                             </div>
                             <div class="column-7">
-                                <label>Background:
+                                <label>{% trans 'Background' %}:
                                     <button id="lightThemeBtn" class="theme-background-btn">
                                         <span class="material-icons done-icon">
                                             done
@@ -318,7 +327,7 @@
                                 </label>
                             </div>
                         </div>
-                        <button id="saveThemeBtn">Save</button>
+                        <button id="saveThemeBtn">{% trans 'Save' %}</button>
                     </div>
                 </div>
             </div>
@@ -335,13 +344,13 @@
                         </div>
                         <div class="column-2" style="margin-right: 10px;">
                             {% if selected_friend_id or selected_group_id %}
-                                <button id="btnSet" class="btn-set">settle up</button>
+                                <button id="btnSet" class="btn-set">{% trans 'settle up' %}</button>
                             {% endif %}
                             <div id="settleModal" class="modal">
                                 <div class="modal-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
-                                            <h3><strong>Settle up</strong></h3>
+                                            <h3><strong>{% trans 'Settle up' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
                                             <button class="material-icons close close-settle-modal">
@@ -353,15 +362,15 @@
                                     <div class="modal-body">
                                         <div>
                                             <p style="align-content: center">
-                                                <span class='btn-modal-links' id='a-who-settle'>You</span> paid
-                                                <span class="btn-modal-links" id="a-who-recipient">you</span>.
-
+                                                <span class='btn-modal-links' id='a-who-settle'>{% trans 'You' %}</span>
+                                                {% trans 'paid' %}
+                                                <span class="btn-modal-links" id="a-who-recipient">{% trans 'you' %}</span>.
                                             </p>
                                         </div>
                                         <label>
                                             <input id="settle-expense-amount" style="margin-top: 0" readonly class="modal-input">
                                         </label>
-                                        <button id="btn-settle-up-confirm">Save</button>
+                                        <button id="btn-settle-up-confirm">{% trans 'Save' %}</button>
 
                                     </div>
                                 </div>
@@ -371,7 +380,7 @@
                             <div class="modal-content">
                                 <div class="row modal-header">
                                     <div class="column-10">
-                                        <h3><strong>You should select some expense to settle up</strong></h3>
+                                        <h3><strong>{% trans 'You should select some expense to settle up' %}</strong></h3>
                                     </div>
                                     <div class="column-2">
                                         <button class="material-icons close close-no-expense-modal">
@@ -386,13 +395,13 @@
                         </div>
                         <div class="column-2">
                             {% if selected_friend_id or selected_group_id %}
-                            <button id="btnAdd" class="btn-add">add new</button>
+                            <button id="btnAdd" class="btn-add">{% trans 'add new' %}</button>
                             {% endif %}
                             <div id="addModal" class="modal">
                                 <div class="modal-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
-                                            <h3><strong>Add an expense</strong></h3>
+                                            <h3><strong>{% trans 'Add an expense' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
                                             <button class="material-icons close close-add-expense-modal">
@@ -403,18 +412,19 @@
                                     <div class="hr"></div>
                                     <div class="modal-body">
                                         <label>
-                                            <input placeholder="Description" id="expense-description" class="modal-input">
+                                            <input placeholder="{% trans 'Description' %}" id="expense-description" class="modal-input">
                                         </label>
                                         <label>
                                             <input placeholder="$0.00" id="expense-amount"
                                                    type="number" class="modal-input"
                                             >
-                                            <span id="amount-invalid-span">Amount field cannot be empty</span>
+                                            <span id="amount-invalid-span">{% trans 'Amount field cannot be empty' %}</span>
                                         </label>
                                         <div>
-                                            <p>Paid by
-                                                <button id="a-who-paid" class="btn-modal-links">you</button> and split
-                                                <button id="a-split" class="btn-modal-links">equally</button>. (0.00$/person)
+                                            <p>{% trans 'Paid by' %}
+                                                <button id="a-who-paid" class="btn-modal-links">{% trans 'you_whom' %}</button>
+                                                {% trans 'and split' %}
+                                                <button id="a-split" class="btn-modal-links">{% trans 'equally' %}</button>.
                                             </p>
                                         </div>
                                         <div class="row">
@@ -424,15 +434,23 @@
                                                 </label>
                                             </div>
                                             <div class="column-6">
-                                                <button id="expense-photo-btn" class="btn-modal-links">add image</button>
-                                                <input type="file" accept="image/*" id="expense-photo-input-file" name="edit_group_photo" style="display: none;">
+                                                <button id="expense-photo-btn" class="btn-modal-links">{% trans 'add image' %}</button>
+                                                <input type="file" accept="image/*"
+                                                       id="expense-photo-input-file" name="edit_group_photo" style="display: none;"
+                                                >
                                             </div>
 
                                         </div>
                                         {% if selected_group_id %}
-                                            <button data-is-friend="0" data-id-group="{{ selected_group_id }}" class="btn-create_expense">Save</button>
+                                            <button data-is-friend="0"
+                                                    data-id-group="{{ selected_group_id }}"
+                                                    class="btn-create_expense">{% trans 'Save' %}
+                                            </button>
                                         {% elif selected_friend_id %}
-                                            <button data-is-friend="1" data-id-group="{{ selected_friend_id }}" class="btn-create_expense">Save</button>
+                                            <button data-is-friend="1"
+                                                    data-id-group="{{ selected_friend_id }}"
+                                                    class="btn-create_expense">{% trans 'Save' %}
+                                            </button>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -441,7 +459,7 @@
                                 <div class="modal-content modal-content-right" id="who-settle-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
-                                            <h3><strong>Choose payer</strong></h3>
+                                            <h3><strong>{% trans 'Choose payer' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
                                             <button class="material-icons close close-who-paid-modal">
@@ -481,7 +499,7 @@
                                 <div class="modal-content modal-content-right" id="percentage-content">
                                     <div class="row modal-header">
                                         <div class="column-10">
-                                            <h3><strong>Split by percentages</strong></h3>
+                                            <h3><strong>{% trans 'Split by percentages' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
                                             <button class="material-icons close close-split-modal" >
@@ -526,8 +544,8 @@
                                             {% endif %}
 
                                             </ul>
-                                            <span id="percent-invalid-span">Sum shoud be equal to 100%</span>
-                                            <button id="save-percents-btn" type="button">Save</button>
+                                            <span id="percent-invalid-span">{% trans 'Sum should be equal to 100%' %}</span>
+                                            <button id="save-percents-btn" type="button">{% trans 'Save' %}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -571,7 +589,7 @@
                         </div>
                     {% empty %}
                         <div class="empty-expenses-text">
-                            No active expenses in this group yet.
+                            {% trans 'No active expenses in this group yet.' %}
                         </div>
                     {% endfor %}
 
@@ -589,13 +607,13 @@
                 <div class="column-3">
                     <div class="company">
                         <h4>
-                            Company
+                            {% trans 'Company' %}
                         </h4>
                         <a href="#">
-                            About us
+                            {% trans 'About us' %}
                         </a>
                         <a href="#">
-                            Contact us
+                            {% trans 'Contact us' %}
                         </a>
                     </div>
                 </div>
@@ -603,7 +621,6 @@
             <div class="hr"></div>
             <div class="row">
                 <div class="column-9">
-
                 </div>
                 <div class="column-3 follow-us">
                     <ul>

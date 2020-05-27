@@ -127,7 +127,7 @@ main {
     position: fixed;
     background-color: var(--background-color);
     border: var(--main-dark-color) solid 1px;
-    width: 150px;
+    width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
     top: 50px;
@@ -767,7 +767,7 @@ input[type="date" i] {
 }
 
 #notificationModal button {
-    width: 70px;
+    width: 90px;
     height: 34px;
 }
 
@@ -996,7 +996,7 @@ input[type="date" i] {
 }
 
 #saveThemeBtn {
-    width: 70px;
+    width: 90px;
     height: 34px;
 }
 

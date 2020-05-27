@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.utils.translation import gettext as _
 from splitwise_web.models import *
 
 eps = 10 ** -6
@@ -18,15 +18,15 @@ def get_user_notifications(user_id):
             sender_username = User.objects.filter(id=notification.id_sender).get()
             sender_username = sender_username.username
             if notification.notification_type == 'friend_request':
-                text += 'New friend request from @{}'.format(sender_username)
+                text += '{} @{}'.format(_('New friend request from'), sender_username)
                 res_notification['accept_decline'] = True
                 res_notification['type'] = 'friend'
             elif notification.notification_type == 'friend_request_reply_accept':
-                text += 'Your friend request to @{} was accepted'.format(sender_username)
+                text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was accepted'))
                 res_notification['accept_decline'] = False
                 res_notification['type'] = 'friend_reply'
             elif notification.notification_type == 'friend_request_reply_decline':
-                text += 'Your friend request to @{} was declined'.format(sender_username)
+                text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was declined'))
                 res_notification['accept_decline'] = False
                 res_notification['type'] = 'friend_reply'
 
@@ -97,7 +97,6 @@ def get_user_friends(user_id):
 
 def get_user_groups(id_user):
     group_ids = UserToGroup.objects.filter(id_user=id_user)
-    # print(group_ids)
     res = []
 
     for group_id in group_ids:
@@ -117,11 +116,11 @@ def get_user_friend_members(id_user, id_friend):
     res = dict()
     friend_photo = find_user_photo(id_friend)
     if not friend_photo:
-        friend_photo = "./media/images/profile_default.jpg"
+        friend_photo = "/media/images/profile_default.jpg"
 
     user_photo = find_user_photo(id_user)
     if not user_photo:
-        user_photo = "./media/images/profile_default.jpg"
+        user_photo = "/media/images/profile_default.jpg"
 
     res[id_friend] = [
         {'photo': user_photo, 'username': User.objects.filter(id=id_user).first().username},
@@ -133,7 +132,6 @@ def get_user_friend_members(id_user, id_friend):
 
 def get_user_group_members(id_user):
     group_ids = UserToGroup.objects.filter(id_user=id_user)
-    # print(group_ids)
     res = {}
 
     for group_id in group_ids:
@@ -147,14 +145,13 @@ def get_user_group_members(id_user):
             usr['username'] = user.username
             photo = find_user_photo(user.id)
             if not photo:
-                photo = "./media/images/profile_default.jpg"
+                photo = "/media/images/profile_default.jpg"
             usr['photo'] = photo
 
             group_members.append(usr)
 
         res[id_group] = group_members
 
-    # print(res)
     return res
 
 
@@ -175,13 +172,12 @@ def find_user_photo(id_user):
 
     if len(profile_pics):
         return profile_pics.get().photo_path
-    # fix other places
-    return "./media/images/profile_default.jpg"
+    return "/media/images/profile_default.png"
 
 
 def create_group(name, pic, id_user):
     if not pic:
-        pic = "./media/images/group_default.jpg"
+        pic = "/media/images/group_default.png"
 
     group = Group(
         name=name,
@@ -201,8 +197,6 @@ def delete_group_member(id_group, username):
     if len(user_to_group) == 1:
         Group.objects.filter(id_group=id_group).delete()
 
-    # print(id_group, username)
-
 
 def edit_group_db(id_group, pic, name, group_members):
     group = Group.objects.filter(id=id_group).get()
@@ -220,7 +214,7 @@ def edit_group_db(id_group, pic, name, group_members):
 
 def get_user_dashboard_expenses(id_user):
     expenses_owes = Expense.objects.filter(id_user_owes=id_user)
-    expenses_owed = Expense.objects.filter(id_user_paid=id_user) # мы заплатили
+    expenses_owed = Expense.objects.filter(id_user_paid=id_user)
 
     sums = defaultdict(int)
     for ex in expenses_owes:
@@ -282,11 +276,11 @@ def prepare_expenses(id_user, expenses):
             continue
         if exp['id_paid'] == id_user and exp['amount'] > eps:
             owed = User.objects.filter(id=exp['id_owed']).first().username
-            exp['text'] = 'you lent {}'.format(owed)
+            exp['text'] = '{} {}'.format(_('you lent'), owed)
             exp['lent'] = True
         elif exp['id_owed'] == id_user and exp['amount'] > eps:
             paid = User.objects.filter(id=exp['id_paid']).first().username
-            exp['text'] = '{} lent you'.format(paid)
+            exp['text'] = '{} {}'.format(paid, _('lent you'))
             exp['lent'] = False
         else:
             continue
@@ -297,10 +291,10 @@ def prepare_expenses(id_user, expenses):
     return res
 
 
-
 def get_user_expenses_from_group(id_group, id_user):
     expenses = get_group_expenses(id_group)
     return prepare_expenses(id_user, expenses)
+
 
 def get_user_expenses_with_friend(id_friend, id_user):
     expenses = Expense.objects.filter(
@@ -328,11 +322,11 @@ def get_user_expenses_with_friend(id_friend, id_user):
             continue
         if exp['id_paid'] == id_user and exp['amount'] > eps:
             owed = User.objects.filter(id=exp['id_owed']).first().username
-            exp['text'] = 'you lent {}'.format(owed)
+            exp['text'] = '{} {}'.format(_('you lent'), owed)
             exp['lent'] = True
         elif exp['id_owed'] == id_user and exp['amount'] > eps:
             paid = User.objects.filter(id=exp['id_paid']).first().username
-            exp['text'] = '{} lent you'.format(paid)
+            exp['text'] = '{} {}'.format(paid, _('lent you'))
             exp['lent'] = False
         else:
             continue
@@ -347,7 +341,7 @@ def get_group_name_by_id(id_group):
     group = Group.objects.filter(id=id_group).first()
     if group:
         return group.name
-    return "GROUP NAME"
+    return _("GROUP NAME")
 
 
 def get_friend_name_by_id(id_friend):
@@ -358,7 +352,7 @@ def get_group_photo_by_id(id_group):
     group = Group.objects.filter(id=id_group).first()
     if group:
         return group.group_logo_path
-    return "./media/images/group_default.jpg"
+    return "/media/images/group_default.png"
 
 
 def get_some_user_group_expenses(id_user):
@@ -371,7 +365,7 @@ def get_some_user_group_expenses(id_user):
 
 def create_expense(id_group, desc, amount, date, percent_users, paid_username, pic):
     if not pic:
-        pic = "./media/images/group_default.jpg"
+        pic = "/media/images/group_default.png"
 
     for d in percent_users:
         id_user_owes = User.objects.filter(username=d['username']).first().id
@@ -399,16 +393,18 @@ def get_expense_info_by_id(id_exp, id_current_user):
 
     res = dict()
     if exp.id_user_owes == id_current_user:
-        res['username_pay'] = 'You'
+        res['username_pay'] = _('You pay')
+
     else:
         res['username_pay'] = User.objects.filter(id=exp.id_user_owes).get().username
 
     if exp.id_user_paid == id_current_user:
-        res['username_get'] = 'you'
+        res['username_get'] = _('to you')
     else:
         res['username_get'] = User.objects.filter(id=exp.id_user_paid).get().username
     res['amount'] = str(round(exp.amount, 5)) + exp.currency
 
+    print(res['username_pay'], res['username_get'])
     return res
 
 
@@ -510,7 +506,7 @@ def get_user_expenses_to_groups(id_user):
 
             currency = ''
             for exp in cur_expenses:
-                currency = exp['currency']
+                currency = '$'
                 # fixme if many currencies
                 if exp['id_user_paid'] == id_user:
                     you_pay += round(exp['amount'], 5)
