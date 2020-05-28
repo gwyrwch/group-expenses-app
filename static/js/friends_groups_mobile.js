@@ -1,3 +1,5 @@
+import {setThemeColors} from "./lib.js";
+
 function setOnClickOnCards() {
     const cards = document.getElementsByClassName('friend-group-cards');
 
@@ -13,3 +15,4 @@ function setOnClickOnCards() {
 }
 
 setOnClickOnCards();
+setThemeColors();

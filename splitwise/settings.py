@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'splitwise_web'
+    'splitwise_web',
+    'webpush',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'splitwise.urls'
@@ -102,11 +104,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+WEBPUSH_SETTINGS = {
+   "VAPID_PUBLIC_KEY": "BKsZLz57npuaMW-F08o9YPkZ5r43EFFO3y__iz5TceRZ61D87v--yemmpoqaqfOa_JRHjek-nEQskX4TBcfnCeU",
+   "VAPID_PRIVATE_KEY": "7lquqvICbKdQN7YIgHIb26oUc9gpgWU_XMj8EiYykn0",
+   "VAPID_ADMIN_EMAIL": "gwyrwch@gmail.com"
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = (
+    ('en-us', 'English'),
+    ('ru', 'Russian'),
+)
+
+LOCALE_PATHS = (
+    # 'locale',
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 TIME_ZONE = 'UTC'
 

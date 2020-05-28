@@ -6,6 +6,7 @@
 .main-container {
     padding-left: 0;
     padding-right: 0;
+    color: var(--main-text-color);
 }
 
 .header-text {
@@ -32,6 +33,7 @@
 
 .card {
     padding: 3% 2%;
+    box-shadow: 0 0 3px var(--main-color);
 }
 
 .friend-group-name {

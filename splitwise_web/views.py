@@ -2,19 +2,19 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.template.defaulttags import register
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
-
 from django.views.generic.base import View
+from django.views.i18n import set_language
+from webpush import send_user_notification
 
 from splitwise_web.db_operations import *
+from splitwise_web.img_processing import process_img
 from splitwise_web.models import Notification
-
-from django.template.defaulttags import register
 
 
 @register.filter
@@ -32,6 +32,7 @@ def get_index_context(request):
 
     selected_group_id = request.GET.get('group')
     selected_friend_id = request.GET.get('friend')
+    dashboard = request.GET.get('dashboard')
 
     if selected_group_id:
         selected_group_id = int(selected_group_id)
@@ -47,7 +48,11 @@ def get_index_context(request):
         context['selected_friend_id'] = selected_friend_id
         context['selected_group_name'] = get_friend_name_by_id(selected_friend_id)
         context['selected_group_photo'] = find_user_photo(selected_friend_id)
-
+    elif dashboard:
+        context['group_expenses'] = get_user_dashboard_expenses(id_user=request.user.id)
+        # context['selected_friend_id'] = None
+        context['selected_group_name'] = _('DASHBOARD')
+        context['selected_group_photo'] = find_user_photo(request.user.id)
     else:
         context['group_expenses'], context['selected_group_id'] = \
             get_some_user_group_expenses(request.user.id)
@@ -65,6 +70,10 @@ def get_index_context(request):
     else:
         context['group_members'] = get_user_friend_members(request.user.id, selected_friend_id)
 
+    notifications_modal = request.GET.get('notifications')
+    if notifications_modal:
+        context['show_notifications'] = True
+
     return context
 
 
@@ -72,6 +81,7 @@ class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
             context = get_index_context(request)
+
 
             return render(request, 'index.html', context=context)
         else:
@@ -86,7 +96,7 @@ def handle_uploaded_file(f):
     with open('./media/images/{}'.format(name), 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-    return 'media/images/{}'.format(name)
+    return '/media/images/{}'.format(name)
 
 
 class Profile(View):
@@ -105,12 +115,12 @@ class Profile(View):
         surname = request.POST.get('surname')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        currency = request.POST.get('currency')
+        lang_code = request.POST.get('language')
 
-        # print(request.POST)
+        print(lang_code)
+        update_or_set_lang_user(request.user.id, lang_code)
 
         if len(cur_password) == 0 or not check_password(cur_password, request.user.password):
-            # todo: show error msg
             return HttpResponseRedirect('/profile')
 
         if len(name) > 0 and name != request.user.first_name:
@@ -132,9 +142,12 @@ class Profile(View):
 
         if photo:
             fs = handle_uploaded_file(photo)
-            add_or_update_photo(request.user.id, fs)
+            path = process_img(fs, request.user.username)
+            add_or_update_photo(request.user.id, path)
 
-        return HttpResponseRedirect(redirect_to='/profile')
+        resp = set_language(request)
+        return resp
+        # return HttpResponseRedirect(redirect_to='/profile')
 
 
 class SignInUP(View):
@@ -149,18 +162,17 @@ class SignInUP(View):
 
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(redirect_to='/')
+                return HttpResponseRedirect(redirect_to='/ru' if get_user_lang(user.id) == 'ru' else '/')
             else:
-                print('kek')
-                return render(request, 'sign_in_up.html', context={'no_such_user': True})
+                raise
 
         elif request.POST.get('sign-up-username'):
             username = request.POST.get('sign-up-username')
             password = request.POST.get('sign-up-password')
             email = request.POST.get('sign-up-email')
             user = User.objects.create_user(username, password=password, email=email)
-            # print(user)
-
+            update_or_set_lang_user(user.id, 'en-us')
+            print(get_user_lang(user.id))
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -192,10 +204,10 @@ class FriendsGroupsMobile(View):
             context['user_photo_path'] = find_user_photo(request.user.id)
 
             if request.GET.get('friends'):
-                context['title'] = 'Friends'
+                context['title'] = _('Friends')
                 context['cards_content'] = get_user_expenses_to_friends(request.user.id)
             else:
-                context['title'] = 'Groups'
+                context['title'] = _('Groups')
                 context['cards_content'] = get_user_expenses_to_groups(request.user.id)
 
             return render(request, 'friends_groups_mobile.html', context=context)
@@ -223,15 +235,23 @@ def send_friend_invitation(request):
             notification_type='friend_request'
         )
         notification.save()
-    except:
-        pass
+
+        photo = find_user_photo(request.user.id)
+        payload = {
+            'head': _('friend request'),
+            'body': '{} {}'.format(request.user.username, _('wants to be your friend')),
+            'icon': photo
+        }
+        send_user_notification(user=user_friend, payload=payload, ttl=1000)
+    except Exception as e:
+        print(e)
     return JsonResponse({})
 
 
 @csrf_exempt
 def reply_to_notification(request):
     r = json.loads(request.body)
-    # print(r)
+
     id_sender = int(r.get('n_sender_id'))
     accept = r.get('accept')
     notification_type = r.get('n_type')
@@ -243,6 +263,14 @@ def reply_to_notification(request):
         accept = None
 
     process_notification(id_sender, notification_type, accept, request.user.id)
+
+    photo = find_user_photo(request.user.id)
+    payload = {
+        'head': _('friend reply'),
+        'body': '{} {} {}'.format(request.user.username, _('accepted') if accept else _('declined'), _('your invitation')),
+        'icon': photo
+    }
+    send_user_notification(user=User.objects.filter(id=id_sender).first(), payload=payload, ttl=1000)
 
     return JsonResponse({})
 
@@ -310,14 +338,17 @@ def create_new_expense(request):
     if photo:
         pic = handle_uploaded_file(photo)
 
-    if paid_username == 'you':
+    if paid_username == 'you' or paid_username == 'тобой':
+        # fixme:
+
         paid_username = request.user.username
 
     if is_friend:
         create_expense(None, desc, amount, date, percent_users, paid_username, pic)
     else:
-        create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
         print((int(id_group), desc, amount, date, percent_users, paid_username, pic))
+        create_expense(int(id_group), desc, amount, date, percent_users, paid_username, pic)
+        # print((int(id_group), desc, amount, date, percent_users, paid_username, pic))
 
     return JsonResponse({})
 
@@ -346,6 +377,21 @@ def check_user_is_valid(request):
 
 
 @csrf_exempt
+def check_sign_in_user(request):
+    print('bla')
+    resp = json.loads(request.body)
+    ans = dict()
+    if check_no_such_username(resp.get('username')):
+        ans['username'] = 'invalid'
+        ans['password'] = None
+    else:
+        ans['username'] = 'valid'
+        ans['password'] = check_password(resp.get('password'), User.objects.filter(username=resp.get('username')).first().password)
+
+    return JsonResponse(ans)
+
+
+@csrf_exempt
 def is_password_valid(request):
     valid = None
     if check_password(json.loads(request.body)['pass'], request.user.password):
@@ -358,7 +404,7 @@ def is_password_valid(request):
 
 @csrf_exempt
 def check_username_used(request):
-    return JsonResponse({'valid': check_is_username_valid(json.loads(request.body))})
+    return JsonResponse({'valid': check_no_such_username(json.loads(request.body))})
 
 
 @csrf_exempt
@@ -370,5 +416,5 @@ def check_email_used(request):
     except:
         invalid = True
 
-    return JsonResponse({'valid':check_is_email_valid(email), 'incorrect_email': invalid})
+    return JsonResponse({'valid': check_is_email_valid(email), 'incorrect_email': invalid})
 

@@ -1,4 +1,7 @@
+from django.conf.urls import url
 from django.urls import path
+from django.views.decorators.cache import cache_control
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -20,5 +23,9 @@ urlpatterns = [
     path('check_user_is_valid', views.check_user_is_valid, name='check_user_is_valid'),
     path('is_password_valid', views.is_password_valid, name='is_password_valid'),
     path('check_username_used', views.check_username_used, name='check_username_used'),
-    path('check_email_used', views.check_email_used, name='check_email_used')
+    path('check_email_used', views.check_email_used, name='check_email_used'),
+    path('service.js', TemplateView.as_view(template_name='service.js', content_type='application/x-javascript')),
+    path('check_sign_in_user', views.check_sign_in_user, name='check_sign_in_user'),
 ]
+
+

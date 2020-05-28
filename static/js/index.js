@@ -1,5 +1,6 @@
 import { addModal } from './lib.js';
 import { getRandomInt } from './lib.js';
+import {setThemeColors} from "./lib.js";
 
 
 function addNewExpenseModal() {
@@ -59,6 +60,8 @@ function sendInvitationToFriend() {
                 username: friendUsername
             };
 
+
+
             await fetch('/send_friend_invitation', {
                 method: 'POST',
                 headers: {
@@ -81,6 +84,105 @@ function addNotificationFriendModal() {
     const closeBtn = document.getElementsByClassName("close-notification-modal")[0];
     addModal(modal, openBtn, closeBtn);
 }
+
+
+function addThemeModal() {
+    const modal = document.getElementById("themeModal");
+    const openBtn = document.getElementById("btnChangeTheme");
+    const closeBtn = document.getElementsByClassName("close-theme-modal")[0];
+    addModal(modal, openBtn, closeBtn);
+}
+
+function adjust(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(
+        /../g, color => (
+            '0' + Math.min(
+                255, Math.max(0, parseInt(color, 16) + amount)
+            ).toString(16)).substr(-2)
+    );
+}
+
+function hexToRgba(hex, alpha = 1) {
+    const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function setTempProperties(bgColor, textColor, mainTextColor, hrefBgColor, logoSrc) {
+    document.documentElement.style.setProperty("--background-color", bgColor);
+    document.documentElement.style.setProperty("--text-color", textColor);
+    document.documentElement.style.setProperty("--main-text-color", mainTextColor);
+    document.documentElement.style.setProperty("--href-bg-color", hrefBgColor);
+    document.getElementById('logo').src = logoSrc;
+}
+
+setThemeColors();
+function changeTheme() {
+    const mainInput = document.getElementById('mainColorInput');
+    mainInput.value = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
+
+    mainInput.addEventListener("change", function() {
+        document.documentElement.style.setProperty("--main-color", this.value);
+        document.documentElement.style.setProperty("--main-dark-color", adjust(this.value, -20));
+        document.documentElement.style.setProperty("--main-light-color", hexToRgba(this.value, 0.2));
+        localStorage.setItem("tempMainColor", this.value);
+    });
+
+    const lightColor = '#ffffff';
+    const darkColor = '#272933';
+    const lightColorBtn = document.getElementById('lightThemeBtn');
+    const darkColorBtn = document.getElementById('darkThemeBtn');
+
+    const hrefBgLight = '#f1f1f1';
+    const hrefBgDark = '#1b1b1b';
+
+    const bgColor = localStorage.getItem('backgroundColor');
+    if (!bgColor || bgColor === lightColor) {
+        lightColorBtn.classList.add("selected-theme-btn");
+    } else {
+        darkColorBtn.classList.add("selected-theme-btn");
+    }
+
+    lightColorBtn.onclick = function () {
+        this.classList.add("selected-theme-btn");
+        darkColorBtn.classList.remove("selected-theme-btn");
+
+        const newLogoSrc = document.getElementById('logo').src.replace(/logowhite.png/gi, 'logo.png');
+
+        setTempProperties(lightColor, lightColor, darkColor, hrefBgLight, newLogoSrc);
+
+        localStorage.setItem("tempBackgroundColor", lightColor);
+        localStorage.setItem("tempLogoSrc", newLogoSrc);
+    };
+
+    darkColorBtn.onclick = function () {
+        this.classList.add("selected-theme-btn");
+        lightColorBtn.classList.remove("selected-theme-btn");
+        const newLogoSrc = document.getElementById('logo').src.replace(/logo.png/gi, 'logowhite.png');
+
+        setTempProperties(darkColor, darkColor, lightColor, hrefBgDark, newLogoSrc);
+
+        localStorage.setItem("tempBackgroundColor", darkColor);
+        localStorage.setItem("tempLogoSrc", newLogoSrc);
+    };
+
+
+    const saveBtn = document.getElementById('saveThemeBtn');
+    saveBtn.onclick = function () {
+        const newMainColor = localStorage.getItem("tempMainColor");
+        localStorage.setItem("mainColor", newMainColor);
+        localStorage.setItem("mainDarkColor", adjust(newMainColor, -20));
+        localStorage.setItem("mainLightColor", hexToRgba(newMainColor, 0.2));
+        const newBgColor = localStorage.getItem("tempBackgroundColor");
+        localStorage.setItem("textColor", newBgColor);
+        localStorage.setItem("backgroundColor", newBgColor);
+        localStorage.setItem("mainTextColor", newBgColor === lightColor ? darkColor : lightColor);
+        localStorage.setItem("hrefBgColor", newBgColor === lightColor ? hrefBgLight : hrefBgDark);
+        localStorage.setItem("logoSrc", localStorage.getItem("tempLogoSrc"));
+
+        location.reload();
+    };
+}
+
 
 function replyToNotificationRequest() {
     const acceptBtns = document.getElementsByClassName('button-accept');
@@ -205,6 +307,8 @@ if (!isMobile()) {
     addFindFriendModal();
     sendInvitationToFriend();
     addNotificationFriendModal();
+    addThemeModal();
+    changeTheme();
     replyToNotificationRequest();
     createGroupModal();
     createNewGroup();
@@ -362,6 +466,10 @@ function addOnclickToPhotoButton(idAddPhotoBtn, fileInputId) {
 
 function createExpense() {
     const createBtn = document.getElementsByClassName('btn-create_expense').item(0);
+
+    if (!createBtn)
+        return;
+
     addOnclickToPhotoButton('expense-photo-btn', 'expense-photo-input-file');
 
     createBtn.onclick = async function () {
@@ -392,7 +500,7 @@ function createExpense() {
         }
 
         let equally = document.getElementById('a-split').innerHTML;
-        equally = equally === 'equally';
+        equally = equally === 'equally' || equally === 'поровну';
 
         if (amount.length !== 0) {
             let fd = new FormData();
@@ -468,7 +576,7 @@ function savePercents() {
         }
 
         const equallyBtn = document.getElementById("a-split");
-        equallyBtn.innerText = 'by percentage';
+        equallyBtn.innerText = gettext('by percentage');
         const closeModalBtn = document.getElementsByClassName('close-split-modal').item(0);
         closeModalBtn.click();
     }
@@ -481,19 +589,16 @@ function setOnclickToExpensesCards() {
     const cards = document.getElementsByClassName('expenses-card');
 
     for (let i = 0; i < cards.length; i++) {
-        console.log('kek');
         cards[i].onfocus = function () {
             const selected = this.classList.contains('expenses-card-selected');
 
             for (let j = 0; j < cards.length; j++) {
-                // console.log(selected);
                 cards[j].classList.remove('expenses-card-selected');
             }
 
             if (!selected) {
                 this.classList.add('expenses-card-selected');
                 const selected1 = this.classList.contains('expenses-card-selected');
-                console.log('mda',selected1);
                 expenseId = this.id.split('-')[0];
             } else {
                 expenseId = null;
@@ -505,6 +610,9 @@ setOnclickToExpensesCards();
 
 
 function addSettleUp(modal, openBtn, closeBtn) {
+    if (!openBtn)
+        return;
+
     const modalNoExp  = document.getElementById('noExpenseChooseModal');
 
     addModal(
@@ -541,9 +649,17 @@ function addSettleUp(modal, openBtn, closeBtn) {
         });
 
         const result = await response.json();
-        const pay = result['username_pay'];
-        const get = result['username_get'];
+
+        let pay = result['username_pay'];
+        let get = result['username_get'];
         const amount = result['amount'];
+
+        if (pay === 'You') {
+            pay = gettext('You')
+        }
+        if (get === 'you') {
+            get = gettext('you')
+        }
 
         document.getElementById('a-who-settle').innerText = pay;
         document.getElementById('a-who-recipient').innerHTML = get;
@@ -584,7 +700,7 @@ function settleUp() {
             body: expenseId
         });
 
-        location.reload();
+         location.reload();
 
     }
 }

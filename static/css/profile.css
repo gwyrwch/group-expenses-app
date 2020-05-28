@@ -1,7 +1,6 @@
 .profile-photo {
     width: 200px;
     height: 200px;
-    /*box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.03) inset;*/
     box-shadow: -1px -1px 3px rgba(0, 0, 0, 0.07), 1px 1px 3px rgba(0, 0, 0, 0.07);
     border-radius: 100px;
 }
@@ -10,8 +9,8 @@
     position: absolute;
     top: 83px;
     left: 35px;
-    color: #ffffff;
-    background-color: #007eff;
+    color: var(--text-color);
+    background-color: var(--main-color);
     border: none;
     font-size: 12px;
     width: 130px;
@@ -23,8 +22,8 @@
 }
 
 .profile-submit-btn {
-    color: #ffffff;
-    background-color: #007eff;
+    color: var(--text-color);
+    background-color: var(--main-color);
     border: none;
     font-size: 12px;
     width: 230px;
@@ -37,7 +36,7 @@
 }
 
 .profile-form {
-    border: #007eff solid 1px;
+    border: var(--main-color) solid 1px;
     border-radius: 30px;
     padding: 6%;
     margin-top: 50px;
@@ -56,7 +55,8 @@
     /*border: rgba(72, 72, 72, 0.85) 0.5px solid;*/
     padding: 10px;
     font-size: 14px;
-    background-color: #f1f1f1;
+    color: var(--main-text-color);
+    background-color: var(--href-bg-color);
     border-radius: 8px;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
     /*text-align: center;*/
@@ -67,14 +67,11 @@
 }
 
 .profile-form select {
-    background-color: #f1f1f1;
+    background-color: var(--href-bg-color);
     border-radius: 8px;
     height: 54px;
-
-    /*width: 100%;*/
-    /*box-sizing: border-box;;*/
     border: none;
-    /*color: ;*/
+    color: var(--main-text-color);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
 
     width: 100%;
@@ -125,6 +122,9 @@
         display: block;
     }
 
+    .profile-photo-col-3 {
+        position: initial;
+    }
     .profile-photo-button {
         display: none;
     }

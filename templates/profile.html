@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load i18n %}
 
 <html lang="en">
   <head>
@@ -10,13 +11,13 @@
       <link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %}">
       <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+      <link rel="shortcut icon" href="{% static "img/icon.png" %}" type="image/x-icon">
   </head>
 <body>
     <header>
         <nav class="navbar row">
             <div class="column-2">
-                <a class="navbar-item" href="/">
+                <a class="navbar-item" href="./">
                     <div class="text navbar-logo-text">
                         Cashflow
                     </div>
@@ -25,7 +26,7 @@
             <div class="column-8"></div>
             <div class="column-2" style="text-align: right">
                 <a class="navbar-item navbar-logout" href="logout_view">
-                    Log out
+                    {% trans 'Log out' %}
                 </a>
             </div>
         </nav>
@@ -42,19 +43,23 @@
                             <img class="profile-photo" src="{% static "img/profile_default.jpg" %}" alt="..."/>
                         {% endif %}
 
-                        <button type="button" class="profile-photo-button">UPLOAD PHOTO</button>
+                        <button type="button" class="profile-photo-button">{% trans 'UPLOAD PHOTO' %}</button>
                         <input type="file" id="photo" name="photo" style="display: none;">
                     </div>
                     <div class="column-6">
                         <div class="row">
                             <div class="column-5">
-                                <input class="input-small-device" type="text" value="{{ user.first_name }}" name="name" placeholder="Rita">
+                                <input class="input-small-device" type="text" value="{{ user.first_name }}"
+                                       name="name" placeholder="{% trans 'Rita' %}"
+                                >
                             </div>
                             <div class="column-1">
 
                             </div>
                             <div class="column-6">
-                                <input class="input-small-device" type="text" value="{{ user.last_name }}" name="surname" placeholder="Gagarina">
+                                <input class="input-small-device" type="text"
+                                       value="{{ user.last_name }}" name="surname" placeholder="{% trans 'Gagarina' %}"
+                                >
                             </div>
                         </div>
                         <div class="row">
@@ -64,29 +69,40 @@
                         </div>
                         <div class="row">
                             <div class="column-12">
-                                <input type="password" name="password" placeholder="New password">
+                                <input type="password" name="password" placeholder="{% trans 'New password' %}">
                             </div>
                         </div>
+                        {% load i18n %}
                         <div class="row">
                             <div class="column-12">
-                                <select name="currency">
-                                    &nbsp
-                                    <option>BYN</option>
-                                    <option>USD</option>
-                                    <option>EUR</option>
-                                    <option>PLN</option>
-                                </select>
+                                <select name="language">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+
+                                {% for language in languages %}
+                                    {% if forloop.counter0 == 0 %}
+                                    <option value="en-us"{% if "en-us" == LANGUAGE_CODE %} selected{% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
+                                    {% else %}
+                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                             </div>
                         </div>
                         <div class="row" style="display: inline;">
                             <div class="column-12 profile-submit-btn-parent">
-                                <button id="saveChanges" type="button" class="profile-submit-btn">SAVE</button>
+                                <button id="saveChanges" type="button" class="profile-submit-btn">{% trans 'SAVE' %}</button>
                             </div>
                             <div id="confirmModal" class="modal">
                                 <div class="modal-content" id="modal-content-kek">
                                     <div class="row modal-header">
                                         <div class="column-9">
-                                            <h3><strong>Confirm changes</strong></h3>
+                                            <h3><strong>{% trans 'Confirm changes' %}</strong></h3>
                                         </div>
                                         <div class="column-2">
                                             <button class="material-icons close">
@@ -97,10 +113,10 @@
                                     <div class="hr"></div>
                                     <div class="modal-body">
                                         <label>
-                                            <input placeholder="Current password" type="password" name="cur_password" class="modal-input">
+                                            <input placeholder="{% trans 'Current password' %}" type="password" name="cur_password" class="modal-input">
                                         </label>
-                                        <span id="password-invalid-span">Incorrect password</span>
-                                        <button type="button" class="profile-confirm-submit-btn">Save</button>
+                                        <span id="password-invalid-span">{% trans 'Incorrect password' %}</span>
+                                        <button type="button" class="profile-confirm-submit-btn">{% trans 'Save' %}</button>
                                         <button id="submit-btn" type="submit" style="display: none"></button>
                                     </div>
                                 </div>
@@ -115,18 +131,18 @@
         <div class="footer">
             <div class="row">
                 <div class="column-9 logo">
-                    <img src="{% static "img/logo.png" %}" alt="">
+                    <img src="{% static "img/logo.png" %}" alt="" id="logo">
                 </div>
                 <div class="column-3">
                     <div class="company">
                         <h4>
-                            Company
+                            {% trans 'Company' %}
                         </h4>
                         <a href="#">
-                            About us
+                            {% trans 'About us' %}
                         </a>
                         <a href="#">
-                            Contact us
+                            {% trans 'Contact us' %}
                         </a>
                     </div>
                 </div>

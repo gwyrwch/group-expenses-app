@@ -15,22 +15,22 @@
 .row-btns button {
     outline: none;
     font-size: 12px;
-    width: 72px;
+    width: 75px;
     padding-top: 7px;
     padding-bottom: 7px;
 }
 
 
 .row-btns .btn-blue {
-    color: #ffffff;
-    background-color: #007eff;
-    border-color: #007eff;
+    color: var(--text-color);
+    background-color: var(--main-color);
+    border-color: var(--main-color);
 
 }
 
 .row-btns .btn-white {
-    color: #007eff;
-    background-color: #ffffff;
+    color: var(--main-color);
+    background-color: var(--background-color);
 }
 
 
@@ -39,7 +39,8 @@
 }
 
 .row-btns {
-    background-color: rgba(24, 160, 251, 0.10);
+    /*background-color: rgba(24, 160, 251, 0.10);*/
+    background-color: var(--main-light-color);
     padding: 5px;
 }
 
@@ -47,6 +48,7 @@
 .main-container  {
     padding-left: 0;
     padding-right: 0;
+    color: var(--main-text-color)
 }
 
 .card .column-3 {
@@ -60,7 +62,7 @@
 .lent-borrowed-text {
     font-size: 10.5px;
     text-align: right;
-    color: #5b5b5b;
+    color: var(--main-dark-color);
 }
 
 .lent-money-text {
@@ -80,7 +82,7 @@
 
 .card-date {
     font-size: 11px;
-    color: #5b5b5b;
+    color: var(--main-dark-color);
 }
 
 .navbar {

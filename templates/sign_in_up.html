@@ -12,12 +12,12 @@
 
       <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+      <link rel="shortcut icon" href="{% static "img/icon.png" %}" type="image/x-icon">
   </head>
 <body>
     <header>
         <nav class="navbar">
-            <a class="navbar-item" href="/">
+            <a class="navbar-item" href="./">
                 <div class="text navbar-logo-text">
                     Cashflow
                 </div>
@@ -46,14 +46,11 @@
                     <h2>
                         Sign in to <span class="span-logo-text">Cashflow</span>
                     </h2>
-                    {% if no_such_user  %}
-                        <span id="no-such-user-span" style="display: block">No such user in database</span>
-                    {% endif %}
                     <div class="row">
                         <div class="column-12">
                             <label>
                                 <input name="sign-in-username" autocomplete="new-password" placeholder="Username">
-                                <span id="username-in-invalid-span">Username shouldn't be empty</span>
+                                <span id="username-in-invalid-span">.</span>
                             </label>
                         </div>
                     </div>
@@ -158,7 +155,7 @@
         <div class="footer">
             <div class="row">
                 <div class="column-9 logo">
-                    <img src="{% static "img/logo.png" %}" alt="">
+                    <img src="{% static "img/logo.png" %}" alt="" id="logo">
                 </div>
                 <div class="column-3">
                     <div class="company">

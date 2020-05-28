@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load i18n %}
+
 
 <html lang="en">
 <head>
@@ -11,12 +13,14 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/friends_groups.css" %}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static "img/icon.png" %}" type="image/x-icon">
+
 </head>
 <body>
     <header>
         <nav class="navbar row">
             <div class="column-3">
-                <a class="navbar-item" href="/">
+                <a class="navbar-item" href="./">
                     <div class="text navbar-logo-text">
                         Cashflow
                     </div>
@@ -30,8 +34,8 @@
                         <img src="{{ user_photo_path }}">
                     </a>
                     <div class="dropdown-content">
-                        <a href="profile">Your account</a>
-                        <a href="logout_view">Log out</a>
+                        <a href="profile">{% trans 'Your account' %}</a>
+                        <a href="logout_view">{% trans 'Log out' %}</a>
                     </div>
                 </div>
             </div>
@@ -53,16 +57,16 @@
                         {{ card.name }}
                     </div>
                     <div class="owes-you-text">
-                        you lent {{ card.you_pay }}
+                        {% trans 'you lent' %} {{ card.you_pay }}
                     </div>
                     <div class="you-owe-text">
-                        you owe {{ card.you_owe }}
+                        {% trans 'you owe' %} {{ card.you_owe }}
                     </div>
                 </div>
                 <div class="column-4"></div>
             </div>
             {% empty %}
-             <span>{{ title }} list is empty</span>
+             <span>{{ title }} {% trans 'list is empty' %}</span>
             {% endfor %}
         </div>
     </main>
@@ -70,18 +74,18 @@
         <div class="footer">
             <div class="row">
                 <div class="column-9 logo">
-                    <img src="{% static "img/logo.png" %}" alt="">
+                    <img src="{% static "img/logo.png" %}" alt="" id="logo">
                 </div>
                 <div class="column-3">
                     <div class="company">
                         <h4>
-                            Company
+                            {% trans 'Company' %}
                         </h4>
                         <a href="#">
-                            About us
+                            {% trans 'About us' %}
                         </a>
                         <a href="#">
-                            Contact us
+                            {% trans 'Contact us' %}
                         </a>
                     </div>
                 </div>

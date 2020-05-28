@@ -1,5 +1,5 @@
 import { addModal } from './lib.js';
-
+import {setThemeColors} from "./lib.js";
 
 
 const modal = document.getElementById("confirmModal");
@@ -32,11 +32,16 @@ function saveData() {
         if (!res['valid']) {
             span.style.display = 'block';
         } else {
+            const langSubmitBtn = document.getElementById('language-btn');
+            setTimeout(function () {
+                langSubmitBtn.click();
+            }, 0);
+
             const submitBtn = document.getElementById('submit-btn');
-            submitBtn.click();
+            setTimeout(function () {
+                submitBtn.click();
+            }, 100);
         }
-
-
     };
 }
 saveData();
@@ -63,3 +68,6 @@ function handleProfileImage() {
 }
 
 handleProfileImage();
+
+
+setThemeColors();
