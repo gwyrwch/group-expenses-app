@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 16:24+0000\n"
+"POT-Creation-Date: 2020-05-28 07:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,17 +100,17 @@ msgstr "you owe"
 msgid "list is empty"
 msgstr "list is emptyт"
 
-#: templates/friends_groups_mobile.html:82 templates/index.html:610
+#: templates/friends_groups_mobile.html:82 templates/index.html:609
 #: templates/index_mobile.html:321 templates/profile.html:139
 msgid "Company"
 msgstr "Company"
 
-#: templates/friends_groups_mobile.html:85 templates/index.html:613
+#: templates/friends_groups_mobile.html:85 templates/index.html:612
 #: templates/index_mobile.html:324 templates/profile.html:142
 msgid "About us"
 msgstr "About us"
 
-#: templates/friends_groups_mobile.html:88 templates/index.html:616
+#: templates/friends_groups_mobile.html:88 templates/index.html:615
 #: templates/index_mobile.html:327 templates/profile.html:145
 msgid "Contact us"
 msgstr "Contact us"
@@ -279,6 +279,10 @@ msgstr "group"
 #: templates/index.html:592 templates/index_mobile.html:306
 msgid "No active expenses in this group yet."
 msgstr "No active expenses in this group yet."
+
+#: templates/index.html:601
+msgid "language"
+msgstr "en"
 
 #: templates/index_mobile.html:55
 msgid "groups"

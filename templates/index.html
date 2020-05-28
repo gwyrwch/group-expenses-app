@@ -262,11 +262,11 @@
                     <div class="modal-body">
                         {% for notification in notifications %}
                             <div class="row">
-                            <div class="column-8">
+                            <div class="column-7">
                                 {{ notification.text }}
                             </div>
                             {% if notification.accept_decline %}
-                                <div class="column-4" style="text-align: right">
+                                <div class="column-5" style="text-align: right">
                                     <button data-type="{{ notification.type }}"
                                             data-sender="{{ notification.id_sender }}"
                                             class="button-accept">{% trans 'Accept' %}
@@ -598,8 +598,7 @@
         </div>
     </main>
     <footer>
-        <div class="footer">
-            {# fixme: #}
+        <div class="footer {% trans 'language' %}" >
             <div class="row">
                 <div class="column-9 logo">
                     <img src="{% static "img/logo.png" %}" alt="" id="logo">

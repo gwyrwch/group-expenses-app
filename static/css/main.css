@@ -43,6 +43,7 @@ header {
     height: 50px;
     position: fixed;
     width: 100%;
+    z-index: 1;
 }
 
 .navbar {
@@ -53,7 +54,7 @@ header {
 }
 
 main {
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 110px);
 }
 
 .navbar, .main-container {
@@ -63,6 +64,7 @@ main {
 .main-container {
     padding-top: 60px;
     padding-bottom: 60px;
+    min-height: auto;
 }
 
 .navbar-item:hover {
@@ -370,7 +372,8 @@ th {
     padding-left: 0;
     margin-top: 0;
     margin-bottom: 0;
-    height: 140px;
+    /*height: 140px;*/
+    max-height: 140px;
     overflow: auto;
 }
 
@@ -395,9 +398,12 @@ footer {
 
 .footer {
     background-color: var(--href-bg-color);
+    width: auto;
     height: 170px;
     padding: 0 10%;
     color: var(--main-text-color);
+    position: relative;
+    z-index: 10;
 }
 
 .footer .logo {
@@ -416,6 +422,11 @@ footer {
 
 .footer ul:before {
     content: "Follow us:";
+    font-size: 11px;
+}
+
+.footer.ru ul:before {
+    content: "Ищите нас:";
     font-size: 11px;
 }
 
@@ -523,10 +534,10 @@ footer {
 
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 250px; /* Location of the box */
+  display: none;
+  position: fixed;
+  z-index: 11;
+  padding-top: 10%;
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -763,7 +774,8 @@ input[type="date" i] {
 
 
 #notificationModal .modal-content {
-    width: 35%;
+    width: 40%;
+
 }
 
 #notificationModal button {
@@ -788,7 +800,7 @@ input[type="date" i] {
     margin-top: 4%;
 }
 
-#notificationModal .column-8 {
+#notificationModal .column-7 {
     padding-top: 2%;
 }
 
