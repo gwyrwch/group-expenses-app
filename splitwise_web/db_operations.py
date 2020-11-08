@@ -51,10 +51,15 @@ def process_notification(id_sender, notification_type, accept=None, id_user=None
         ).delete()
 
         if accept:
-            fr1 = FriendShip(uid_1=id_sender, uid_2=id_user)
-            fr2 = FriendShip(uid_1=id_user, uid_2=id_sender)
-            fr1.save()
-            fr2.save()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    'INSERT INTO FriendShip VALUES (NULL, %s, %s)',
+                    [id_sender, id_user]
+                )
+                cursor.execute(
+                    'INSERT INTO FriendShip VALUES (NULL, %s, %s)',
+                    [id_user, id_sender]
+                )
 
             notification = Notification(
                 id_sender=id_user,
@@ -84,17 +89,22 @@ def process_notification(id_sender, notification_type, accept=None, id_user=None
             print(e)
 
 
-def get_user_friends(user_id):
-    friendships = FriendShip.objects.filter(uid_1=user_id)
-    res = []
-    for friendship in friendships:
-        friend = dict()
-        friend__obj = User.objects.filter(id=friendship.uid_2).get()
-        friend['friend_username'] = friend__obj.username
-        friend['id'] = friend__obj.id
-        friend['photo_path'] = find_user_photo(friend__obj.id)
+def get_user_friends(id_user):
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM FriendShip WHERE uid_1=%s', [id_user])
+        friendships = cursor.fetchall()
+        res = []
+        if len(friendships):
+            for friendship in friendships:
+                _, uid_1, uid_2 = friendship
 
-        res.append(friend)
+                friend = dict()
+                friend_obj = User.objects.filter(id=uid_2).get()
+                friend['friend_username'] = friend_obj.username
+                friend['id'] = friend_obj.id
+                friend['photo_path'] = find_user_photo(friend_obj.id)
+                res.append(friend)
+            print('friends: ', res)
 
     return res
 
@@ -465,44 +475,46 @@ def check_is_email_valid(email):
 
 
 def get_user_expenses_to_friends(id_user):
-    id_friends = FriendShip.objects.filter(uid_1=id_user).values_list('uid_2')
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT uid_2 FROM FriendShip WHERE uid_1=%s', [id_user])
+        expenses = []
+        id_friends = cursor.fetchall()
+        for id_friend in id_friends:
+            cur_expenses = Expense.objects.filter(
+                id_user_paid=id_friend[0], id_user_owes=id_user
+            ) | Expense.objects.filter(
+                id_user_paid=id_user, id_user_owes=id_friend[0]
+            )
+            ans = dict()
+            if cur_expenses:
+                cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
 
-    expenses = []
-    for id_friend in id_friends:
-        cur_expenses = Expense.objects.filter(
-            id_user_paid=id_friend[0], id_user_owes=id_user
-        ) | Expense.objects.filter(
-            id_user_paid=id_user, id_user_owes=id_friend[0]
-        )
-        ans = dict()
-        if cur_expenses:
-            cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
+                you_pay = 0
+                you_owe = 0
 
-            you_pay = 0
-            you_owe = 0
+                currency = ''
+                for exp in cur_expenses:
+                    currency = exp['currency']
+                    # fixme if many currencies
+                    if exp['id_user_paid'] == id_user:
+                        you_pay += round(exp['amount'], 5)
+                    else:
+                        you_owe += round(exp['amount'], 5)
 
-            currency = ''
-            for exp in cur_expenses:
-                currency = exp['currency']
-                # fixme if many currencies
-                if exp['id_user_paid'] == id_user:
-                    you_pay += round(exp['amount'], 5)
-                else:
-                    you_owe += round(exp['amount'], 5)
+                ans['you_pay'] = str(round(you_pay, 5)) + currency
+                ans['you_owe'] = str(round(you_owe, 5)) + currency
 
-            ans['you_pay'] = str(round(you_pay, 5)) + currency
-            ans['you_owe'] = str(round(you_owe, 5)) + currency
+            else:
+                ans['you_pay'] = '0$'
+                ans['you_owe'] = '0$'
 
-        else:
-            ans['you_pay'] = '0$'
-            ans['you_owe'] = '0$'
+            ans['name'] = User.objects.filter(id=id_friend[0]).get().username
+            ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
+            ans['id'] = id_friend[0]
+            expenses.append(ans)
 
-        ans['name'] = User.objects.filter(id=id_friend[0]).get().username
-        ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
-        ans['id'] = id_friend[0]
-        expenses.append(ans)
-
-    return expenses
+        print('expenses', expenses)
+        return expenses
 
 
 def get_user_expenses_to_groups(id_user):
