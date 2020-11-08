@@ -160,23 +160,32 @@ def get_user_group_members(id_user):
 
 
 def add_or_update_photo(id_user, pic):
-    profile_pics = ProfilePictures.objects.filter(id_user=id_user)
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM ProfilePictures WHERE id_user=%s', [id_user])
+        profile_pic = cursor.fetchall()
 
-    if not len(profile_pics):
-        profile_pic = ProfilePictures(id_user=id_user, photo_path=pic)
-        profile_pic.save()
-    else:
-        profile_pic = profile_pics.get()
-        profile_pic.photo_path = pic
-        profile_pic.save()
+        if not len(profile_pic):
+            cursor.execute(
+                'INSERT INTO ProfilePictures VALUES (NULL, %s, %s)',
+                [id_user, pic]
+            )
+        else:
+            cursor.execute(
+                'UPDATE ProfilePictures SET photo_path=%s WHERE id_user=%s',
+                [pic, id_user]
+            )
 
 
 def find_user_photo(id_user):
-    profile_pics = ProfilePictures.objects.filter(id_user=id_user)
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM ProfilePictures WHERE id_user=%s', [id_user])
+        values = cursor.fetchall()
 
-    if len(profile_pics):
-        return profile_pics.get().photo_path
-    return "/media/images/profile_default.png"
+        if len(values):
+            _, _, profile_pic = values[0]
+            return profile_pic
+        else:
+            return "/media/images/profile_default.png"
 
 
 def create_group(name, pic, id_user):
@@ -554,22 +563,12 @@ def update_or_set_lang_user(id_user, lang_code):
                 [lang_code, id_user]
             )
 
-    # language = UserLang.objects.filter(id_user=id_user)
-    #
-    # if not len(language):
-    #     lang = UserLang(id_user=id_user, lang=lang_code)
-    #     lang.save()
-    # else:
-    #     lang = language.get()
-    #     lang.lang = lang_code
-    #     lang.save()
-
 
 def get_user_lang(id_user):
     try:
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM UserLang WHERE id_user=%s', [id_user])
-            _, _, lang = cursor.fetchall()
+            _, _, lang = cursor.fetchall()[0]
         return lang
     except Exception as e:
         return 'en-us'

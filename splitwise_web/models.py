@@ -33,8 +33,3 @@ class Notification(models.Model):
     notification_type = models.CharField(max_length=30)  # friend invitation,
     id_sender = models.IntegerField()
     id_recipient = models.IntegerField()
-
-
-class ProfilePictures(models.Model):
-    id_user = models.IntegerField()
-    photo_path = models.CharField(max_length=100)
