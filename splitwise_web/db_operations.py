@@ -253,65 +253,74 @@ def edit_group_db(id_group, pic, name, group_members):
 
 
 def get_user_dashboard_expenses(id_user):
-    expenses_owes = Expense.objects.filter(id_user_owes=id_user)
-    expenses_owed = Expense.objects.filter(id_user_paid=id_user)
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM Expense WHERE id_user_owes=%s', [id_user])
+        expenses_owes = cursor.fetchall()
+        cursor.execute('SELECT * FROM Expense WHERE id_user_paid=%s', [id_user])
+        expenses_owed = cursor.fetchall()
 
-    sums = defaultdict(int)
-    for ex in expenses_owes:
-        sums[ex.id_user_paid] -= ex.amount
-    for ex in expenses_owed:
-        sums[ex.id_user_owes] += ex.amount
+        sums = defaultdict(int)
+        for ex in expenses_owes:
+            _, description, date, currency, amount, id_user_paid, id_user_owes, id_group, pic_file_path = ex
+            sums[id_user_paid] -= amount
+        print(sums[id_user_paid])
+        for ex in expenses_owed:
+            _, description, date, currency, amount, id_user_paid, id_user_owes, id_group, pic_file_path = ex
+            sums[id_user_owes] += amount
+        print(sums[id_user_owes])
+        res = []
+        for id_friend, total_sum in sums.items():
+            exp = dict()
+            exp['description'] = ''
+            exp['date'] = ''
 
-    res = []
-    for id_friend, total_sum in sums.items():
-        exp = dict()
-        exp['description'] = ''
-        exp['date'] = ''
+            if total_sum > 0:
+                exp['id_paid'] = id_user
+                exp['id_owed'] = id_friend
+                exp['amount'] = round(total_sum, 5)
+            else:
+                exp['id_paid'] = id_friend
+                exp['id_owed'] = id_user
+                exp['amount'] = -round(total_sum, 5)
 
-        if total_sum > 0:
-            exp['id_paid'] = id_user
-            exp['id_owed'] = id_friend
-            exp['amount'] = round(total_sum, 5)
-        else:
-            exp['id_paid'] = id_friend
-            exp['id_owed'] = id_user
-            exp['amount'] = -round(total_sum, 5)
+            exp['currency'] = '$'
+            exp['photo'] = find_user_photo(id_friend)
+            exp['id_group'] = None
+            exp['id'] = ''
 
-        exp['currency'] = '$'
-        exp['photo'] = find_user_photo(id_friend)
-        exp['id_group'] = None
-        exp['id'] = ''
-
-        res.append(exp)
-
-    return prepare_expenses(id_user, res)
+            res.append(exp)
+        # print('res_exp:', res)
+        return prepare_expenses(id_user, res)
 
 
 def get_group_expenses(id_group):
-    expenses = Expense.objects.filter(id_group=id_group)
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM Expense WHERE id_group=%s', [id_group])
+        expenses = cursor.fetchall()
+        res = []
+        for expense in expenses:
+            id_expense, description, date, currency, amount, id_user_paid, id_user_owes, id_group, pic_file_path = expense
+            exp = dict()
+            exp['description'] = description
 
-    res = []
-    for expense in expenses:
-        exp = dict()
-        exp['description'] = expense.description
+            if to_locale(get_language()) == 'ru':
+                exp['date'] = strftime("%d.%m.%Y")
+            else:
+                exp['date'] = date
+            print(exp['date'])
 
-        if to_locale(get_language()) == 'ru':
-            exp['date'] = strftime("%d.%m.%Y")
-        else:
-            exp['date'] = expense.date
-        print(exp['date'])
+            exp['id_paid'] = id_user_paid
+            exp['id_owed'] = id_user_owes
+            exp['amount'] = round(amount, 5)
+            exp['currency'] = currency
+            exp['photo'] = pic_file_path
+            exp['id_group'] = id_group
+            exp['id'] = id_expense
 
-        exp['id_paid'] = expense.id_user_paid
-        exp['id_owed'] = expense.id_user_owes
-        exp['amount'] = round(expense.amount, 5)
-        exp['currency'] = expense.currency
-        exp['photo'] = expense.pic_file_path
-        exp['id_group'] = id_group
-        exp['id'] = expense.id
+            res.append(exp)
 
-        res.append(exp)
-
-    return res
+        # print('res_gr: ', res)
+        return res
 
 
 def prepare_expenses(id_user, expenses):
@@ -343,44 +352,47 @@ def get_user_expenses_from_group(id_group, id_user):
 
 
 def get_user_expenses_with_friend(id_friend, id_user):
-    expenses = Expense.objects.filter(
-        id_user_owes=id_friend, id_user_paid=id_user
-    ) | Expense.objects.filter(
-        id_user_owes=id_user, id_user_paid=id_friend
-    )
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM Expense WHERE '
+                       '(id_user_owes=%s AND id_user_paid=%s) OR '
+                       '(id_user_owes=%s AND id_user_paid=%s)',
+                       [id_friend, id_user, id_user, id_friend])
 
-    res = []
-    for expense in expenses:
-        exp = dict()
-        exp['description'] = expense.description
-        exp['date'] = expense.date
-        exp['id_paid'] = expense.id_user_paid
-        exp['id_owed'] = expense.id_user_owes
-        exp['amount'] = round(expense.amount, 5)
-        exp['currency'] = expense.currency
-        exp['photo'] = expense.pic_file_path
-        exp['id_group'] = expense.id_group
-        exp['id'] = expense.id
-        if expense.id_group:
-            exp['group_name'] = Group.objects.filter(id=expense.id_group).first().name
+        expenses = cursor.fetchall()
+        res = []
+        for expense in expenses:
+            id_expense, description, date, currency, amount, id_user_paid, \
+                id_user_owes, id_group, pic_file_path = expense
+            exp = dict()
+            exp['description'] = description
+            exp['date'] = date
+            exp['id_paid'] = id_user_paid
+            exp['id_owed'] = id_user_owes
+            exp['amount'] = round(amount, 5)
+            exp['currency'] = currency
+            exp['photo'] = pic_file_path
+            exp['id_group'] = id_group
+            exp['id'] = id_expense
+            if id_group:
+                exp['group_name'] = Group.objects.filter(id=id_group).first().name
 
-        if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
-            continue
-        if exp['id_paid'] == id_user and exp['amount'] > eps:
-            owed = User.objects.filter(id=exp['id_owed']).first().username
-            exp['text'] = '{} {}'.format(_('you lent'), owed)
-            exp['lent'] = True
-        elif exp['id_owed'] == id_user and exp['amount'] > eps:
-            paid = User.objects.filter(id=exp['id_paid']).first().username
-            exp['text'] = '{} {}'.format(paid, _('lent you'))
-            exp['lent'] = False
-        else:
-            continue
-        res.append(exp)
+            if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
+                continue
+            if exp['id_paid'] == id_user and exp['amount'] > eps:
+                owed = User.objects.filter(id=exp['id_owed']).first().username
+                exp['text'] = '{} {}'.format(_('you lent'), owed)
+                exp['lent'] = True
+            elif exp['id_owed'] == id_user and exp['amount'] > eps:
+                paid = User.objects.filter(id=exp['id_paid']).first().username
+                exp['text'] = '{} {}'.format(paid, _('lent you'))
+                exp['lent'] = False
+            else:
+                continue
+            res.append(exp)
 
-    res.reverse()
-
-    return res
+        res.reverse()
+        # print('res_3', res)
+        return res
 
 
 def get_group_name_by_id(id_group):
@@ -421,41 +433,50 @@ def create_expense(id_group, desc, amount, date, percent_users, paid_username, p
         user_amount = float(d['percent']) / 100 * amount
         print(user_amount)
 
-        expense = Expense(
-            id_group=id_group,
-            description=desc,
-            amount=user_amount,
-            date=date,
-            currency='$',
-            id_user_paid=User.objects.filter(username=paid_username).first().id,
-            pic_file_path=pic,
-            id_user_owes=id_user_owes
-        )
-        expense.save()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                'INSERT INTO Expense VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)',
+                [
+                    desc, date, '$', user_amount,
+                    User.objects.filter(username=paid_username).first().id,
+                    id_user_owes, id_group, pic
+                ]
+            )
 
 
 def get_expense_info_by_id(id_exp, id_current_user):
-    exp = Expense.objects.filter(id=id_exp).get()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT * FROM Expense WHERE id = %s",
+            [id_exp]
+        )
 
-    res = dict()
-    if exp.id_user_owes == id_current_user:
-        res['username_pay'] = 'You'
+        expense = cursor.fetchall()
+        id_expense, description, date, currency, amount, \
+            id_user_paid, id_user_owes, id_group, pic_file_path = expense[0]
+        res = dict()
 
-    else:
-        res['username_pay'] = User.objects.filter(id=exp.id_user_owes).get().username
+        if id_user_owes == id_current_user:
+            res['username_pay'] = 'You'
 
-    if exp.id_user_paid == id_current_user:
-        res['username_get'] = 'you'
-    else:
-        res['username_get'] = User.objects.filter(id=exp.id_user_paid).get().username
-    res['amount'] = str(round(exp.amount, 5)) + exp.currency
+        else:
+            res['username_pay'] = User.objects.filter(id=id_user_owes).get().username
 
-    print(res['username_pay'], res['username_get'])
-    return res
+        if id_user_paid == id_current_user:
+            res['username_get'] = 'you'
+        else:
+            res['username_get'] = User.objects.filter(id=id_user_paid).get().username
+        res['amount'] = str(round(amount, 5)) + currency
+
+        return res
 
 
 def settle_up_by_id_exp(id_exp):
-    Expense.objects.filter(id=id_exp).delete()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'DELETE FROM Expense WHERE id = %s',
+            [id_exp]
+        )
 
 
 def check_if_user_is_valid(user):
@@ -496,27 +517,28 @@ def get_user_expenses_to_friends(id_user):
         cursor.execute('SELECT uid_2 FROM FriendShip WHERE uid_1=%s', [id_user])
         expenses = []
         id_friends = cursor.fetchall()
+
         for id_friend in id_friends:
-            cur_expenses = Expense.objects.filter(
-                id_user_paid=id_friend[0], id_user_owes=id_user
-            ) | Expense.objects.filter(
-                id_user_paid=id_user, id_user_owes=id_friend[0]
+            cursor.execute(
+                'SELECT id_user_paid, id_user_owes,  amount, currency FROM Expense WHERE '
+                '(id_user_paid=%s AND id_user_owes=%s) OR '
+                '(id_user_paid=%s AND id_user_owes=%s)',
+                [id_friend[0], id_user, id_user, id_friend[0]]
             )
+
+            cur_expenses = cursor.fetchall()
             ans = dict()
             if cur_expenses:
-                cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
-
                 you_pay = 0
                 you_owe = 0
 
                 currency = ''
                 for exp in cur_expenses:
-                    currency = exp['currency']
-                    # fixme if many currencies
-                    if exp['id_user_paid'] == id_user:
-                        you_pay += round(exp['amount'], 5)
+                    id_user_paid, id_user_owes, amount, currency = exp
+                    if id_user_paid == id_user:
+                        you_pay += round(amount, 5)
                     else:
-                        you_owe += round(exp['amount'], 5)
+                        you_owe += round(amount, 5)
 
                 ans['you_pay'] = str(round(you_pay, 5)) + currency
                 ans['you_owe'] = str(round(you_owe, 5)) + currency
@@ -529,51 +551,51 @@ def get_user_expenses_to_friends(id_user):
             ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
             ans['id'] = id_friend[0]
             expenses.append(ans)
-
-        print('expenses', expenses)
+        # print('expenses1: ', expenses)
         return expenses
 
 
 def get_user_expenses_to_groups(id_user):
     id_groups = UserToGroup.objects.filter(id_user=id_user).values_list('id_group')
 
-    expenses = []
-    for id_group in id_groups:
-        cur_expenses = Expense.objects.filter(
-            id_user_owes=id_user, id_group=id_group[0]
-        ) | Expense.objects.filter(
-            id_user_paid=id_user, id_group=id_group[0]
-        )
+    with connection.cursor() as cursor:
+        expenses = []
+        for id_group in id_groups:
+            cursor.execute(
+                'SELECT id_user_paid, id_user_owes,  amount, currency FROM Expense WHERE '
+                '(id_user_owes=%s AND id_group=%s) OR '
+                '(id_user_paid=%s AND id_group=%s)',
+                [id_user, id_group[0], id_user, id_group[0]]
+            )
 
-        ans = dict()
-        if cur_expenses:
-            cur_expenses = list(cur_expenses.values('id_user_paid', 'id_user_owes', 'amount', 'currency'))
+            ans = dict()
+            cur_expenses = cursor.fetchall()
+            if cur_expenses:
+                you_pay = 0
+                you_owe = 0
 
-            you_pay = 0
-            you_owe = 0
+                currency = ''
+                for exp in cur_expenses:
+                    id_user_paid, id_user_owes, amount, currency = exp
+                    currency = currency
+                    if id_user_paid == id_user:
+                        you_pay += round(amount, 5)
+                    else:
+                        you_owe += round(amount, 5)
 
-            currency = ''
-            for exp in cur_expenses:
-                currency = '$'
-                # fixme if many currencies
-                if exp['id_user_paid'] == id_user:
-                    you_pay += round(exp['amount'], 5)
-                else:
-                    you_owe += round(exp['amount'], 5)
+                ans['you_pay'] = str(round(you_pay, 5)) + currency
+                ans['you_owe'] = str(round(you_owe, 5)) + currency
 
-            ans['you_pay'] = str(round(you_pay, 5)) + currency
-            ans['you_owe'] = str(round(you_owe, 5)) + currency
+            else:
+                ans['you_pay'] = '0$'
+                ans['you_owe'] = '0$'
 
-        else:
-            ans['you_pay'] = '0$'
-            ans['you_owe'] = '0$'
-
-        ans['name'] = Group.objects.filter(id=id_group[0]).get().name
-        ans['photo'] = Group.objects.filter(id=id_group[0]).get().group_logo_path
-        ans['id'] = id_group[0]
-        expenses.append(ans)
-
-    return expenses
+            ans['name'] = Group.objects.filter(id=id_group[0]).get().name
+            ans['photo'] = Group.objects.filter(id=id_group[0]).get().group_logo_path
+            ans['id'] = id_group[0]
+            expenses.append(ans)
+        # print('expenses8: ', expenses)
+        return expenses
 
 
 def update_or_set_lang_user(id_user, lang_code):

@@ -639,6 +639,7 @@ function addSettleUp(modal, openBtn, closeBtn) {
         }, 1);
 
 
+        console.log(expenseId);
         const response = await fetch('/get_expense_info', {
             method: 'POST',
             headers: {

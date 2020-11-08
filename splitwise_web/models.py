@@ -3,11 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-class FriendShip(models.Model):
-    uid_1 = models.IntegerField()
-    uid_2 = models.IntegerField()
-
-
 class Group(models.Model):
     name = models.CharField(max_length=30)
     group_logo_path = models.CharField(max_length=100)
@@ -16,15 +11,4 @@ class Group(models.Model):
 class UserToGroup(models.Model):
     id_group = models.IntegerField()
     id_user = models.IntegerField()
-
-
-class Expense(models.Model):
-    description = models.CharField(max_length=200)
-    date = models.DateField()
-    currency = models.CharField(max_length=10)
-    amount = models.FloatField()
-    id_user_paid = models.IntegerField()
-    id_user_owes = models.IntegerField()
-    id_group = models.IntegerField(null=True)
-    pic_file_path = models.CharField(max_length=100, default=None)
 

@@ -361,6 +361,7 @@ def get_expense_info(request):
     id_exp = int(request.body.decode("utf-8"))
     res = get_expense_info_by_id(id_exp, request.user.id)
 
+    print("RESULT TO JSON", res)
     return JsonResponse(res)
 
 
