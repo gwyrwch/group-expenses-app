@@ -14,7 +14,6 @@ from webpush import send_user_notification
 
 from splitwise_web.db_operations import *
 from splitwise_web.img_processing import process_img
-from splitwise_web.models import Notification
 
 
 @register.filter
@@ -233,12 +232,11 @@ def send_friend_invitation(request):
     friend_username = r.get('username')
     try:
         user_friend = User.objects.filter(username=friend_username).get()
-        notification = Notification(
-            id_sender=request.user.id,
-            id_recipient=user_friend.id,
-            notification_type='friend_request'
-        )
-        notification.save()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                'INSERT INTO Notification VALUES (NULL, %s, %s, %s)',
+                ['friend_request', request.user.id, user_friend.id]
+            )
 
         photo = find_user_photo(request.user.id)
         payload = {
@@ -247,6 +245,7 @@ def send_friend_invitation(request):
             'icon': photo
         }
         send_user_notification(user=user_friend, payload=payload, ttl=1000)
+        print('notification sent')
     except Exception as e:
         print(e)
     return JsonResponse({})

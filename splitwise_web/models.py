@@ -28,8 +28,3 @@ class Expense(models.Model):
     id_group = models.IntegerField(null=True)
     pic_file_path = models.CharField(max_length=100, default=None)
 
-
-class Notification(models.Model):
-    notification_type = models.CharField(max_length=30)  # friend invitation,
-    id_sender = models.IntegerField()
-    id_recipient = models.IntegerField()

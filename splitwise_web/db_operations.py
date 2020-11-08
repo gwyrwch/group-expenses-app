@@ -11,33 +11,50 @@ from django.db import connection
 eps = 10 ** -6
 
 
-def get_user_notifications(user_id):
+def get_user_notifications(id_user):
     try:
-        notifications = Notification.objects.filter(id_recipient=user_id)
-        res = []
-        for notification in notifications:
-            res_notification = dict()
-            res_notification['id_sender'] = notification.id_sender
-            text = ''
-            sender_username = User.objects.filter(id=notification.id_sender).get()
-            sender_username = sender_username.username
-            if notification.notification_type == 'friend_request':
-                text += '{} @{}'.format(_('New friend request from'), sender_username)
-                res_notification['accept_decline'] = True
-                res_notification['type'] = 'friend'
-            elif notification.notification_type == 'friend_request_reply_accept':
-                text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was accepted'))
-                res_notification['accept_decline'] = False
-                res_notification['type'] = 'friend_reply'
-            elif notification.notification_type == 'friend_request_reply_decline':
-                text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was declined'))
-                res_notification['accept_decline'] = False
-                res_notification['type'] = 'friend_reply'
+        with connection.cursor() as cursor:
+            cursor.execute(
+                'SELECT * FROM Notification WHERE id_recipient=%s',
+                [id_user]
+            )
 
-            res_notification['text'] = text
-            res.append(res_notification)
+            notifications = cursor.fetchall()
+            print('notifications', notifications)
+            res = []
+            for notification in notifications:
+                id_notification, notification_type, id_sender, id_recipient = notification
+                res_notification = dict()
+                res_notification['id_sender'] = id_sender
+                print('1', res_notification)
+                text = ''
+                sender_username = User.objects.filter(id=id_sender).get()
+                sender_username = sender_username.username
+                if notification_type == 'friend_request':
+                    print('2', res_notification)
+                    text += '{} @{}'.format(_('New friend request from'), sender_username)
+                    print('txt:', text)
+                    print('3', res_notification)
+                    res_notification['accept_decline'] = True
+                    print(res_notification)
+                    res_notification['type'] = 'friend'
+                    print(res_notification)
+                elif notification_type == 'friend_request_reply_accept':
+                    text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was accepted'))
+                    res_notification['accept_decline'] = False
+                    res_notification['type'] = 'friend_reply'
+                elif notification_type == 'friend_request_reply_decline':
+                    text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was declined'))
+                    res_notification['accept_decline'] = False
+                    res_notification['type'] = 'friend_reply'
 
-        return res
+                print(res_notification)
+                res_notification['text'] = text
+                print(res_notification)
+                res.append(res_notification)
+
+            print('res:', res)
+            return res
     except:
         return None
 
@@ -45,10 +62,11 @@ def get_user_notifications(user_id):
 def process_notification(id_sender, notification_type, accept=None, id_user=None):
     # print(id_sender, notification_type, accept, id_user)
     if notification_type == 'friend':
-        Notification.objects.filter(
-            notification_type='friend_request',
-            id_sender=id_sender, id_recipient=id_user
-        ).delete()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                'DELETE FROM Notification WHERE notification_type=%s AND id_sender=%s AND id_recipient=%s',
+                ['friend_request', id_sender, id_user]
+            )
 
         if accept:
             with connection.cursor() as cursor:
@@ -61,30 +79,29 @@ def process_notification(id_sender, notification_type, accept=None, id_user=None
                     [id_user, id_sender]
                 )
 
-            notification = Notification(
-                id_sender=id_user,
-                id_recipient=id_sender,
-                notification_type='friend_request_reply_accept'
-            )
-            notification.save()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    'INSERT INTO Notification VALUES (NULL, %s, %s, %s)',
+                    ['friend_request_reply_accept', id_user, id_sender]
+                )
         else:
-            notification = Notification(
-                id_sender=id_user,
-                id_recipient=id_sender,
-                notification_type='friend_request_reply_decline'
-            )
-            notification.save()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    'INSERT INTO Notification VALUES (NULL, %s, %s, %s)',
+                    ['friend_request_reply_decline', id_user, id_sender]
+                )
     elif notification_type == 'friend_reply':
         try:
-            Notification.objects.filter(
-                notification_type='friend_request_reply_accept',
-                id_sender=id_sender, id_recipient=id_user
-            ).delete()
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    'DELETE FROM Notification WHERE notification_type=%s AND id_sender=%s AND id_recipient=%s',
+                    ['friend_request_reply_accept', id_sender, id_user]
+                )
 
-            Notification.objects.filter(
-                notification_type='friend_request_reply_decline',
-                id_sender=id_sender, id_recipient=id_user
-            ).delete()
+                cursor.execute(
+                    'DELETE FROM Notification WHERE notification_type=%s AND id_sender=%s AND id_recipient=%s',
+                    ['friend_request_reply_decline', id_sender, id_user]
+                )
         except Exception as e:
             print(e)
 
