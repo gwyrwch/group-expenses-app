@@ -177,7 +177,6 @@ class SignInUP(View):
             email = request.POST.get('sign-up-email')
             user = User.objects.create_user(username, password=password, email=email)
             update_or_set_lang_user(user.id, 'en-us')
-            print(get_user_lang(user.id))
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -383,7 +382,6 @@ def check_user_is_valid(request):
 
 @csrf_exempt
 def check_sign_in_user(request):
-    print('bla')
     resp = json.loads(request.body)
     ans = dict()
     if check_no_such_username(resp.get('username')):
@@ -391,7 +389,9 @@ def check_sign_in_user(request):
         ans['password'] = None
     else:
         ans['username'] = 'valid'
-        ans['password'] = check_password(resp.get('password'), User.objects.filter(username=resp.get('username')).first().password)
+        ans['password'] = check_password(
+            resp.get('password'), User.objects.filter(username=resp.get('username')).first().password
+        )
 
     return JsonResponse(ans)
 
@@ -404,7 +404,7 @@ def is_password_valid(request):
     else:
         valid = False
 
-    return JsonResponse({'valid':valid})
+    return JsonResponse({'valid': valid})
 
 
 @csrf_exempt

@@ -38,8 +38,3 @@ class Notification(models.Model):
 class ProfilePictures(models.Model):
     id_user = models.IntegerField()
     photo_path = models.CharField(max_length=100)
-
-
-class UserLang(models.Model):
-    id_user = models.IntegerField()
-    lang = models.CharField(max_length=10)

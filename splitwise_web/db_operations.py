@@ -6,6 +6,8 @@ from django.utils.translation import gettext as _
 from splitwise_web.models import *
 from django.utils.translation import to_locale, get_language
 
+from django.db import connection
+
 eps = 10 ** -6
 
 
@@ -537,19 +539,37 @@ def get_user_expenses_to_groups(id_user):
 
 
 def update_or_set_lang_user(id_user, lang_code):
-    language = UserLang.objects.filter(id_user=id_user)
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM UserLang WHERE id_user=%s', [id_user])
+        lang = cursor.fetchall()
 
-    if not len(language):
-        lang = UserLang(id_user=id_user, lang=lang_code)
-        lang.save()
-    else:
-        lang = language.get()
-        lang.lang = lang_code
-        lang.save()
+        if not len(lang):
+            cursor.execute(
+                'INSERT INTO UserLang VALUES (NULL, %s, %s)',
+                [id_user, lang_code]
+            )
+        else:
+            cursor.execute(
+                'UPDATE UserLang SET lang=%s WHERE id_user=%s',
+                [lang_code, id_user]
+            )
+
+    # language = UserLang.objects.filter(id_user=id_user)
+    #
+    # if not len(language):
+    #     lang = UserLang(id_user=id_user, lang=lang_code)
+    #     lang.save()
+    # else:
+    #     lang = language.get()
+    #     lang.lang = lang_code
+    #     lang.save()
 
 
 def get_user_lang(id_user):
     try:
-        return UserLang.objects.filter(id_user=id_user).get().lang
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM UserLang WHERE id_user=%s', [id_user])
+            _, _, lang = cursor.fetchall()
+        return lang
     except Exception as e:
         return 'en-us'
