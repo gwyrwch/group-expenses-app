@@ -20,25 +20,18 @@ def get_user_notifications(id_user):
             )
 
             notifications = cursor.fetchall()
-            print('notifications', notifications)
             res = []
             for notification in notifications:
                 id_notification, notification_type, id_sender, id_recipient = notification
                 res_notification = dict()
                 res_notification['id_sender'] = id_sender
-                print('1', res_notification)
                 text = ''
                 sender_username = User.objects.filter(id=id_sender).get()
                 sender_username = sender_username.username
                 if notification_type == 'friend_request':
-                    print('2', res_notification)
                     text += '{} @{}'.format(_('New friend request from'), sender_username)
-                    print('txt:', text)
-                    print('3', res_notification)
                     res_notification['accept_decline'] = True
-                    print(res_notification)
                     res_notification['type'] = 'friend'
-                    print(res_notification)
                 elif notification_type == 'friend_request_reply_accept':
                     text += '{} @{} {}'.format(_('Your friend request to'), sender_username, _('was accepted'))
                     res_notification['accept_decline'] = False
@@ -48,19 +41,15 @@ def get_user_notifications(id_user):
                     res_notification['accept_decline'] = False
                     res_notification['type'] = 'friend_reply'
 
-                print(res_notification)
                 res_notification['text'] = text
-                print(res_notification)
                 res.append(res_notification)
 
-            print('res:', res)
             return res
     except:
         return None
 
 
 def process_notification(id_sender, notification_type, accept=None, id_user=None):
-    # print(id_sender, notification_type, accept, id_user)
     if notification_type == 'friend':
         with connection.cursor() as cursor:
             cursor.execute(
@@ -121,26 +110,37 @@ def get_user_friends(id_user):
                 friend['id'] = friend_obj.id
                 friend['photo_path'] = find_user_photo(friend_obj.id)
                 res.append(friend)
-            print('friends: ', res)
 
     return res
 
 
 def get_user_groups(id_user):
-    group_ids = UserToGroup.objects.filter(id_user=id_user)
-    res = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT * FROM UserToGroup WHERE id_user=%s',
+            [id_user]
+        )
+        group_ids = cursor.fetchall()
 
-    for group_id in group_ids:
-        group = dict()
-        # print(group_id.id_group)
-        group_obj = Group.objects.filter(id=group_id.id_group).get()
-        group['name'] = group_obj.name
-        group['logo_file_path'] = group_obj.group_logo_path
-        group['id'] = group_obj.id
+        res = []
 
-        res.append(group)
+        for group_id in group_ids:
+            _, id_group, id_user = group_id
+            group = dict()
 
-    return res
+            cursor.execute(
+                'SELECT * FROM mydb.Group WHERE id=%s',
+                [id_group]
+            )
+            group_obj = cursor.fetchall()
+            if len(group_obj):
+                id_group, name, group_logo_path = group_obj[0]
+                group['name'] = name
+                group['logo_file_path'] = group_logo_path
+                group['id'] = id_group
+
+                res.append(group)
+        return res
 
 
 def get_user_friend_members(id_user, id_friend):
@@ -162,28 +162,39 @@ def get_user_friend_members(id_user, id_friend):
 
 
 def get_user_group_members(id_user):
-    group_ids = UserToGroup.objects.filter(id_user=id_user)
-    res = {}
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT * FROM UserToGroup WHERE id_user=%s',
+            [id_user]
+        )
+        group_ids = cursor.fetchall()
 
-    for group_id in group_ids:
-        group_members = list()
-        group_obj = Group.objects.filter(id=group_id.id_group).get()
-        id_group = group_obj.id
-        user_to_groups = UserToGroup.objects.filter(id_group=id_group)
-        for user_to_group in user_to_groups:
-            usr = dict()
-            user = User.objects.filter(id=user_to_group.id_user).get()
-            usr['username'] = user.username
-            photo = find_user_photo(user.id)
-            if not photo:
-                photo = "/media/images/profile_default.jpg"
-            usr['photo'] = photo
+        res = {}
 
-            group_members.append(usr)
+        for group_id in group_ids:
+            group_members = list()
 
-        res[id_group] = group_members
+            _, id_group, _ = group_id
+            cursor.execute(
+                'SELECT * FROM UserToGroup WHERE id_group=%s',
+                [id_group]
+            )
 
-    return res
+            user_to_groups = cursor.fetchall()
+            for user_to_group in user_to_groups:
+                _, _, id_user = user_to_group
+                usr = dict()
+                user = User.objects.filter(id=id_user).get()
+                usr['username'] = user.username
+                photo = find_user_photo(user.id)
+                if not photo:
+                    photo = "/media/images/profile_default.jpg"
+                usr['photo'] = photo
+
+                group_members.append(usr)
+
+            res[id_group] = group_members
+        return res
 
 
 def add_or_update_photo(id_user, pic):
@@ -219,37 +230,59 @@ def create_group(name, pic, id_user):
     if not pic:
         pic = "/media/images/group_default.png"
 
-    group = Group(
-        name=name,
-        group_logo_path=pic
-    )
-    group.save()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'INSERT INTO mydb.Group VALUES (NULL, %s, %s)',
+            [name, pic]
+        )
 
-    user_to_group = UserToGroup(id_user=id_user, id_group=group.id)
-    user_to_group.save()
+        cursor.execute(
+            'INSERT INTO UserToGroup VALUES (NULL, %s, %s)',
+            [cursor.lastrowid, id_user]
+        )
 
 
 def delete_group_member(id_group, username):
     id_user = User.objects.filter(username=username).get().id
-    UserToGroup.objects.filter(id_group=id_group, id_user=id_user).delete()
 
-    user_to_group = UserToGroup.objects.filter(id_group=id_group)
-    if len(user_to_group) == 1:
-        Group.objects.filter(id_group=id_group).delete()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'DELETE FROM UserToGroup WHERE id_group=%s AND id_user=%s',
+            [id_group, id_user]
+        )
+
+        cursor.execute(
+            'SELECT * FROM UserToGroup WHERE id_group=%s',
+            [id_group]
+        )
+
+        user_to_group = cursor.fetchall()
+        if len(user_to_group) == 1:
+            cursor.execute(
+                'DELETE FROM mydb.Group WHERE id=%s',
+                [id_group]
+            )
 
 
 def edit_group_db(id_group, pic, name, group_members):
-    group = Group.objects.filter(id=id_group).get()
-    group.name = name
-    if pic:
-        group.group_logo_path = pic
-    group.save()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'UPDATE mydb.Group SET name=%s WHERE id=%s',
+            [name, id_group]
+        )
+        if pic:
+            cursor.execute(
+                'UPDATE mydb.Group SET group_logo_path=%s WHERE id=%s',
+                [pic, id_group]
+            )
 
-    for username in group_members:
-        user_obj = User.objects.filter(username=username)
-        if user_obj:
-            user_to_group = UserToGroup(id_group=id_group, id_user=user_obj.get().id)
-            user_to_group.save()
+        for username in group_members:
+            user_obj = User.objects.filter(username=username)
+            if user_obj:
+                cursor.execute(
+                    'INSERT INTO UserToGroup VALUES (NULL, %s, %s)',
+                    [id_group, user_obj.get().id]
+                )
 
 
 def get_user_dashboard_expenses(id_user):
@@ -260,14 +293,17 @@ def get_user_dashboard_expenses(id_user):
         expenses_owed = cursor.fetchall()
 
         sums = defaultdict(int)
+        id_user_paid, id_user_owes = None, None
         for ex in expenses_owes:
             _, description, date, currency, amount, id_user_paid, id_user_owes, id_group, pic_file_path = ex
             sums[id_user_paid] -= amount
-        print(sums[id_user_paid])
+        if id_user_paid:
+            print(sums[id_user_paid])
         for ex in expenses_owed:
             _, description, date, currency, amount, id_user_paid, id_user_owes, id_group, pic_file_path = ex
             sums[id_user_owes] += amount
-        print(sums[id_user_owes])
+        if id_user_owes:
+            print(sums[id_user_owes])
         res = []
         for id_friend, total_sum in sums.items():
             exp = dict()
@@ -289,7 +325,7 @@ def get_user_dashboard_expenses(id_user):
             exp['id'] = ''
 
             res.append(exp)
-        # print('res_exp:', res)
+
         return prepare_expenses(id_user, res)
 
 
@@ -319,7 +355,6 @@ def get_group_expenses(id_group):
 
             res.append(exp)
 
-        # print('res_gr: ', res)
         return res
 
 
@@ -374,7 +409,14 @@ def get_user_expenses_with_friend(id_friend, id_user):
             exp['id_group'] = id_group
             exp['id'] = id_expense
             if id_group:
-                exp['group_name'] = Group.objects.filter(id=id_group).first().name
+                cursor.execute(
+                    'SELECT name FROM mydb.Group WHERE id=%s',
+                    [id_group]
+                )
+                group_name = cursor.fetchall()
+                if len(group_name):
+                    group_name = group_name[0][0]
+                    exp['group_name'] = group_name
 
             if exp['id_paid'] == exp['id_owed'] and exp['id_paid'] == id_user:
                 continue
@@ -391,15 +433,23 @@ def get_user_expenses_with_friend(id_friend, id_user):
             res.append(exp)
 
         res.reverse()
-        # print('res_3', res)
         return res
 
 
 def get_group_name_by_id(id_group):
-    group = Group.objects.filter(id=id_group).first()
-    if group:
-        return group.name
-    return _("GROUP NAME")
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT * FROM mydb.Group WHERE id=%s',
+            [id_group]
+        )
+
+        group_name = cursor.fetchall()
+        if len(group_name):
+            __, name, __ = group_name[0]
+            return name
+
+        print('get_group_name_by_id', group_name)
+        return _("GROUP NAME")
 
 
 def get_friend_name_by_id(id_friend):
@@ -407,18 +457,35 @@ def get_friend_name_by_id(id_friend):
 
 
 def get_group_photo_by_id(id_group):
-    group = Group.objects.filter(id=id_group).first()
-    if group:
-        return group.group_logo_path
-    return "/media/images/group_default.png"
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT group_logo_path FROM mydb.Group WHERE id=%s',
+            [id_group]
+        )
+
+        group_photo = cursor.fetchall()
+        if len(group_photo):
+            group_photo = group_photo[0][0]
+            return group_photo
+
+        return "/media/images/group_default.png"
 
 
 def get_some_user_group_expenses(id_user):
-    user_group = UserToGroup.objects.filter(id_user=id_user).first()
-    if not user_group:
-        return [], -1
+    with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT * FROM UserToGroup WHERE id_user=%s',
+            [id_user]
+        )
 
-    return get_user_expenses_from_group(user_group.id_group, id_user), user_group.id_group
+        user_group = cursor.fetchall()
+        if len(user_group):
+            user_group = user_group[0]
+            _, id_group, _ = user_group
+            return get_user_expenses_from_group(id_group, id_user), id_group
+
+        print('get_some_user_group_expenses', user_group)
+        return [], -1
 
 
 def create_expense(id_group, desc, amount, date, percent_users, paid_username, pic):
@@ -431,17 +498,17 @@ def create_expense(id_group, desc, amount, date, percent_users, paid_username, p
         if d['percent'] is None:
             d['percent'] = 0
         user_amount = float(d['percent']) / 100 * amount
-        print(user_amount)
 
         with connection.cursor() as cursor:
-            cursor.execute(
-                'INSERT INTO Expense VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)',
-                [
-                    desc, date, '$', user_amount,
-                    User.objects.filter(username=paid_username).first().id,
-                    id_user_owes, id_group, pic
-                ]
-            )
+            if User.objects.filter(username=paid_username).first():
+                cursor.execute(
+                    'INSERT INTO Expense VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)',
+                    [
+                        desc, date, '$', user_amount,
+                        User.objects.filter(username=paid_username).first().id,
+                        id_user_owes, id_group, pic
+                    ]
+                )
 
 
 def get_expense_info_by_id(id_exp, id_current_user):
@@ -551,14 +618,18 @@ def get_user_expenses_to_friends(id_user):
             ans['photo'] = find_user_photo(User.objects.filter(id=id_friend[0]).get().id)
             ans['id'] = id_friend[0]
             expenses.append(ans)
-        # print('expenses1: ', expenses)
+
         return expenses
 
 
 def get_user_expenses_to_groups(id_user):
-    id_groups = UserToGroup.objects.filter(id_user=id_user).values_list('id_group')
-
     with connection.cursor() as cursor:
+        cursor.execute(
+            'SELECT id_group FROM UserToGroup WHERE id_user=%s',
+            [id_user]
+        )
+        id_groups = cursor.fetchall()
+
         expenses = []
         for id_group in id_groups:
             cursor.execute(
@@ -590,11 +661,19 @@ def get_user_expenses_to_groups(id_user):
                 ans['you_pay'] = '0$'
                 ans['you_owe'] = '0$'
 
-            ans['name'] = Group.objects.filter(id=id_group[0]).get().name
-            ans['photo'] = Group.objects.filter(id=id_group[0]).get().group_logo_path
-            ans['id'] = id_group[0]
-            expenses.append(ans)
-        # print('expenses8: ', expenses)
+            cursor.execute(
+                'SELECT * FROM mydb.Group WHERE id=%s',
+                [id_group[0]]
+            )
+
+            group = cursor.fetchall()
+            if len(group):
+                _, name, group_logo_path = group[0]
+                ans['name'] = name
+                ans['photo'] = group_logo_path
+                ans['id'] = id_group[0]
+                expenses.append(ans)
+
         return expenses
 
 
