@@ -14,7 +14,6 @@ from webpush import send_user_notification
 
 from splitwise_web.db_operations import *
 from splitwise_web.img_processing import process_img
-from splitwise_web.models import Notification
 
 
 @register.filter
@@ -79,9 +78,14 @@ def get_index_context(request):
 
 class Index(View):
     def get(self, request):
+        # from django.db import connection
+        # with connection.cursor() as cursor:
+        #     cursor.execute('describe table Expense;')
+        #     print(cursor.fetchall())
+        #
+        # return render(request, 'index.html')
         if request.user.is_authenticated:
             context = get_index_context(request)
-
 
             return render(request, 'index.html', context=context)
         else:
@@ -172,7 +176,6 @@ class SignInUP(View):
             email = request.POST.get('sign-up-email')
             user = User.objects.create_user(username, password=password, email=email)
             update_or_set_lang_user(user.id, 'en-us')
-            print(get_user_lang(user.id))
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -229,12 +232,11 @@ def send_friend_invitation(request):
     friend_username = r.get('username')
     try:
         user_friend = User.objects.filter(username=friend_username).get()
-        notification = Notification(
-            id_sender=request.user.id,
-            id_recipient=user_friend.id,
-            notification_type='friend_request'
-        )
-        notification.save()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                'INSERT INTO Notification VALUES (NULL, %s, %s, %s)',
+                ['friend_request', request.user.id, user_friend.id]
+            )
 
         photo = find_user_photo(request.user.id)
         payload = {
@@ -243,6 +245,7 @@ def send_friend_invitation(request):
             'icon': photo
         }
         send_user_notification(user=user_friend, payload=payload, ttl=1000)
+        print('notification sent')
     except Exception as e:
         print(e)
     return JsonResponse({})
@@ -358,6 +361,7 @@ def get_expense_info(request):
     id_exp = int(request.body.decode("utf-8"))
     res = get_expense_info_by_id(id_exp, request.user.id)
 
+    print("RESULT TO JSON", res)
     return JsonResponse(res)
 
 
@@ -378,7 +382,6 @@ def check_user_is_valid(request):
 
 @csrf_exempt
 def check_sign_in_user(request):
-    print('bla')
     resp = json.loads(request.body)
     ans = dict()
     if check_no_such_username(resp.get('username')):
@@ -386,7 +389,9 @@ def check_sign_in_user(request):
         ans['password'] = None
     else:
         ans['username'] = 'valid'
-        ans['password'] = check_password(resp.get('password'), User.objects.filter(username=resp.get('username')).first().password)
+        ans['password'] = check_password(
+            resp.get('password'), User.objects.filter(username=resp.get('username')).first().password
+        )
 
     return JsonResponse(ans)
 
@@ -399,7 +404,7 @@ def is_password_valid(request):
     else:
         valid = False
 
-    return JsonResponse({'valid':valid})
+    return JsonResponse({'valid': valid})
 
 
 @csrf_exempt
