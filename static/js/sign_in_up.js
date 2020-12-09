@@ -160,7 +160,7 @@ validateInputOnSignUp(
     'email-up-invalid-span',
     '/check_email_used',
     'email-spinner',
-    'User with such username already exists',
+    'User with such email already exists',
     1,
     {invalidEmailText:'This should be email address', lengthSpanText:null}
 );

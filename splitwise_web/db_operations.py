@@ -3,7 +3,6 @@ from time import strftime
 
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-from splitwise_web.models import *
 from django.utils.translation import to_locale, get_language
 
 from django.db import connection

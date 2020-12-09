@@ -203,11 +203,11 @@ msgstr "Цвет фона"
 
 #: templates/index.html:347
 msgid "settle up"
-msgstr "рассчитаться"
+msgstr "расчёт"
 
 #: templates/index.html:353 templates/index_mobile.html:71
 msgid "Settle up"
-msgstr "Рассчитаться"
+msgstr "Расчёт"
 
 #: templates/index.html:365 templates/index_mobile.html:83
 msgid "You"
@@ -295,7 +295,7 @@ msgid "friends"
 msgstr "друзья"
 
 #: templates/index_mobile.html:65
-msgid "settle up mobile"
+msgid "settle up"
 msgstr "рассчёт"
 
 #: templates/profile.html:46

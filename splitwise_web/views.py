@@ -78,12 +78,6 @@ def get_index_context(request):
 
 class Index(View):
     def get(self, request):
-        # from django.db import connection
-        # with connection.cursor() as cursor:
-        #     cursor.execute('describe table Expense;')
-        #     print(cursor.fetchall())
-        #
-        # return render(request, 'index.html')
         if request.user.is_authenticated:
             context = get_index_context(request)
 
@@ -343,7 +337,6 @@ def create_new_expense(request):
 
     if paid_username == 'you' or paid_username == 'тобой':
         # fixme:
-
         paid_username = request.user.username
 
     if is_friend:
