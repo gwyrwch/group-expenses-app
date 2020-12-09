@@ -177,6 +177,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
 django_heroku.settings(locals(), databases=False)
 
+# print(DATABASES)
 # del DATABASES['default']['OPTIONS']['sslmode']
 
 MEDIA_URL = '/media/'
