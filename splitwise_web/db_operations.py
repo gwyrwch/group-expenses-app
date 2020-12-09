@@ -259,7 +259,7 @@ def delete_group_member(id_group, username):
         user_to_group = cursor.fetchall()
         if len(user_to_group) == 1:
             cursor.execute(
-                'DELETE FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
+                  'DELETE FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                 [id_group]
             )
 
