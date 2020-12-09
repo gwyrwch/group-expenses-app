@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import to_locale, get_language
 
 from django.db import connection
+from django.conf import settings
 
 eps = 10 ** -6
 
@@ -128,7 +129,7 @@ def get_user_groups(id_user):
             group = dict()
 
             cursor.execute(
-                'SELECT * FROM mydb.Group WHERE id=%s',
+                'SELECT * FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                 [id_group]
             )
             group_obj = cursor.fetchall()
@@ -231,7 +232,7 @@ def create_group(name, pic, id_user):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            'INSERT INTO mydb.Group VALUES (NULL, %s, %s)',
+            'INSERT INTO {}.Group VALUES (NULL, %s, %s)'.format(settings.DATABASES['default']['NAME']),
             [name, pic]
         )
 
@@ -258,7 +259,7 @@ def delete_group_member(id_group, username):
         user_to_group = cursor.fetchall()
         if len(user_to_group) == 1:
             cursor.execute(
-                'DELETE FROM mydb.Group WHERE id=%s',
+                'DELETE FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                 [id_group]
             )
 
@@ -266,12 +267,12 @@ def delete_group_member(id_group, username):
 def edit_group_db(id_group, pic, name, group_members):
     with connection.cursor() as cursor:
         cursor.execute(
-            'UPDATE mydb.Group SET name=%s WHERE id=%s',
+            'UPDATE {}.Group SET name=%s WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
             [name, id_group]
         )
         if pic:
             cursor.execute(
-                'UPDATE mydb.Group SET group_logo_path=%s WHERE id=%s',
+                'UPDATE {}.Group SET group_logo_path=%s WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                 [pic, id_group]
             )
 
@@ -409,7 +410,7 @@ def get_user_expenses_with_friend(id_friend, id_user):
             exp['id'] = id_expense
             if id_group:
                 cursor.execute(
-                    'SELECT name FROM mydb.Group WHERE id=%s',
+                    'SELECT name FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                     [id_group]
                 )
                 group_name = cursor.fetchall()
@@ -438,7 +439,7 @@ def get_user_expenses_with_friend(id_friend, id_user):
 def get_group_name_by_id(id_group):
     with connection.cursor() as cursor:
         cursor.execute(
-            'SELECT * FROM mydb.Group WHERE id=%s',
+            'SELECT * FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
             [id_group]
         )
 
@@ -458,7 +459,7 @@ def get_friend_name_by_id(id_friend):
 def get_group_photo_by_id(id_group):
     with connection.cursor() as cursor:
         cursor.execute(
-            'SELECT group_logo_path FROM mydb.Group WHERE id=%s',
+            'SELECT group_logo_path FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
             [id_group]
         )
 
@@ -661,7 +662,7 @@ def get_user_expenses_to_groups(id_user):
                 ans['you_owe'] = '0$'
 
             cursor.execute(
-                'SELECT * FROM mydb.Group WHERE id=%s',
+                'SELECT * FROM {}.Group WHERE id=%s'.format(settings.DATABASES['default']['NAME']),
                 [id_group[0]]
             )
 
