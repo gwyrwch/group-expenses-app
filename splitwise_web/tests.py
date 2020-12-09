@@ -12,18 +12,18 @@ class AnimalTestCase(TestCase):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                'INSERT INTO Notification VALUES (NULL, %s, %s, %s)',
+                'INSERT INTO splitwise_web_notification VALUES (NULL, %s, %s, %s)',
                 [n_type, user_id, friend_id]
             )
             notification_id = cursor.lastrowid
 
             cursor.execute(
-                'SELECT * FROM Notification WHERE id=%s',
+                'SELECT * FROM splitwise_web_notification WHERE id=%s',
                 [notification_id]
             )
 
             notifications = cursor.fetchall()
-            self.assertEqual(len(cursor.fetchall), 1)
+            self.assertEqual(len(notifications), 1)
 
             id_notification, notification_type, id_sender, id_recipient = notifications[0]
 

@@ -89,6 +89,32 @@ DATABASES = {
     }
 }
 
+import os
+import sys
+from urllib.parse import urlparse
+
+try:
+    if 'DATABASE_URL' in os.environ:
+        url = urlparse(os.environ['DATABASE_URL'])
+
+        # Ensure default database exists.
+        DATABASES['default'] = DATABASES.get('default', {})
+
+        # Update with environment configuration.
+        DATABASES['default'].update({
+            'NAME': url.path[1:],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port,
+        })
+
+
+        if url.scheme == 'mysql':
+            DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'
+except Exception:
+    print('Unexpected error:', sys.exc_info())
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
