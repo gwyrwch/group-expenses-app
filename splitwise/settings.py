@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import django_heroku
 import os
 
+import sys
+from urllib.parse import urlparse
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -89,12 +92,9 @@ DATABASES = {
     }
 }
 
-import os
-import sys
-from urllib.parse import urlparse
-
 try:
     if 'DATABASE_URL' in os.environ:
+        print('USING DATABASE + ' + os.environ['DATABASE_URL'])
         url = urlparse(os.environ['DATABASE_URL'])
 
         # Ensure default database exists.
@@ -108,7 +108,6 @@ try:
             'HOST': url.hostname,
             'PORT': url.port,
         })
-
 
         if url.scheme == 'mysql':
             DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'

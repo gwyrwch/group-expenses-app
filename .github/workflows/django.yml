@@ -23,6 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
+        export DATABASE_URL=mysql://be18461eb5c863:8443f33a@eu-cdbr-west-03.cleardb.net/heroku_0b23bb27e1ff1b1
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
