@@ -26,7 +26,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        DATABASE_URL: mysql://be18461eb5c863:8443f33a@eu-cdbr-west-03.cleardb.net/heroku_0b23bb27e1ff1b1
       run: |
-        export DATABASE_URL=mysql://be18461eb5c863:8443f33a@eu-cdbr-west-03.cleardb.net/heroku_0b23bb27e1ff1b1
         python manage.py test --testrunner=splitwise_web.test_runner.NoDbTestRunner
 
