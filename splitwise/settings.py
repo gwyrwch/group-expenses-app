@@ -109,7 +109,8 @@ try:
             'PORT': url.port,
             'TEST': {
                 'NAME': url.path[1:]
-            }
+            },
+            'MIGRATE': False
         })
 
         if url.scheme == 'mysql':
