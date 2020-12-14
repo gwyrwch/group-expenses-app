@@ -107,6 +107,9 @@ try:
             'PASSWORD': url.password,
             'HOST': url.hostname,
             'PORT': url.port,
+            'TEST': {
+                'NAME': url.path[1:]
+            }
         })
 
         if url.scheme == 'mysql':

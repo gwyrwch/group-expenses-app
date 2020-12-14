@@ -4,9 +4,9 @@ from django.test import TestCase
 from splitwise_web.db_operations import *
 from django.test import Client
 
-username = 'rita'
+username = 'rita123'
 password = '12345'
-email = 'rita@mail.ru'
+email = 'rita123@mail.ru'
 
 
 class TestClientTestCase(TestCase):
