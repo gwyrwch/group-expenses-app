@@ -4,7 +4,6 @@ from django.db import models
 
 
 class FriendShip(models.Model):
-
     uid_1 = models.IntegerField()
     uid_2 = models.IntegerField()
 

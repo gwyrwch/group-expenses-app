@@ -6,3 +6,6 @@ splitwise_web/__pycache__/
 static/img/.DS_Store
 static/.DS_Store
 __pycache__/
+splitwise_web/migrations/0007_auto_20201209_1834.py
+splitwise_web/migrations/0008_expense_friendship_group_notification_profilepictures_userlang_usertogroup.py
+staticfiles/
