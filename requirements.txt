@@ -13,7 +13,7 @@ http-ece==1.1.0
 idna==2.9
 mysqlclient==2.0.1
 numpy==1.18.4
-Pillow==7.1.2
+Pillow==8.1.1
 pipreqs==0.4.10
 psycopg2==2.7.5
 psycopg2-binary==2.8.4
